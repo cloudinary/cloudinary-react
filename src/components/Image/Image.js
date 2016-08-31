@@ -2,22 +2,40 @@ import React, {Component, PropTypes} from 'react';
 import cloudinary from 'cloudinary-core';
 
 export default class Image extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {bar: props.initialBar};
+  constructor(props, context) {
+    super(props, context);
+    var options = Object.assign({}, context, props);
+    var options2 = this.snakeCase(options);
+    let cl = cloudinary.Cloudinary.new(options2);
+    // let tr = cloudinary.Transformation.new(options);
+    //
+    console.log("trying url", props, options2);
+    var url = cl.url(props.publicId, options2);
+    console.log(url);
+    this.state = {url: url};
     // this.foo = this.foo.bind(this);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    var config = {};
-    cloudinary.Configuration.CONFIG_PARAMS.forEach((param)=> {
-      if(nextProps[param]){
-        config[param] = nextProps[param];
-      }
-    });
+  snakeCase(options) {
+    let res = {};
+    for(let key of Object.keys(options)) {
+      res[cloudinary.Util.snakeCase(key)] = options[key];
+    }
+    return res;
+  }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    var options = Object.assign({}, nextContext, nextProps);
+
+    let cl = cloudinary.Cloudinary.new(options);
+    let tr = cloudinary.Transformation.new(options);
+    var url = cl.url(this.props.publicId, options);
+    console.log(url);
+    var transformation = tr.toString();
+    console.log(transformation);
     this.setState({
-      url: ""
+      url: url,
+      transformation: transformation
     })
   }
 
@@ -41,11 +59,11 @@ export default class Image extends React.Component {
   }
 
   render() {
-    let cl = cloudinary.Cloudinary.new({cloud_name: "demo"});
+    var options = Object.assign({}, this.context, this.props);
     var {publicId, transformation, ...other} = this.props;
-    var url = cl.url(publicId, transformation);
+    var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
-      <img {...other} src={url} />
+      <img {...attributes} src={this.state.url} />
     );
   }
 }
@@ -57,16 +75,17 @@ Image.propTypes = {
   transformation: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
-    PropTypes.arrayOf(React.PropTypes.object)
+    PropTypes.arrayOf(PropTypes.object)
   ]),
   handleLoad: PropTypes.func,
   breakpoints: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.arrayOf(React.PropTypes.number)
+    PropTypes.arrayOf(PropTypes.number)
   ])
 
 };
 Image.defaultProps = {};
 Image.contextTypes = {
-  config: React.PropTypes.object
+  cloudName: PropTypes.string,
+  angle: PropTypes.string
 };

@@ -1,16 +1,18 @@
 import React, {Component, PropTypes} from 'react';
+import cloudinary from 'cloudinary-core';
 
 export default class CloudinaryContext extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {};
   }
 
   getChildContext() {
-    return {cloud_name: "demo"};
+    let {children, ...otherProps} = this.props;
+    return Object.assign({}, this.context, otherProps);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
   }
 
   componentWillMount() {
@@ -22,27 +24,35 @@ export default class CloudinaryContext extends React.Component {
   componentWillUnmount() {
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState, nextContext) {
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, prevContext) {
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     return true;
   }
 
   render() {
     return (
-      <span>CloudinaryContext Not Implemented yet</span>
+      <div>{this.props.children}</div>
     );
   }
 }
-CloudinaryContext.propTypes = {initialCount: React.PropTypes.number};
-CloudinaryContext.defaultProps = {initialCount: 0};
+CloudinaryContext.propTypes = {};
+CloudinaryContext.defaultProps = {};
 CloudinaryContext.contextTypes = {
-  cloud_name: PropTypes.string.isRequired
+  cloudName: PropTypes.string.isRequired
 };
 CloudinaryContext.childContextTypes = {
-  cloud_name: PropTypes.string.isRequired
+  cloudName: PropTypes.string.isRequired
 };
+for (let key of cloudinary.Configuration.CONFIG_PARAMS) {
+  CloudinaryContext.childContextTypes[cloudinary.Util.camelCase(key)] = PropTypes.string;
+}
+for (let key of cloudinary.Transformation.new().PARAM_NAMES) {
+  CloudinaryContext.childContextTypes[cloudinary.Util.camelCase(key)] = PropTypes.string;
+}
+
+console.log(CloudinaryContext.childContextTypes);

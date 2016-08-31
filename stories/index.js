@@ -10,18 +10,18 @@ storiesOf('Cloudinary', module)
   .add('image', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return (
-    <Image publicId="sample" transformation={t}/>
+    <Image cloudName="demo" publicId="sample" transformation={t}/>
   )})
   .add('image with alt', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return(
-      <Image publicId="does-not-exist" alt="This image is intentionally missing" transformation={t}/>
+      <Image cloudName="demo" publicId="does-not-exist" alt="This image is intentionally missing" transformation={t}/>
     )
   })
   .add('image with style', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return(
-      <Image publicId="sample" style={{border: "20px solid"}} transformation={t}/>
+      <Image cloudName="demo" publicId="sample" style={{border: "20px solid"}} transformation={t}/>
     )
   })
   .add('Video', ()=> {
@@ -31,10 +31,22 @@ storiesOf('Cloudinary', module)
   .add('CloudinaryContext', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return (
-      <CloudinaryContext >
-        <div>
+      <CloudinaryContext cloudName="demo" >
+        <ul><li>
+          <Image publicId="sample" transformation={t} width="50"/>
+          </li></ul>
+
           <Image publicId="sample" transformation={t}/>
-        </div>
+      </CloudinaryContext>
+    )})
+  .add('CloudinaryContext - nested', ()=> {
+    let t = { width: 0.5, crop: "scale"};
+    return (
+      <CloudinaryContext cloudName="demo" angle="30">
+          <Image publicId="sample"  width="50"/>
+        <CloudinaryContext cloudName="demo" angle="20" width="100">
+          <Image publicId="sample" transformation={t}/>
+          </CloudinaryContext>
       </CloudinaryContext>
     )})
 ;
