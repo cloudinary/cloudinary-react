@@ -1,0 +1,6 @@
+{
+  "name": "cloudinarycontext",
+  "version": "1.0.0",
+  "main": "./CloudinaryContext.js",
+  "private": true
+}
