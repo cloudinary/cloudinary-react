@@ -6,7 +6,7 @@ import CloudinaryContext from '../src/components/CloudinaryContext';
 
 let CLImage = Image;
 
-storiesOf('Cloudinary', module)
+storiesOf('Image', module)
   .add('image', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return (
@@ -18,35 +18,47 @@ storiesOf('Cloudinary', module)
       <Image cloudName="demo" publicId="does-not-exist" alt="This image is intentionally missing" transformation={t}/>
     )
   })
+  .add('image with html attributes', ()=> {
+    return(
+      <Image cloudName="demo" publicId="sample"  html_width="100"/>
+    )
+  })
   .add('image with style', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return(
       <Image cloudName="demo" publicId="sample" style={{border: "20px solid"}} transformation={t}/>
     )
-  })
+  });
+storiesOf('Video', module)
   .add('Video', ()=> {
     return (
       <Video />
-    )})
+    )});
+storiesOf('CloudinaryContext', module)
   .add('CloudinaryContext', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return (
       <CloudinaryContext cloudName="demo" >
-        <ul><li>
+        <div><span>Inside a div: </span>
           <Image publicId="sample" transformation={t} width="50"/>
-          </li></ul>
+          </div>
 
           <Image publicId="sample" transformation={t}/>
       </CloudinaryContext>
     )})
-  .add('CloudinaryContext - nested', ()=> {
+  .add('Nested Context', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return (
-      <CloudinaryContext cloudName="demo" angle="30">
-          <Image publicId="sample"  width="50"/>
-        <CloudinaryContext cloudName="demo" angle="20" width="100">
-          <Image publicId="sample" transformation={t}/>
-          </CloudinaryContext>
+      <CloudinaryContext cloudName="demo" width="50" crop="scale">
+        <Image publicId="sample"/>
+        <Image publicId="sample" radius="100"/>
+        <Image publicId="sample" angle="0"/>
+        <CloudinaryContext angle="20" width="100" style={{border: "2px solid"}}>
+          <span>Inner Context</span>
+          <Image publicId="sample"/>
+          <Image publicId="sample" radius="100"/>
+          <Image publicId="sample" angle="0"/>
+        </CloudinaryContext>
       </CloudinaryContext>
     )})
 ;

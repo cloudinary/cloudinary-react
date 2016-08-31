@@ -1,42 +1,27 @@
 import React, {Component, PropTypes} from 'react';
 import cloudinary from 'cloudinary-core';
+import CloudinaryComponent from '../CloudinaryComponent';
 
-export default class Image extends React.Component {
+export default class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    var options = Object.assign({}, context, props);
-    var options2 = this.snakeCase(options);
+    var options = this.getOptions(props, context);
+    var options2 = options;
     let cl = cloudinary.Cloudinary.new(options2);
-    // let tr = cloudinary.Transformation.new(options);
-    //
-    console.log("trying url", props, options2);
     var url = cl.url(props.publicId, options2);
-    console.log(url);
     this.state = {url: url};
-    // this.foo = this.foo.bind(this);
-  }
-
-  snakeCase(options) {
-    let res = {};
-    for(let key of Object.keys(options)) {
-      res[cloudinary.Util.snakeCase(key)] = options[key];
-    }
-    return res;
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    var options = Object.assign({}, nextContext, nextProps);
+    var options = this.getOptions(nextProps, nextContext);
 
     let cl = cloudinary.Cloudinary.new(options);
-    let tr = cloudinary.Transformation.new(options);
     var url = cl.url(this.props.publicId, options);
-    console.log(url);
-    var transformation = tr.toString();
-    console.log(transformation);
-    this.setState({
-      url: url,
-      transformation: transformation
-    })
+    if(url != this.state.url){
+      this.setState({
+        url: url
+      })
+    }
   }
 
   componentWillMount() {
@@ -59,7 +44,7 @@ export default class Image extends React.Component {
   }
 
   render() {
-    var options = Object.assign({}, this.context, this.props);
+    var options = this.getOptions(this.props, this.context);
     var {publicId, transformation, ...other} = this.props;
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
@@ -85,7 +70,4 @@ Image.propTypes = {
 
 };
 Image.defaultProps = {};
-Image.contextTypes = {
-  cloudName: PropTypes.string,
-  angle: PropTypes.string
-};
+Image.contextTypes = CloudinaryComponent.contextTypes;

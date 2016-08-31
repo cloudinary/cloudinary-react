@@ -1,0 +1,6 @@
+{
+  "name": "cloudinarycomponent",
+  "version": "1.0.0",
+  "main": "./CloudinaryComponent.js",
+  "private": true
+}

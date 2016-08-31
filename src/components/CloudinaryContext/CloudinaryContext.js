@@ -1,7 +1,16 @@
-import React, {Component, PropTypes} from 'react';
-import cloudinary from 'cloudinary-core';
+import React from 'react';
+import CloudinaryComponent from '../CloudinaryComponent';
 
-export default class CloudinaryContext extends React.Component {
+/**
+ * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
+ * @example
+ *    <CloudinaryContext cloudName="mycloud" dpr="auto">
+ *      <!-- other tags -->
+ *      <Image publicId={id}/>
+ *    </CloudinaryContext>
+ *
+ */
+export default class CloudinaryContext extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {};
@@ -9,7 +18,15 @@ export default class CloudinaryContext extends React.Component {
 
   getChildContext() {
     let {children, ...otherProps} = this.props;
-    return Object.assign({}, this.context, otherProps);
+    let context = {};
+    // only pass valid Cloudinary options
+    CloudinaryComponent.VALID_OPTIONS.forEach(key => {
+      let val = otherProps[key] || this.context[key];
+      if(val !== null && val !== undefined){
+        context[key] = val;
+      }
+    });
+    return context;
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -40,19 +57,6 @@ export default class CloudinaryContext extends React.Component {
     );
   }
 }
-CloudinaryContext.propTypes = {};
+CloudinaryContext.propTypes = CloudinaryComponent.propTypes;
 CloudinaryContext.defaultProps = {};
-CloudinaryContext.contextTypes = {
-  cloudName: PropTypes.string.isRequired
-};
-CloudinaryContext.childContextTypes = {
-  cloudName: PropTypes.string.isRequired
-};
-for (let key of cloudinary.Configuration.CONFIG_PARAMS) {
-  CloudinaryContext.childContextTypes[cloudinary.Util.camelCase(key)] = PropTypes.string;
-}
-for (let key of cloudinary.Transformation.new().PARAM_NAMES) {
-  CloudinaryContext.childContextTypes[cloudinary.Util.camelCase(key)] = PropTypes.string;
-}
-
-console.log(CloudinaryContext.childContextTypes);
+CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
