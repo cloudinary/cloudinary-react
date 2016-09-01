@@ -17,12 +17,11 @@ export default class CloudinaryContext extends CloudinaryComponent {
   }
 
   getChildContext() {
-    let {children, ...otherProps} = this.props;
     let context = {};
     // only pass valid Cloudinary options
     CloudinaryComponent.VALID_OPTIONS.forEach(key => {
-      let val = otherProps[key] || this.context[key];
-      if(val !== null && val !== undefined){
+      let val = this.props[key] || this.context[key];
+      if (val !== undefined && val !== null) {
         context[key] = val;
       }
     });

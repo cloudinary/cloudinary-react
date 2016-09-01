@@ -6,9 +6,8 @@ export default class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     var options = this.getOptions(props, context);
-    var options2 = options;
-    let cl = cloudinary.Cloudinary.new(options2);
-    var url = cl.url(props.publicId, options2);
+    let cl = cloudinary.Cloudinary.new(options);
+    var url = cl.url(props.publicId, options);
     this.state = {url: url};
   }
 
@@ -45,7 +44,6 @@ export default class Image extends CloudinaryComponent {
 
   render() {
     var options = this.getOptions(this.props, this.context);
-    var {publicId, transformation, ...other} = this.props;
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
       <img {...attributes} src={this.state.url} />
