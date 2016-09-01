@@ -3,8 +3,7 @@ import { storiesOf, action, linkTo } from '@kadira/storybook';
 import Image from '../src/components/Image';
 import Video from '../src/components/Video';
 import CloudinaryContext from '../src/components/CloudinaryContext';
-
-let CLImage = Image;
+import cloudinary from 'cloudinary-core';
 
 storiesOf('Image', module)
   .add('image', ()=> {
@@ -30,10 +29,40 @@ storiesOf('Image', module)
     )
   });
 storiesOf('Video', module)
-  .add('Video', ()=> {
+  .add('Simple tag', ()=> {
     return (
-      <Video />
-    )});
+      <Video cloudName="demo" controls publicId="dog"/>
+    )
+  }).add('With fallback', ()=> {
+    return (
+      <Video cloudName="demo" controls="controls" publicId="dog" fallback="Cannot display video"/>
+    )
+  }).add('With inline fallback', ()=> {
+    return (
+      <Video cloudName="demo" controls="controls" publicId="dog" >
+        Cannot display <b>video</b>.
+      </Video>
+    )
+  }).add('With source types', ()=> {
+    return (
+      <Video cloudName="demo" controls="controls" publicId="dog" sourceTypes={['webm', 'ogv', 'mp4']}>
+        Cannot display video.
+      </Video>
+    )
+  }).add('Simple tag with width', ()=> {
+    return (
+      <Video cloudName="demo" controls publicId="dog" width="300" crop="scale"/>
+    )
+  }).add('Simple tag with poster url', ()=> {
+    let url = cloudinary.Cloudinary.new({cloud_name: "demo"}).url("sample", {width:300, crop: "scale"});
+    return (
+      <Video cloudName="demo" controls publicId="dog" width="300" crop="scale" poster={url}/>
+    )
+  }).add('Simple tag with poster object', ()=> {
+    return (
+      <Video cloudName="demo" controls publicId="dog" width="300" crop="scale" poster={{publicId: "sample"}}/>
+    )
+  });
 storiesOf('CloudinaryContext', module)
   .add('CloudinaryContext', ()=> {
     let t = { width: 0.5, crop: "scale"};
@@ -47,7 +76,6 @@ storiesOf('CloudinaryContext', module)
       </CloudinaryContext>
     )})
   .add('Nested Context', ()=> {
-    let t = { width: 0.5, crop: "scale"};
     return (
       <CloudinaryContext cloudName="demo" width="50" crop="scale">
         <Image publicId="sample"/>
