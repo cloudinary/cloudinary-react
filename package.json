@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/CloudinaryLtd/cloudinary_react#readme",
   "devDependencies": {
+    "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.5.2",
     "babel-cli": "^6.14.0",
     "babel-core": "^6.14.0",
