@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import cloudinary from 'cloudinary-core';
+import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-const Util = cloudinary.Util;
-const Cloudinary = cloudinary.Cloudinary;
+
 const DEFAULT_POSTER_OPTIONS = {
   format: 'jpg',
   resource_type: 'video'
@@ -14,7 +13,7 @@ export default class Video extends CloudinaryComponent {
     this.state = {};
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
   }
 
   componentWillMount() {
@@ -26,13 +25,13 @@ export default class Video extends CloudinaryComponent {
   componentWillUnmount() {
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState, nextContext) {
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, prevContext) {
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     return true;
   }
 
@@ -43,27 +42,29 @@ export default class Video extends CloudinaryComponent {
     options = this.getOptions(options, {});
     let cld = Cloudinary.new(options);
     let sources = [];
-    let tagAttributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    let tagAttributes = Transformation.new(options).toHtmlAttributes();
     if (Util.isPlainObject(poster)) {
-      let defaults = poster.publicId != null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
+      let defaults = poster.publicId !== undefined && poster.publicId !== null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
       poster = cld.url(poster.publicId || publicId, Util.defaults({}, poster, defaults));
     }
     if(!Util.isEmpty(poster)){
-      tagAttributes["poster"] = poster;
+      tagAttributes.poster = poster;
+    }
+    if(!Util.isEmpty(this.state.poster)){
+      tagAttributes.poster = this.state.poster;
     }
 
     if(Util.isArray(sourceTypes)){
       sources = sourceTypes.map( srcType => {
         let transformation = sourceTransformation[srcType] || {};
         let src = cld.url(publicId, Util.defaults({}, transformation, {resource_type: 'video', format: srcType}));
-        let mimeType = 'video/' + (srcType == 'ogv' ? 'ogg' : srcType);
+        let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
         return <source key={mimeType} src={ src} type={ mimeType}/>;
         }
       );
     } else {
       tagAttributes["src"] = cld.url(publicId, {resource_type: 'video', format: sourceTypes});
     }
-    console.log("Ready to return tag", tagAttributes);
     return (
       <video {...tagAttributes}>
         {sources}
