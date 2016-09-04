@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import cloudinary from 'cloudinary-core';
+import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
 
-const camelCase = cloudinary.Util.camelCase;
-const snakeCase = cloudinary.Util.snakeCase;
+const camelCase = Util.camelCase;
+const snakeCase = Util.snakeCase;
 
 export default class CloudinaryComponent extends Component {
   constructor(props, context) {
@@ -63,8 +63,15 @@ export default class CloudinaryComponent extends Component {
     }
     return options;
   }
+
+  getUrl(props, context = {}) {
+    var options = this.getOptions(props, context);
+    let cl = Cloudinary.new(options);
+    return  cl.url(props.publicId, options);
+  }
+
 }
-CloudinaryComponent.VALID_OPTIONS = cloudinary.Configuration.CONFIG_PARAMS.concat(cloudinary.Transformation.new().PARAM_NAMES).map( camelCase);
+CloudinaryComponent.VALID_OPTIONS = Configuration.CONFIG_PARAMS.concat(Transformation.new().PARAM_NAMES).map( camelCase);
 CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 
 CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes ;
@@ -73,13 +80,13 @@ CloudinaryComponent.childContextTypes = {};
 
 /**
  * Create a React type definition object. All items are PropTypes.string.
- * @param {Array} configparams a list of parameter names
+ * @param {Array} configParams a list of parameter names
  * @returns {Object}
  */
-function typesFrom(configparams) {
-  configparams = configparams || [];
+function typesFrom(configParams) {
+  configParams = configParams || [];
   const types = {};
-  for (let key of configparams) {
+  for (let key of configParams) {
     types[camelCase(key)] = PropTypes.string;
   }
   return types;

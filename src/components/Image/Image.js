@@ -1,25 +1,18 @@
 import React, {Component, PropTypes} from 'react';
-import cloudinary from 'cloudinary-core';
+import {Transformation} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 
 export default class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    var options = this.getOptions(props, context);
-    let cl = cloudinary.Cloudinary.new(options);
-    var url = cl.url(props.publicId, options);
-    this.state = {url: url};
+    let url = this.getUrl(props, context);
+    this.state = {url};
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    var options = this.getOptions(nextProps, nextContext);
-
-    let cl = cloudinary.Cloudinary.new(options);
-    var url = cl.url(this.props.publicId, options);
-    if(url != this.state.url){
-      this.setState({
-        url: url
-      })
+    let url = this.getUrl(nextProps, nextContext);
+    if(url !== this.state.url){
+      this.setState({url});
     }
   }
 
@@ -44,28 +37,13 @@ export default class Image extends CloudinaryComponent {
 
   render() {
     var options = this.getOptions(this.props, this.context);
-    var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    var attributes = Transformation.new(options).toHtmlAttributes();
     return (
       <img {...attributes} src={this.state.url} />
     );
   }
 }
 
-Image.propTypes = {
-  publicId: PropTypes.string.isRequired,
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.number,
-  transformation: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object,
-    PropTypes.arrayOf(PropTypes.object)
-  ]),
-  handleLoad: PropTypes.func,
-  breakpoints: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.arrayOf(PropTypes.number)
-  ])
-
-};
 Image.defaultProps = {};
 Image.contextTypes = CloudinaryComponent.contextTypes;
+Image.propTypes = CloudinaryComponent.propTypes;
