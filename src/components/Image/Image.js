@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Transformation} from 'cloudinary-core';
+import cloudinary from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 
 export default class Image extends CloudinaryComponent {
@@ -36,8 +36,8 @@ export default class Image extends CloudinaryComponent {
   }
 
   render() {
-    var options = this.getOptions(this.props, this.context);
-    var attributes = Transformation.new(options).toHtmlAttributes();
+    var {children, ...options} = CloudinaryComponent.getOptions(this.props, this.context);
+    var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
       <img {...attributes} src={this.state.url} />
     );

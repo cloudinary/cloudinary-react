@@ -39,6 +39,20 @@ export default class CloudinaryComponent extends Component {
     return null;
   }
 
+  getChildTransformations(children) {
+    return React.Children.map( children ,child =>
+      CloudinaryComponent.getOptions(child.props, child.context)
+    );
+  }
+
+  getTransformation(){
+    let options = CloudinaryComponent.getOptions(this.props, this.context);
+    let childrenOptions = this.getChildTransformations(this.props.children);
+    if(!Util.isEmpty(childrenOptions)){
+      options.transformation = childrenOptions;
+    }
+    return options;
+  }
   /**
    * Combine props and context to create an option Object that can be passed to Cloudinary methods.<br>
    *   All names are converted to snake_case.
@@ -46,7 +60,7 @@ export default class CloudinaryComponent extends Component {
    * @param context
    * @returns {{}}
    */
-  getOptions(props, context) {
+  static getOptions(props, context) {
     var options = {};
 
     for(let key in context) {
@@ -65,8 +79,10 @@ export default class CloudinaryComponent extends Component {
   }
 
   getUrl(props, context = {}) {
-    var options = this.getOptions(props, context);
+    var options = CloudinaryComponent.getOptions(props, context);
+    options = this.getTransformation();
     let cl = Cloudinary.new(options);
+    this.getChildTransformations(props.children);
     return  cl.url(props.publicId, options);
   }
 

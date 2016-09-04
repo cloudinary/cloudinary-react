@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import Image from '../src/components/Image';
 import Video from '../src/components/Video';
+import Transformation from '../src/components/Transformation';
 import CloudinaryContext from '../src/components/CloudinaryContext';
 import cloudinary from 'cloudinary-core';
 
@@ -37,11 +38,12 @@ storiesOf('Image', module)
   }).addWithInfo('image with chained transformation', 'image with chained transformation', ()=> {
     let t = { width: 0.5, crop: "scale"};
     return(<div>
-      <Image cloudName="demo" publicId="sample" width="100" crop="scale" angle="10">
-        <Transformation width="100" crop="scale" angle="10"/>
-        <Transformation width="100" crop="scale" angle="10"/>
+      <Image cloudName="demo" publicId="sample" >
+        <Transformation width="200" crop="scale" angle="10" />
+        <Transformation width="100" crop="crop"  />
+        <Transformation width="100" crop="scale" angle="-10"/>
       </Image>
-      <Image cloudName="demo" publicId="sample" width="100" crop="scale" angle="10" />
+      <Image cloudName="demo" publicId="sample" width="100" crop="scale" />
       </div>
     )
   });
