@@ -36,7 +36,7 @@ export default class Image extends CloudinaryComponent {
   }
 
   render() {
-    var {children, ...options} = CloudinaryComponent.getOptions(this.props, this.context);
+    var {public_id, children, ...options} = CloudinaryComponent.getOptions(this.props, this.context);
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
       <img {...attributes} src={this.state.url} />
