@@ -40,19 +40,20 @@ export default class CloudinaryComponent extends Component {
   }
 
   getChildTransformations(children) {
-    return React.Children.map( children ,child =>
-      CloudinaryComponent.getOptions(child.props, child.context)
+    return React.Children.map(children, child =>
+      CloudinaryComponent.getOptions(child.props, child.context) // TODO change to getTransformation()
     );
   }
 
-  getTransformation(){
+  getTransformation() {
     let options = CloudinaryComponent.getOptions(this.props, this.context);
     let childrenOptions = this.getChildTransformations(this.props.children);
-    if(!Util.isEmpty(childrenOptions)){
+    if (!Util.isEmpty(childrenOptions)) {
       options.transformation = childrenOptions;
     }
     return options;
   }
+
   /**
    * Combine props and context to create an option Object that can be passed to Cloudinary methods.<br>
    *   All names are converted to snake_case.
@@ -63,15 +64,15 @@ export default class CloudinaryComponent extends Component {
   static getOptions(props, context) {
     var options = {};
 
-    for(let key in context) {
+    for (let key in context) {
       let value = context[key];
-      if(value !== null && value !== undefined) {
+      if (value !== null && value !== undefined) {
         options[snakeCase(key)] = value;
       }
     }
-    for(let key in props) {
+    for (let key in props) {
       let value = props[key];
-      if(value !== null && value !== undefined) {
+      if (value !== null && value !== undefined) {
         options[snakeCase(key)] = value;
       }
     }
@@ -79,18 +80,18 @@ export default class CloudinaryComponent extends Component {
   }
 
   getUrl(props, context = {}) {
-    var options = CloudinaryComponent.getOptions(props, context);
-    options = this.getTransformation();
+    let options = this.getTransformation();
     let cl = Cloudinary.new(options);
     this.getChildTransformations(props.children);
-    return  cl.url(props.publicId, options);
+    return cl.url(props.publicId, options);
   }
 
 }
-CloudinaryComponent.VALID_OPTIONS = Configuration.CONFIG_PARAMS.concat(Transformation.new().PARAM_NAMES).map( camelCase);
+CloudinaryComponent.VALID_OPTIONS = Configuration.CONFIG_PARAMS.concat(Transformation.new().PARAM_NAMES).map(camelCase);
 CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 
-CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes ;
+CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes;
+CloudinaryComponent.propTypes.publicId = PropTypes.string;
 
 CloudinaryComponent.childContextTypes = {};
 
@@ -103,7 +104,13 @@ function typesFrom(configParams) {
   configParams = configParams || [];
   const types = {};
   for (let key of configParams) {
-    types[camelCase(key)] = PropTypes.string;
+    types[camelCase(key)] = PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string),
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object)
+
+    ]);
   }
   return types;
 }

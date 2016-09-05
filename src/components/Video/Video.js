@@ -36,7 +36,9 @@ export default class Video extends CloudinaryComponent {
   }
 
   render() {
-    let {publicId, poster, sourceTypes, fallback, sourceTransformation, ...options} = Object.assign({}, this.context, this.props);
+    let {publicId, poster, sourceTypes, fallback, sourceTransformation, ...options} = Object.assign({},
+      this.context,
+      this.props);
     sourceTransformation = sourceTransformation || {};
     sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;
     options = CloudinaryComponent.getOptions(options, {});
@@ -47,19 +49,19 @@ export default class Video extends CloudinaryComponent {
       let defaults = poster.publicId !== undefined && poster.publicId !== null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
       poster = cld.url(poster.publicId || publicId, Util.defaults({}, poster, defaults));
     }
-    if(!Util.isEmpty(poster)){
+    if (!Util.isEmpty(poster)) {
       tagAttributes.poster = poster;
     }
-    if(!Util.isEmpty(this.state.poster)){
+    if (!Util.isEmpty(this.state.poster)) {
       tagAttributes.poster = this.state.poster;
     }
 
-    if(Util.isArray(sourceTypes)){
-      sources = sourceTypes.map( srcType => {
-        let transformation = sourceTransformation[srcType] || {};
-        let src = cld.url(publicId, Util.defaults({}, transformation, {resource_type: 'video', format: srcType}));
-        let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
-        return <source key={mimeType} src={ src} type={ mimeType}/>;
+    if (Util.isArray(sourceTypes)) {
+      sources = sourceTypes.map(srcType => {
+          let transformation = sourceTransformation[srcType] || {};
+          let src = cld.url(publicId, Util.defaults({}, transformation, {resource_type: 'video', format: srcType}));
+          let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
+          return <source key={mimeType} src={ src} type={ mimeType}/>;
         }
       );
     } else {
