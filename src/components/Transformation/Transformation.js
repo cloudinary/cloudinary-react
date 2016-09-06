@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
 
-export default class Transformation extends Component {
+export default class Transformation extends CloudinaryComponent {
   constructor(props) {
     super(props);
   }

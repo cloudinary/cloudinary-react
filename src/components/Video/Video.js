@@ -41,7 +41,7 @@ export default class Video extends CloudinaryComponent {
       this.props);
     sourceTransformation = sourceTransformation || {};
     sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;
-    options = CloudinaryComponent.getOptions(options, {});
+    options = CloudinaryComponent.normalizeOptions(options, {});
     let cld = Cloudinary.new(options);
     let sources = [];
     let tagAttributes = Transformation.new(options).toHtmlAttributes();

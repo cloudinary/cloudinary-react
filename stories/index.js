@@ -7,9 +7,10 @@ import CloudinaryContext from '../src/components/CloudinaryContext';
 import cloudinary from 'cloudinary-core';
 
 storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
-    let t = {width: 0.5, crop: "scale"};
+    // let t = {width: 0.5, crop: "scale"};
+    let t = {crop: "scale"};
     return (
-      <Image cloudName="demo" publicId="sample" transformation={t}/>
+      <Image cloudName="demo" publicId="sample" crop="scale"/>
     )
   }
 ).addWithInfo('image with alt', "Demostrate using an img tag attribute", ()=> {
@@ -39,14 +40,15 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
       </div>
     )
   }
-).addWithInfo('image with chained transformation', 'image with chained transformation', ()=> {
+).addWithInfo('image with nested chained transformation', 'image with chained transformation', ()=> {
   let t = {width: 0.5, crop: "scale"};
   return (
     <div>
       <Image cloudName="demo" publicId="sample">
-        <Transformation width="200" crop="scale" angle="10"/>
-        <Transformation width="100" crop="crop"/>
-        <Transformation width="100" crop="scale" angle="-10"/>
+        <Transformation angle="-45"/>
+        <Transformation effect="trim" angle="45" crop="scale" width="600">
+          <Transformation overlay="text:Arial_100:Hello" />
+        </Transformation>
       </Image>
       <Image cloudName="demo" publicId="sample" width="100" crop="scale"/>
     </div>
