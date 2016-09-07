@@ -50,15 +50,15 @@ export default class CloudinaryComponent extends Component {
     });
   }
 
-  getTransformation(props = this.props , context = this.context) {
-    let options = CloudinaryComponent.normalizeOptions(context, props );
-    if(this.props.children !== undefined){
+  getTransformation(options) {
+    var transformation;
+    if (this.props.children !== undefined) {
       let childrenOptions = this.getChildTransformations(this.props.children);
       if (!Util.isEmpty(childrenOptions)) {
-        options.transformation = childrenOptions;
+        transformation = childrenOptions;
       }
     }
-    return options;
+    return {...options, transformation};
   }
 
   /**
@@ -81,12 +81,11 @@ export default class CloudinaryComponent extends Component {
       , {});
   }
 
-  getUrl(props = this.props , context = this.context) {
-    let options = CloudinaryComponent.normalizeOptions(context, props);
-    let transformation = this.getTransformation(props, context);
+  getUrl(options) {
+    let transformation = this.getTransformation(options);
     let cl = Cloudinary.new(options);
     console.log("options: ", options, "transformation:", transformation);
-    return cl.url(props.publicId, transformation);
+    return cl.url(options.public_id, transformation);
   }
 
 }
@@ -95,6 +94,7 @@ CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 
 CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes;
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
+CloudinaryComponent.propTypes.responsive = PropTypes.bool;
 
 CloudinaryComponent.childContextTypes = {};
 

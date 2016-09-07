@@ -13,6 +13,11 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
       <Image cloudName="demo" publicId="sample" crop="scale"/>
     )
   }
+).addWithInfo('responsive image', "Basic tag", ()=> {
+    return (
+      <Image cloudName="demo" publicId="sample" crop="scale" width="auto" responsive/>
+    )
+  }
 ).addWithInfo('image with alt', "Demostrate using an img tag attribute", ()=> {
     let t = {width: 0.5, crop: "scale"};
     return (
