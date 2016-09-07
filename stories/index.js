@@ -7,15 +7,18 @@ import CloudinaryContext from '../src/components/CloudinaryContext';
 import cloudinary from 'cloudinary-core';
 
 storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
-    // let t = {width: 0.5, crop: "scale"};
-    let t = {crop: "scale"};
     return (
-      <Image cloudName="demo" publicId="sample" crop="scale"/>
+      <Image cloudName="demo" publicId="sample"/>
     )
   }
 ).addWithInfo('responsive image', "Basic tag", ()=> {
     return (
       <Image cloudName="demo" publicId="sample" crop="scale" width="auto" responsive/>
+    )
+  }
+).addWithInfo('responsive image with very slow debounce', "Basic tag", ()=> {
+    return (
+      <Image cloudName="demo" publicId="sample" crop="scale" width="auto" responsive responsiveDebounce="2000"/>
     )
   }
 ).addWithInfo('image with alt', "Demostrate using an img tag attribute", ()=> {
@@ -32,11 +35,10 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
 ).addWithInfo('image with style', 'image with style', ()=> {
     let t = {width: 0.5, crop: "scale"};
     return (
-      <Image cloudName="demo" publicId="sample" style={{border: "20px solid"}}/>
+      <Image {...t} cloudName="demo" publicId="sample" style={{border: "20px solid"}}/>
     )
   }
 ).addWithInfo('image with chained transformation', 'image with chained transformation', ()=> {
-    let t = {width: 0.5, crop: "scale"};
     return (
       <div>
         <Image cloudName="demo" publicId="sample" width="100" crop="scale" angle="10"
@@ -46,7 +48,6 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
     )
   }
 ).addWithInfo('image with nested chained transformation', 'image with chained transformation', ()=> {
-  let t = {width: 0.5, crop: "scale"};
   return (
     <div>
       <Image cloudName="demo" publicId="sample">

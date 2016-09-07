@@ -6,24 +6,6 @@ export default class Transformation extends CloudinaryComponent {
     super(props);
   }
 
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     return true;
   }

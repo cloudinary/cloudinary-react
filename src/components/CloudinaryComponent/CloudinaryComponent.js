@@ -68,7 +68,6 @@ export default class CloudinaryComponent extends Component {
    * @param options one or more options objects
    */
   static normalizeOptions(...options) {
-    var result = {};
     return options.reduce((left, right)=> {
         for (let key in right) {
           let value = right[key];
@@ -84,7 +83,6 @@ export default class CloudinaryComponent extends Component {
   getUrl(options) {
     let transformation = this.getTransformation(options);
     let cl = Cloudinary.new(options);
-    console.log("options: ", options, "transformation:", transformation);
     return cl.url(options.public_id, transformation);
   }
 
