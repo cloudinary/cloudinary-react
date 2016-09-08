@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import debounce from '../../util/debounce';
-import firstDefined from '../../util/firstDefined';
+import {debounce, firstDefined, closestAbove} from '../../Util';
 
 export default class Image extends CloudinaryComponent {
   constructor(props, context) {
@@ -37,7 +36,7 @@ export default class Image extends CloudinaryComponent {
     }
 
     let currentState = this.state || {};
-    if (/* FIXME probably not needed */ Util.isEmpty(currentState.url) || url !== currentState.url) {
+    if (!Util.isEmpty(url) && url !== currentState.url) {
       state.url = url;
     }
     return state;
@@ -66,7 +65,6 @@ export default class Image extends CloudinaryComponent {
   }
 
   componentWillUpdate(nextProps, nextState, nextContext) {
-    // TODO check responsive. also check for responsive state change.
     if (nextState.responsive) {
       const wait = firstDefined(nextProps.responsiveDebounce, nextContext.responsiveDebounce, 100);
       if (this.listener) {
@@ -105,7 +103,7 @@ export default class Image extends CloudinaryComponent {
     );
   }
 
-  // methods from cloudinary_js
+  // Methods from cloudinary_js
 
   findContainerWidth() {
     var containerWidth, style;
@@ -213,16 +211,7 @@ Image.defaultProps = {};
 Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
 
-
 function defaultBreakpoints(width, steps = 100) {
   return steps * Math.ceil(width / steps);
 }
 
-function closestAbove(list, value) {
-  var i;
-  i = list.length - 2;
-  while (i >= 0 && list[i] >= value) {
-    i--;
-  }
-  return list[i + 1];
-}

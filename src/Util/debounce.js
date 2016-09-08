@@ -1,10 +1,17 @@
+/**
+ * Delay execution of func until wait miliseconds have passed since the last invocation of the returned debounced function.
+ * @param {function} func the function to execute
+ * @param {number} wait waiting time in miliseconds
+ * @param {boolean=false} immediate if true execute func at the beginning of the wait period
+ * @returns {function()} debounced function
+ */
 export default function debounce(func, wait, immediate) {
   let timeout = null;
-  let debounced =  () => {
+  let debounced = () => {
     const context = this;
     const args = arguments;
     const callNow = immediate && !timeout;
-    if(timeout){
+    if (timeout) {
       clearTimeout(timeout);
     }
     const later = () => {
@@ -20,10 +27,9 @@ export default function debounce(func, wait, immediate) {
     }
   };
 
-  debounced.cancel = ()=>{
+  debounced.cancel = ()=> {
     clearTimeout(timeout);
     timeout = null;
   };
   return debounced;
-
 }
