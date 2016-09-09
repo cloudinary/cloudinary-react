@@ -105,13 +105,7 @@ function typesFrom(configParams) {
   configParams = configParams || [];
   const types = {};
   for (let key of configParams) {
-    types[camelCase(key)] = PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.object,
-      PropTypes.arrayOf(PropTypes.object)
-
-    ]);
+    types[camelCase(key)] = PropTypes.any;
   }
   return types;
 }
