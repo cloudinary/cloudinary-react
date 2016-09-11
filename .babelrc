@@ -1,4 +1,5 @@
 {
   "presets": ["react","es2015", "stage-1"],
-  "ignore": [ "src/**/*compiled.js*"]
+  "plugins": ["transform-es2015-modules-umd"],
+  "ignore": [ "**/*compiled.js*"]
 }
