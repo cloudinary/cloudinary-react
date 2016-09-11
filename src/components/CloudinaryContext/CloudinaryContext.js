@@ -56,6 +56,7 @@ export default class CloudinaryContext extends CloudinaryComponent {
     );
   }
 }
+
 CloudinaryContext.propTypes = CloudinaryComponent.propTypes;
 CloudinaryContext.defaultProps = {};
 CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;

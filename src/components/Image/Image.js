@@ -3,8 +3,13 @@ import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove} from '../../Util';
 
+
 export default class Image extends CloudinaryComponent {
   constructor(props, context) {
+    function defaultBreakpoints(width, steps = 100) {
+      return steps * Math.ceil(width / steps);
+    }
+
     super(props, context);
     let options = CloudinaryComponent.normalizeOptions(context, props);
     this.handleResize = this.handleResize.bind(this);
@@ -210,8 +215,4 @@ export default class Image extends CloudinaryComponent {
 Image.defaultProps = {};
 Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
-
-function defaultBreakpoints(width, steps = 100) {
-  return steps * Math.ceil(width / steps);
-}
 

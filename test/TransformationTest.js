@@ -21,10 +21,12 @@ describe('Transformation', () => {
     let tag = shallow(
       <Image publicId="sample" cloudName="demo" >
         <Transformation width="100" crop="scale"/>
-        <Transformation width="200" crop="crop"/>
+        <Transformation width="200" crop="pad">
+          <Transformation angle="30"/>
+        </Transformation>
       </Image>
     );
     expect(tag.type()).to.equal("img");
-    expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/c_crop,w_200/sample");
+    expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/a_30/c_pad,w_200/sample");
   });
 });
