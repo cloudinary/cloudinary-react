@@ -1,0 +1,26 @@
+{
+  "name": "cloudinary-react-bundled-sample",
+  "description": "",
+  "homepage": "https://github.com/CloudinaryLtd/cloudinary_react",
+  "authors": [
+    "Cloudinary"
+  ],
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^15.3.1",
+    "lodash": "^3.10.0",
+    "cloudinary-core": "^2.1.3"
+  },
+  "resolutions": {
+    "lodash": "3.x"
+  }
+}
