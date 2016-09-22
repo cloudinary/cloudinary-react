@@ -6,10 +6,6 @@ export default class Transformation extends CloudinaryComponent {
     super(props);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
   render() {
     return null;
   }

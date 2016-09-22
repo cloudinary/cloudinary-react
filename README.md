@@ -99,9 +99,6 @@ Additional resources are available at:
 * [Website](http://cloudinary.com)
 * [Documentation](http://cloudinary.com/documentation)
 * [Knowledge Base](http://support.cloudinary.com/forums)
-* [Documentation for jQuery integration](http://cloudinary.com/documentation/jquery_integration)
-* [jQuery image upload documentation](http://cloudinary.com/documentation/jquery_image_upload)
-* [jQuery image manipulation documentation](http://cloudinary.com/documentation/jquery_image_manipulation)
 * [Image transformations documentation](http://cloudinary.com/documentation/image_transformations)
 
 ## Support
@@ -116,5 +113,3 @@ Stay tuned for updates, tips and tutorials: [Blog](http://cloudinary.com/blog), 
 ## License
 
 Released under the MIT license.
-
-The direct image upload feature of the plugin is based on https://github.com/blueimp/jQuery-File-Upload

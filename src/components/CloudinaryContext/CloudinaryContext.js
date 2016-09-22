@@ -28,28 +28,6 @@ export default class CloudinaryContext extends CloudinaryComponent {
     return context;
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-  }
-
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillUpdate(nextProps, nextState, nextContext) {
-  }
-
-  componentDidUpdate(prevProps, prevState, prevContext) {
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return true;
-  }
-
   render() {
     return (
       <div>{this.props.children}</div>

@@ -13,28 +13,6 @@ export default class CloudinaryComponent extends Component {
     return {};
   }
 
-  componentWillReceiveProps(nextProps) {
-  }
-
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
   render() {
     return null;
   }

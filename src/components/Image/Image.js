@@ -11,12 +11,10 @@ export default class Image extends CloudinaryComponent {
     }
 
     super(props, context);
-    let options = CloudinaryComponent.normalizeOptions(context, props);
     this.handleResize = this.handleResize.bind(this);
 
     let state = {responsive: false, url: "", breakpoints: defaultBreakpoints};
     this.state = Object.assign(state, this.prepareState(props, context));
-    this.state = state;
   }
 
   get window() {
@@ -47,12 +45,7 @@ export default class Image extends CloudinaryComponent {
     return state;
   }
 
-  componentWillMount() {
-    super.componentWillMount();
-  }
-
   componentDidMount() {
-    super.componentDidMount();
     // now that we have a this.element, we need to calculate the URL
     let state = this.prepareState();
     if (state.url !== undefined) {
@@ -78,13 +71,6 @@ export default class Image extends CloudinaryComponent {
       this.listener = debounce(this.handleResize, wait);
       this.window.addEventListener('resize', this.listener);
     }
-  }
-
-  componentDidUpdate(prevProps, prevState, prevContext) {
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return true;
   }
 
   handleResize(e) {
@@ -123,18 +109,18 @@ export default class Image extends CloudinaryComponent {
     return containerWidth;
   };
 
-  applyBreakpoints(tag, width, steps, options) {
+  applyBreakpoints(width, steps, options) {
     var responsive_use_breakpoints;
     options = CloudinaryComponent.normalizeOptions(this.context, this.props, options);
     responsive_use_breakpoints = options.responsiveUseBreakpoints;
     if ((!responsive_use_breakpoints) || (responsive_use_breakpoints === 'resize' && !options.resizing)) {
       return width;
     } else {
-      return this.calc_breakpoint(tag, width, steps);
+      return this.calc_breakpoint(width, steps);
     }
   };
 
-  calc_breakpoint(element, width, steps) {
+  calc_breakpoint(width, steps) {
     var breakpoints, point;
     breakpoints = this.state.breakpoints || defaultBreakpoints;
     if (Util.isFunction(breakpoints)) {
@@ -200,7 +186,7 @@ export default class Image extends CloudinaryComponent {
           resultUrl = resultUrl.replace(/w_auto:breakpoints([_0-9]*)(:[0-9]+)?/,
             "w_auto:breakpoints$1:" + requiredWidth);
         } else if (match = /w_auto(:(\d+))?/.exec(resultUrl)) {
-          requiredWidth = this.applyBreakpoints(this.element, containerWidth, match[2], options);
+          requiredWidth = this.applyBreakpoints(containerWidth, match[2], options);
           requiredWidth = this.maxWidth(requiredWidth, this.element);
           resultUrl = resultUrl.replace(/w_auto[^,\/]*/g, "w_" + requiredWidth);
         }
