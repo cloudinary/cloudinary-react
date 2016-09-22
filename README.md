@@ -72,7 +72,7 @@ CloudinaryContext allows you to define shared parameters that are applied to all
 The Image element defines a Cloudinary Image tag.
  
 ### Video
-The Image element defines a Cloudinary Image tag.
+The Video element defines a Cloudinary Video tag.
 
 ### Transformation
 The Transformation element allows you to defined additional transformations on the parent element.
