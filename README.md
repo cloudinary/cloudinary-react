@@ -9,10 +9,6 @@ Cloudinary offers comprehensive APIs and administration capabilities and is easy
 
 Cloudinary provides URL and HTTP based APIs that can be easily integrated with any Web development framework.
 
-## Getting started guide
-
-![](http://res.cloudinary.com/cloudinary/image/upload/see_more_bullet.png)  **Take a look at our [Getting started guide for jQuery](http://cloudinary.com/documentation/jquery_integration#getting_started_guide)**.
-
 ## Installation
 
 
@@ -31,7 +27,7 @@ Cloudinary provides URL and HTTP based APIs that can be easily integrated with a
 
 ## Setup
 
-In order to properly use this library you have to provide it with a few configuration parameters. All configuration parameters can be applied directly to the element or usign a CloudinaryContext element.
+In order to properly use this library you have to provide it with a few configuration parameters. All configuration parameters can be applied directly to the element or using a CloudinaryContext element.
 
 
 ```
@@ -39,12 +35,13 @@ ReactDOM.render(
             <div>
                 <h1>Hello, world!</h1>
                 <Image cloudName="demo" publicId="sample" width="300" crop="scale"/>
-                 { /* or using the namespace cloudinaryReact */ }
-                <cloudinaryReact.CloudinaryContext cloudName="demo">
-                    <cloudinaryReact.Image publicId="sample">
-                        <cloudinaryReact.Transformation width="200" crop="scale" angle="10"/>
-                    </cloudinaryReact.Image>
-                </cloudinaryReact.CloudinaryContext>
+                // Or for more advanced usage:
+                // import {CloudinaryContext, Transformation} from 'cloudinary-react';
+                <CloudinaryContext cloudName="demo">
+                    <Image publicId="sample">
+                        <Transformation width="200" crop="scale" angle="10"/>
+                    </Image>
+                </CloudinaryContext>
             </div>,
             document.getElementById('example')
     );
