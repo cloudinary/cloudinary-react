@@ -21,7 +21,7 @@ Cloudinary provides URL and HTTP based APIs that can be easily integrated with a
 1. Install the files using the following command. Use the optional `--save` parameter if you wish to save the dependency in your `bower.json` file.
 
    ```shell
-   npm install cloudinary-react
+   npm install cloudinary-react --save
    ```
 
 1. Include the javascript files in your code. For Example:

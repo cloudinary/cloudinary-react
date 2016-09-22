@@ -1,3 +1,6 @@
+.idea/
+
+
 # Logs
 logs
 *.log
@@ -27,7 +30,7 @@ coverage
 build/Release
 
 # Dependency directories
-node_modules/
+node_modules
 jspm_packages
 bower_components/
 
@@ -37,6 +40,8 @@ bower_components/
 # Optional REPL history
 .node_repl_history
 
-lib/
-dist/
 *-compiled.js*
+stories/
+.storybook/
+samples/
+test/

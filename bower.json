@@ -1,0 +1,21 @@
+{
+  "name": "cloudinary-react",
+  "description": "Present Cloudinary images and videos using React components",
+  "main": "dist/cloudinary-react.js",
+  "authors": [
+    "Cloudinary"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/CloudinaryLtd/cloudinary_react",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "samples",
+    "*-compiled.js*",
+    "stories/",
+    ".storybook/"
+  ]
+}
