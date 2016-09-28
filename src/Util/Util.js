@@ -1,9 +1,3 @@
-import debounce from './debounce';
-import firstDefined from './firstDefined';
-import closestAbove from './closestAbove';
-
-let Util = {
-  debounce, firstDefined, closestAbove
-};
-
-export default Util;
+export debounce from './debounce';
+export firstDefined from './firstDefined';
+export closestAbove from './closestAbove';
