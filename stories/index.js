@@ -59,6 +59,26 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
       <Image cloudName="demo" publicId="sample" width="100" crop="scale"/>
     </div>
   )
+}).addWithInfo('image with events', 'image with events', ()=> {
+  let options = {
+    onLoad: ()=> {
+      let e = document.getElementById("eventResult");
+      e.innerHTML = e.innerHTML + "<br>loaded";
+    },
+    onMouseOver: ()=> {
+      let e = document.getElementById("eventResult");
+      e.innerHTML = e.innerHTML + "<br>Mouse over";
+
+    },
+    width: 200,
+    crop: "scale"
+  };
+  return (
+    <div>
+      <Image {...options} cloudName="demo" publicId="sample" />
+      <div id="eventResult"></div>
+    </div>
+  )
 });
 storiesOf('Video', module).addWithInfo('Simple tag', 'Simple tag', ()=> {
     return (
