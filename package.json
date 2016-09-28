@@ -2,10 +2,10 @@
   "name": "cloudinary-react",
   "version": "1.0.0-rc1",
   "description": "Present Cloudinary images and videos using React components",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha test/.setup.js test/*Test.js",
-    "compile": "node_modules/.bin/babel src -d lib",
+    "compile": "node_modules/.bin/babel src -d lib && cd src && find . -name package.json -exec cp --parents '{}' ../lib \\; -print",
     "dist": "node_modules/.bin/webpack",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
