@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove} from '../../Util';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame} from '../../Util';
 
 function compareObjects(o, p) {
   let i,
@@ -74,14 +74,20 @@ export default class Image extends CloudinaryComponent {
     return state;
   }
 
+  handleResize(e) {
+    if (this.rqf) return;
+    this.rqf = requestAnimationFrame(() => {
+      this.rqf = null;
+      let newState = this.prepareState();
+      if(!Util.isEmpty(newState.url)) {
+        this.setState(newState);
+      }
+    });
+  }
+
   componentDidMount() {
     // now that we have a this.element, we need to calculate the URL
-    setTimeout(()=>{
-      let state = this.prepareState();
-      if (state.url !== undefined) {
-        this.setState(state);
-      }
-    }, 0);
+    this.handleResize();
   }
 
   componentWillUnmount() {
@@ -101,18 +107,6 @@ export default class Image extends CloudinaryComponent {
       }
       this.listener = debounce(this.handleResize, wait);
       this.window.addEventListener('resize', this.listener);
-    }
-  }
-
-  handleResize(e) {
-    let options = CloudinaryComponent.normalizeOptions(this.context, this.props);
-    let url = this.getUrl(options);
-    if (this.state.responsive) {
-      url = this.cloudinary_update(url);
-      let partialState = {url: url};
-      if (this.element) {
-        this.setState(partialState);
-      }
     }
   }
 
