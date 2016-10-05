@@ -18,14 +18,21 @@ export default class CloudinaryComponent extends Component {
   }
 
   getChildTransformations(children) {
-    return React.Children.map(children, child =>{
-      let options = CloudinaryComponent.normalizeOptions(child.props, child.context);
+    if(children === undefined || children === null) return null;
+    let mapped = React.Children.map(children, child =>{
+      let options = {};
+      if (child.type && child.type.name === "Transformation"){
+        options = CloudinaryComponent.normalizeOptions(child.props, child.context);
+      }
       let childOptions = this.getChildTransformations(child.props.children);
       if(childOptions !== undefined && childOptions !== null){
         options.transformation = childOptions;
       }
       return options;
     });
+    if(mapped != null){
+      return mapped.filter(o=>!Util.isEmpty(o));
+    } else return null;
   }
 
   getTransformation(options) {
@@ -34,9 +41,10 @@ export default class CloudinaryComponent extends Component {
       let childrenOptions = this.getChildTransformations(this.props.children);
       if (!Util.isEmpty(childrenOptions)) {
         transformation = childrenOptions;
+        return {...options, transformation};
       }
     }
-    return {...options, transformation};
+    return {...options};
   }
 
   /**
@@ -65,7 +73,7 @@ export default class CloudinaryComponent extends Component {
   }
 
 }
-CloudinaryComponent.VALID_OPTIONS = Configuration.CONFIG_PARAMS.concat(Transformation.new().PARAM_NAMES).map(camelCase);
+CloudinaryComponent.VALID_OPTIONS = Transformation.PARAM_NAMES.map(camelCase);
 CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 
 CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes;
