@@ -55,5 +55,5 @@ export default class Video extends CloudinaryComponent {
   }
 }
 Video.propTypes = {publicId: PropTypes.string};
-// Video.defaultProps = {initialCount: 0};
+Video.defaultProps = {};
 Video.contextTypes = CloudinaryComponent.contextTypes;
