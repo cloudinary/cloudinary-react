@@ -40,3 +40,5 @@ bower_components/
 lib/
 dist/
 *-compiled.js*
+storybook-static/
+.storybook/

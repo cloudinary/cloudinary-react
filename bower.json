@@ -1,7 +1,7 @@
 {
   "name": "cloudinary-react",
   "description": "Present Cloudinary images and videos using React components",
-  "main": "dist/cloudinary-react.js",
+  "main": "lib/index.js",
   "authors": [
     "Cloudinary"
   ],
@@ -15,7 +15,8 @@
     "test",
     "samples",
     "*-compiled.js*",
-    "stories/",
-    ".storybook/"
+    "stories",
+    ".storybook",
+    "storybook-static"
   ]
 }
