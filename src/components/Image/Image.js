@@ -30,6 +30,14 @@ function compareObjects(o, p) {
   return true;
 }
 
+function isElement(value) {
+  return value != null && value.nodeType === 1 && isObjectLike(value);
+}
+
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
 export default class Image extends CloudinaryComponent {
   constructor(props, context) {
     function defaultBreakpoints(width, steps = 100) {
@@ -44,7 +52,11 @@ export default class Image extends CloudinaryComponent {
   }
 
   get window() {
-    return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || window) : window;
+    let windowRef = null;
+    if(typeof window !== "undefined"){
+      windowRef = window
+    }
+    return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
   shouldComponentUpdate( nextProps, nextState){
     return !( compareObjects(this.props, nextProps) && compareObjects(this.state, nextState));
@@ -94,7 +106,7 @@ export default class Image extends CloudinaryComponent {
     this.element = undefined;
     if (this.listener) {
       this.listener.cancel();
-      this.window.removeEventListener('resize', this.listener);
+      this.window && this.window.removeEventListener('resize', this.listener);
     }
     this.listener = undefined;
   }
@@ -103,10 +115,10 @@ export default class Image extends CloudinaryComponent {
     if (nextState.responsive) {
       const wait = firstDefined(nextProps.responsiveDebounce, nextContext.responsiveDebounce, 100);
       if (this.listener) {
-        this.window.removeEventListener('resize', this.listener);
+        this.window && this.window.removeEventListener('resize', this.listener);
       }
       this.listener = debounce(this.handleResize, wait);
-      this.window.addEventListener('resize', this.listener);
+      this.window && this.window.addEventListener('resize', this.listener);
     }
   }
 
@@ -125,8 +137,8 @@ export default class Image extends CloudinaryComponent {
     var containerWidth, style;
     containerWidth = 0;
     let element = this.element;
-    while (((element = element != null ? element.parentNode : void 0) instanceof Element) && !containerWidth) {
-      style = this.window.getComputedStyle(element);
+    while (isElement((element = element != null ? element.parentNode : void 0)) && !containerWidth) {
+      style = this.window ? this.window.getComputedStyle(element) : '';
       if (!/^inline/.test(style.display)) {
         containerWidth = Util.width(element);
       }
