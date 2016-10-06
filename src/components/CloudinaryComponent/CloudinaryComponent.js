@@ -35,6 +35,12 @@ export default class CloudinaryComponent extends Component {
     } else return null;
   }
 
+  /**
+   * Returns an object with all the transformation parameters based on the context and properties of this element
+   * and any children.
+   * @param options
+   * @returns {object} a hash of transformation and configuration parameters
+   */
   getTransformation(options) {
     var transformation;
     if (this.props.children !== undefined) {
@@ -66,6 +72,11 @@ export default class CloudinaryComponent extends Component {
       , {});
   }
 
+  /**
+   * Generate a Cloudinary resource URL based on the options provided and child Transformation elements
+   * @param options
+   * @returns {string} a cloudinary URL
+   */
   getUrl(options) {
     let transformation = this.getTransformation(options);
     let cl = Cloudinary.new(options);
