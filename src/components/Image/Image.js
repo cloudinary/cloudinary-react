@@ -1,43 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove, requestAnimationFrame} from '../../Util';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame, equals, isElement} from '../../Util';
 
-function compareObjects(o, p) {
-  let i,
-    keysO = Object.keys(o).sort(),
-    keysP = Object.keys(p).sort();
-  if (keysO.length !== keysP.length) return false;
-  if (keysO.join('') !== keysP.join('')) return false;
-  for (i = 0; i < keysO.length; ++i) {
-    if (o[keysO[i]] instanceof Array) {
-      if (!(p[keysO[i]] instanceof Array)) return false;
-      if (p[keysO[i]].sort().join('') !== o[keysO[i]].sort().join('')) return false;
-    }
-    else if (o[keysO[i]] instanceof Function) {
-      if (!(p[keysO[i]] instanceof Function)) return false;
-    }
-    else if (o[keysO[i]] instanceof Object) {
-      if (!(p[keysO[i]] instanceof Object)) return false;
-      if (o[keysO[i]] === o) {
-        if (p[keysO[i]] !== p) return false;
-      } else if (compareObjects(o[keysO[i]], p[keysO[i]]) === false) {
-        return false;//WARNING: does not deal with circular refs other than ^^
-      }
-    }
-    if (o[keysO[i]] != p[keysO[i]]) return false;//not the same value
-  }
-  return true;
-}
-
-function isElement(value) {
-  return value != null && value.nodeType === 1 && isObjectLike(value);
-}
-
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
+/**
+ * An element representing a Cloudinary served image
+ */
 export default class Image extends CloudinaryComponent {
   constructor(props, context) {
     function defaultBreakpoints(width, steps = 100) {
@@ -51,6 +19,10 @@ export default class Image extends CloudinaryComponent {
     this.state = Object.assign(state, this.prepareState(props, context));
   }
 
+  /**
+   * Retrieve the window or default view of the current element
+   * @returns {DocumentView|*}
+   */
   get window() {
     let windowRef = null;
     if(typeof window !== "undefined"){
@@ -58,8 +30,9 @@ export default class Image extends CloudinaryComponent {
     }
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
+
   shouldComponentUpdate( nextProps, nextState){
-    return !( compareObjects(this.props, nextProps) && compareObjects(this.state, nextState));
+    return !( equals(this.props, nextProps) && equals(this.state, nextState));
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -67,6 +40,12 @@ export default class Image extends CloudinaryComponent {
     this.setState(state);
   }
 
+  /**
+   * Generate update state of this element
+   * @param {Object} [props=this.props]
+   * @param {Object} [context=this.context]
+   * @returns {Object} state updates
+   */
   prepareState(props = this.props, context = this.context) {
     let options = CloudinaryComponent.normalizeOptions(context, props);
     let url = this.getUrl(options);
@@ -238,4 +217,3 @@ export default class Image extends CloudinaryComponent {
 Image.defaultProps = {};
 Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
-
