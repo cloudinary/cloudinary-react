@@ -21,8 +21,10 @@ Cloudinary provides URL and HTTP based APIs that can be easily integrated with a
    ```
 
 1. Include the javascript files in your code. For Example:
-
+   
+   ```js
    import {Image} from 'cloudinary-react';
+   ```
 
 
 ## Setup
@@ -30,7 +32,7 @@ Cloudinary provides URL and HTTP based APIs that can be easily integrated with a
 In order to properly use this library you have to provide it with a few configuration parameters. All configuration parameters can be applied directly to the element or using a CloudinaryContext element.
 
 
-```
+```js
 ReactDOM.render(
             <div>
                 <h1>Hello, world!</h1>
