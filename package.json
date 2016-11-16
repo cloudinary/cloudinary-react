@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CloudinaryLtd/cloudinary_react.git"
+    "url": "git+https://github.com/cloudinary/cloudinary-react.git"
   },
   "author": "Cloudinary",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CloudinaryLtd/cloudinary_react/issues"
+    "url": "https://github.com/cloudinary/cloudinary-react/issues"
   },
-  "homepage": "https://github.com/CloudinaryLtd/cloudinary_react#readme",
+  "homepage": "https://github.com/cloudinary/cloudinary-react#readme",
   "devDependencies": {
     "@kadira/react-storybook-addon-info": "^3.2.1",
     "@kadira/storybook": "^2.5.2",
