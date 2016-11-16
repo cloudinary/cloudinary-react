@@ -34,6 +34,7 @@
     "browserify-shim": "^3.8.12",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
+    "jsdom": "^9.8.3",
     "mocha": "^3.0.2",
     "react": "^15.3.1",
     "react-addons-test-utils": "^15.3.1",
@@ -49,6 +50,8 @@
       "es2015",
       "stage-1"
     ],
-    "ignore": [ "**/*compiled.js*"]
+    "ignore": [
+      "**/*compiled.js*"
+    ]
   }
 }
