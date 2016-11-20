@@ -7,7 +7,6 @@
   ],
   "license": "MIT",
   "homepage": "https://github.com/cloudinary/cloudinary-react",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
