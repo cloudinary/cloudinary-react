@@ -4,8 +4,8 @@
  * @returns {*}
  */
 export default function firstDefined(...values){
-  for(let value of values) {
-    if(value !== undefined) return value;
+  for(let i = 0; i < values.length; i++) {
+    if(values[i] !== undefined) return values[i];
   }
   return undefined;
 }
