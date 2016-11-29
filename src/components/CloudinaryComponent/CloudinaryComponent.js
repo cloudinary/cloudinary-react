@@ -101,7 +101,8 @@ CloudinaryComponent.childContextTypes = {};
 function typesFrom(configParams) {
   configParams = configParams || [];
   const types = {};
-  for (let key of configParams) {
+  for (let i =0; i < configParams.length; i++) {
+    const key = configParams[i];
     types[camelCase(key)] = PropTypes.any;
   }
   return types;
