@@ -128,7 +128,7 @@ export default class Image extends CloudinaryComponent {
   applyBreakpoints(width, steps, options) {
     var responsive_use_breakpoints;
     options = CloudinaryComponent.normalizeOptions(this.context, this.props, options);
-    responsive_use_breakpoints = options.responsiveUseBreakpoints;
+    responsive_use_breakpoints = options.responsive_use_breakpoints;
     if ((!responsive_use_breakpoints) || (responsive_use_breakpoints === 'resize' && !options.resizing)) {
       return width;
     } else {
