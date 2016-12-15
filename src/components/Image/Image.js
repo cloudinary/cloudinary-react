@@ -1,13 +1,38 @@
 import React, {Component, PropTypes} from 'react';
-import cloudinary from 'cloudinary-core';
+import cloudinary, {Util} from 'cloudinary-core';
 
 const camelCase = cloudinary.Util.camelCase;
 const snakeCase = cloudinary.Util.snakeCase;
 
 
 export default class Image extends React.Component {
+
+  /**
+   * Returns an object with all the transformation parameters based on the context and properties of this element
+   * and any children.
+   * @param options
+   * @returns {object} a hash of transformation and configuration parameters
+   */
+  getTransformation(options) {
+    let transformation;
+    if (this.props.children != null) {
+      let childrenOptions = React.Children.map(this.props.children, child =>{
+        if (child.type && child.type.name === "Transformation"){
+          return getOptions(child.props);
+        } else {
+          return {};
+        }
+      });
+      if (!Util.isEmpty(childrenOptions)) {
+        transformation = childrenOptions;
+        return {...options, transformation};
+      }
+    }
+    return {...options};
+  }
+
   render() {
-    let {public_id, ...options} = getOptions(this.props);
+    let {public_id, children, ...options} = getOptions(this.getTransformation(this.props));
     let cl = cloudinary.Cloudinary.new(options);
     let transformation = cloudinary.Transformation.new(options);
     let url = cl.url(public_id, transformation);
@@ -40,7 +65,6 @@ function typesFrom(configparams) {
  * Combine props and context to create an option Object that can be passed to Cloudinary methods.<br>
  *   All names are converted to snake_case.
  * @param props
- * @param context
  * @returns {{}}
  */
 function getOptions(props) {

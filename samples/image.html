@@ -14,8 +14,14 @@
 <div id="root"></div>
 <script type="text/babel">
   let Image = cloudinaryReact.Image;
+  let Transformation = cloudinaryReact.Transformation;
+
   ReactDOM.render(
-          <Image cloudName="demo" publicId="sample" width="300" crop="scale" angle="30" effect="grayscale"></Image>,
+          <Image cloudName="demo" publicId="sample"  >
+              <Transformation radius="70"/>
+              <Transformation crop="scale"  effect="grayscale" width="300" angle="30"/>
+              <Transformation crop="scale"  overlay="cloudinary_icon" width="120" gravity="south_east"/>
+          </Image>,
     document.getElementById('root')
   );
 
