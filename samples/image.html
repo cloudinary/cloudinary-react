@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cloudinary Image Component</title>
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/cloudinary-core/cloudinary-core-shrinkwrap.js"></script>
+    <script src="../dist/cloudinary-react.js" ></script>
+</head>
+<body>
+
+<div id="root"></div>
+<script type="text/babel">
+  let Image = cloudinaryReact.Image;
+  ReactDOM.render(
+          <Image cloudName="demo" publicId="sample" width="400"></Image>,
+    document.getElementById('root')
+  );
+
+</script>
+</body>
+</html>
