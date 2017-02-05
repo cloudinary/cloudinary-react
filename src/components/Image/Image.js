@@ -102,7 +102,7 @@ export default class Image extends CloudinaryComponent {
   }
 
   render() {
-    var {public_id, responsive, responsive_debounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
+    var {publicId, responsive, responsiveDebounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
       this.context);
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (

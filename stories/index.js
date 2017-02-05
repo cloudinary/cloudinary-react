@@ -38,6 +38,15 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
       <Image {...t} cloudName="demo" publicId="sample" style={{border: "20px solid"}}/>
     )
   }
+).addWithInfo('image with onError', 'image with onError', ()=> {
+    let t = {width: 0.5, crop: "scale"};
+    let onError = (e)=> { e.target.insertAdjacentHTML("afterend", "<div>Error handler was invoked.</div>")};
+    return (
+      <div>
+        <Image {...t} cloudName="demo" publicId="i-dont-exist" style={{border: "20px solid"}} onError={onError}/>
+      </div>
+    )
+  }
 ).addWithInfo('image with chained transformation', 'image with chained transformation', ()=> {
     return (
       <div>
@@ -99,7 +108,7 @@ storiesOf('Video', module).addWithInfo('Simple tag', 'Simple tag', ()=> {
   }
 ).addWithInfo('With source types', 'With source types', ()=> {
     return (
-      <Video cloudName="demo" controls="controls" publicId="dog" sourceTypes={['webm', 'ogv', 'mp4']}>
+      <Video cloudName="demo" controls="controls" publicId="dog" sourceTypes={['webm', 'ogv', 'mp4']} sourceTransformation={{webm: {aspectRatio: "1:1"}, ogv: {aspect_ratio: "3:2"}}}>
         Cannot display video.
       </Video>
     )

@@ -20,12 +20,12 @@ export default class Video extends CloudinaryComponent {
     sourceTransformation = sourceTransformation || {};
     sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;
     options = CloudinaryComponent.normalizeOptions(options, {});
-    let cld = Cloudinary.new(options);
+    let cld = Cloudinary.new(Util.withSnakeCaseKeys(options));
     let sources = [];
     let tagAttributes = Transformation.new(options).toHtmlAttributes();
     if (Util.isPlainObject(poster)) {
       let defaults = poster.publicId !== undefined && poster.publicId !== null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
-      poster = cld.url(poster.publicId || publicId, Util.defaults({}, poster, defaults));
+      poster = cld.url(poster.publicId || publicId, Util.defaults({}, Util.withSnakeCaseKeys(poster), defaults));
     }
     if (!Util.isEmpty(poster)) {
       tagAttributes.poster = poster;

@@ -17,4 +17,38 @@ describe('Image', () => {
     expect(tag.type()).to.equal("img");
     expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_300/sample");
   });
+  it("should set event handlers", function() {
+    let width = 300;
+    let tag = shallow(<Image publicId="sample" cloudName="demo" width={width} crop="scale" onLoad={()=> "foo"}/>);
+    expect(tag.type()).to.equal("img");
+    expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_300/sample");
+    expect(tag.props().onLoad()).to.equal("foo")
+
+  });
+  it("should not pass-through Cloudinary attributes", function() {
+    let width = 300;
+
+    let tag2 = mount(<div width="300"><Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints /></div>);
+    let tag = shallow(<Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints />);
+    expect(tag.type()).to.equal("img");
+    expect(tag.state("url")).to.equal("");
+    expect(tag.props()).to.have.property('src');
+
+    // We are checking for both snake_case and camelCase keys
+    expect(tag.props()).not.to.have.property('privateCdn');
+    expect(tag.props()).not.to.have.property('private_cdn');
+    expect(tag.props()).not.to.have.property('defaultImage');
+    expect(tag.props()).not.to.have.property('default_image');
+    expect(tag.props()).not.to.have.property('responsiveUseBreakpoints');
+    expect(tag.props()).not.to.have.property('responsive_use_breakpoints');
+    tag = shallow(<Image publicId="sample" cloudName="demo" width={width} crop="scale" private_cdn="private" default_image="foobar"/>);
+    expect(tag.type()).to.equal("img");
+    expect(tag.state("url")).to.equal("http://demo-res.cloudinary.com/image/upload/c_scale,d_foobar,w_300/sample");
+    expect(tag.props()).to.have.property('src');
+    expect(tag.props()).not.to.have.property('privateCdn');
+    expect(tag.props()).not.to.have.property('private_cdn');
+    expect(tag.props()).not.to.have.property('defaultImage');
+    expect(tag.props()).not.to.have.property('default_image');
+
+  });
 });
