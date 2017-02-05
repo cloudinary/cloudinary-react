@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
+import {mapKeys} from '../../Util'
 
 const camelCase = Util.camelCase;
 const snakeCase = Util.snakeCase;
@@ -64,7 +65,7 @@ export default class CloudinaryComponent extends Component {
         for (let key in right) {
           let value = right[key];
           if (value !== null && value !== undefined) {
-            left[snakeCase(key)] = value;
+            left[key] = value;
           }
         }
         return left;
@@ -79,8 +80,8 @@ export default class CloudinaryComponent extends Component {
    */
   getUrl(options) {
     let transformation = this.getTransformation(options);
-    let cl = Cloudinary.new(options);
-    return cl.url(options.public_id, transformation);
+    let cl = Cloudinary.new(Util.withSnakeCaseKeys(options));
+    return cl.url(options.publicId, transformation);
   }
 
 }
