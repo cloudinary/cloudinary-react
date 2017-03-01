@@ -4,6 +4,7 @@
  * @param {number} wait waiting time in milliseconds
  * @param {boolean=false} immediate if true execute func at the beginning of the wait period
  * @returns {function()} debounced function
+ * @protected
  */
 export default function debounce(func, wait, immediate) {
   let timeout = null;

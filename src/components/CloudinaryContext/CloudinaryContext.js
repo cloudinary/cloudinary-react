@@ -4,13 +4,13 @@ import CloudinaryComponent from '../CloudinaryComponent';
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
  * @example
- *    <CloudinaryContext cloudName="mycloud" dpr="auto">
- *      <!-- other tags -->
- *      <Image publicId={id}/>
- *    </CloudinaryContext>
+ *<CloudinaryContext cloudName="mycloud" dpr="auto">
+ *    <!-- other tags -->
+ *    <Image publicId={id}/>
+ *</CloudinaryContext>
  *
  */
-export default class CloudinaryContext extends CloudinaryComponent {
+class CloudinaryContext extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.state = {};
@@ -38,3 +38,5 @@ export default class CloudinaryContext extends CloudinaryComponent {
 CloudinaryContext.propTypes = CloudinaryComponent.propTypes;
 CloudinaryContext.defaultProps = {};
 CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
+
+export default CloudinaryContext;

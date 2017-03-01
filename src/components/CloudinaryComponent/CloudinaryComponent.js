@@ -5,7 +5,11 @@ import {mapKeys} from '../../Util'
 const camelCase = Util.camelCase;
 const snakeCase = Util.snakeCase;
 
-export default class CloudinaryComponent extends Component {
+/**
+ * A base component for Cloudinary components.
+ * @protected
+ */
+class CloudinaryComponent extends Component {
   constructor(props, context) {
     super(props, context);
   }
@@ -41,6 +45,7 @@ export default class CloudinaryComponent extends Component {
    * and any children.
    * @param options
    * @returns {object} a hash of transformation and configuration parameters
+   * @protected
    */
   getTransformation(options) {
     var transformation;
@@ -56,7 +61,8 @@ export default class CloudinaryComponent extends Component {
 
   /**
    * Combine properties of all options to create an option Object that can be passed to Cloudinary methods.<br>
-   *   All names are converted to snake_case. undefined and null values are filtered out.
+   *   `undefined` and `null` values are filtered out.
+   * @protected
    * @returns {Object}
    * @param options one or more options objects
    */
@@ -77,6 +83,7 @@ export default class CloudinaryComponent extends Component {
    * Generate a Cloudinary resource URL based on the options provided and child Transformation elements
    * @param options
    * @returns {string} a cloudinary URL
+   * @protected
    */
   getUrl(options) {
     let transformation = this.getTransformation(options);
@@ -98,6 +105,7 @@ CloudinaryComponent.childContextTypes = {};
  * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].
  * @param {Array} configParams a list of parameter names
  * @returns {Object}
+ * @private
  */
 function typesFrom(configParams) {
   configParams = configParams || [];
@@ -109,3 +117,4 @@ function typesFrom(configParams) {
   return types;
 }
 
+export default CloudinaryComponent;

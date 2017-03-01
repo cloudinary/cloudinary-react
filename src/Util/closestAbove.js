@@ -3,6 +3,7 @@
  * @param {Array} list a sorted array of items
  * @param {*} value
  * @returns {*}
+ * @protected
  */
 export default function closestAbove(list, value) {
   return list.reduce((last, next) => value <= last ? last : next, undefined);

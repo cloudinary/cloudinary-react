@@ -8,6 +8,7 @@
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is a DOM element, else `false`.
+ * @protected
  * @example
  *
  * _.isElement(document.body);
