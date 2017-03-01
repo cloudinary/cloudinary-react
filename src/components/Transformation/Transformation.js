@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
 
-export default class Transformation extends CloudinaryComponent {
+/**
+ * Define a transformation that is applied to the parent tag.
+ */
+class Transformation extends CloudinaryComponent {
   constructor(props) {
     super(props);
   }
@@ -13,3 +16,5 @@ export default class Transformation extends CloudinaryComponent {
 Transformation.propTypes = CloudinaryComponent.propTypes;
 Transformation.defaultProps = {};
 Transformation.contextTypes = {};
+
+export default Transformation;

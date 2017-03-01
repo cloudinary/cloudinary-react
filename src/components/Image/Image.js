@@ -4,9 +4,9 @@ import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, equals, isElement} from '../../Util';
 
 /**
- * An element representing a Cloudinary served image
+ * A component representing a Cloudinary served image
  */
-export default class Image extends CloudinaryComponent {
+class Image extends CloudinaryComponent {
   constructor(props, context) {
     function defaultBreakpoints(width, steps = 100) {
       return steps * Math.ceil(width / steps);
@@ -22,6 +22,7 @@ export default class Image extends CloudinaryComponent {
   /**
    * Retrieve the window or default view of the current element
    * @returns {DocumentView|*}
+   * @private
    */
   get window() {
     let windowRef = null;
@@ -45,6 +46,7 @@ export default class Image extends CloudinaryComponent {
    * @param {Object} [props=this.props]
    * @param {Object} [context=this.context]
    * @returns {Object} state updates
+   * @private
    */
   prepareState(props = this.props, context = this.context) {
     let options = CloudinaryComponent.normalizeOptions(context, props);
@@ -217,3 +219,5 @@ export default class Image extends CloudinaryComponent {
 Image.defaultProps = {};
 Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
+
+export default Image;

@@ -7,7 +7,10 @@ const DEFAULT_POSTER_OPTIONS = {
   resource_type: 'video'
 };
 
-export default class Video extends CloudinaryComponent {
+/**
+ * A component representing a Cloudinary served video
+ */
+class Video extends CloudinaryComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -57,3 +60,5 @@ export default class Video extends CloudinaryComponent {
 Video.propTypes = {publicId: PropTypes.string};
 Video.defaultProps = {};
 Video.contextTypes = CloudinaryComponent.contextTypes;
+
+export default Video;
