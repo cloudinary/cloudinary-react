@@ -16,6 +16,16 @@ class Video extends CloudinaryComponent {
     this.state = {};
   }
 
+  getMimeTypeFromSrcType(srcType) {
+    const srcTypeToMimeType = {
+      m3u8: 'application/x-mpegURL',
+      mpd: 'application/dash+xml',
+      ogv: 'video/ogg'
+    };
+
+    return srcTypeToMimeType[srcType] || 'video/' + srcType;
+  }
+
   render() {
     let {publicId, poster, sourceTypes, fallback, sourceTransformation, ...options} = Object.assign({},
       this.context,
@@ -41,7 +51,7 @@ class Video extends CloudinaryComponent {
       sources = sourceTypes.map(srcType => {
           let transformation = sourceTransformation[srcType] || {};
           let src = cld.url(publicId, Util.defaults({}, transformation, {resource_type: 'video', format: srcType}));
-          let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
+          let mimeType = this.getMimeTypeFromSrcType(srcType);
           return <source key={mimeType} src={ src} type={ mimeType}/>;
         }
       );
