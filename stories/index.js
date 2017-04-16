@@ -13,7 +13,10 @@ storiesOf('Image', module).addWithInfo('image', "Basic tag", ()=> {
   }
 ).addWithInfo('responsive image', "Basic tag", ()=> {
     return (
-      <Image cloudName="demo" publicId="sample" crop="scale" width="auto" responsive/>
+      <Image cloudName="demo" publicId="sample" crop="scale" width="auto" responsive
+             transformation={{overlay:{text: "Enlarge window to test responsive behaviour", font_family: "Arial", font_size: "36"}, color: "white"}}
+             onLoad={(e)=> e.target.parentElement.insertAdjacentHTML("beforeend", `<div>Loading width ${e.target.src.match(/w_(\d+)/)[1]}</div>`)}
+      />
     )
   }
 ).addWithInfo('responsive image with very slow debounce', "Basic tag", ()=> {
