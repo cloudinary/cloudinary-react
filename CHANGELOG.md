@@ -1,4 +1,10 @@
 
+1.0.3 / 2017-04-16
+==================
+
+  * Add more informative responsive story
+  * Add dependency on `prop-types`
+
 1.0.2 / 2017-03-01
 ==================
 
