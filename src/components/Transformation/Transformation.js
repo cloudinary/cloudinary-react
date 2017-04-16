@@ -5,6 +5,8 @@ import CloudinaryComponent from '../CloudinaryComponent';
  * Define a transformation that is applied to the parent tag.
  */
 class Transformation extends CloudinaryComponent {
+  static _type = "Transformation";
+  
   constructor(props) {
     super(props);
   }
