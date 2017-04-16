@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 

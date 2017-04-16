@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, equals, isElement} from '../../Util';

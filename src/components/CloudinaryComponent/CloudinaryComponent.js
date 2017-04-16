@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
-import {mapKeys} from '../../Util'
 
 const camelCase = Util.camelCase;
 const snakeCase = Util.snakeCase;
