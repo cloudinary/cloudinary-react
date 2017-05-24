@@ -108,7 +108,7 @@ class Image extends CloudinaryComponent {
       this.context);
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
-      <img {...attributes} src={this.state.url} ref={(e)=> {this.element = e;}}/>
+      <img {...attributes} src={this.state.url ? this.state.url : null} ref={(e)=> {this.element = e;}}/>
     );
   }
 
