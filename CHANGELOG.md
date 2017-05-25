@@ -1,4 +1,9 @@
 
+1.0.4 / 2017-05-25
+==================
+
+  * Refactor test for Transformation. Fixes #17. Fixes #13. References #10.
+
 1.0.3 / 2017-04-16
 ==================
 
