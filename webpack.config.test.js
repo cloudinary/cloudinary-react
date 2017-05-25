@@ -2,5 +2,6 @@
 const config = require('./webpack.config');
 config.output.path = 'test-prod';
 config.externals['cloudinary-core'] = 'cloudinary-core';
+config.externals['react'] = 'react';
 
 module.exports = config;
