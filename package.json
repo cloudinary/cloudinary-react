@@ -4,6 +4,7 @@
   "description": "Present Cloudinary images and videos using React components",
   "main": "lib/index.js",
   "scripts": {
+    "pretest": "node_modules/.bin/webpack --config webpack.config.test.js -p",
     "test": "node_modules/.bin/mocha test/.setup.js --recursive test",
     "compile": "node_modules/.bin/babel src -d lib && cd src && find . -name package.json -exec cp --parents '{}' ../lib \\; -print",
     "dist": "node_modules/.bin/webpack",

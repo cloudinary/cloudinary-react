@@ -26,7 +26,7 @@ class CloudinaryComponent extends Component {
     if(children === undefined || children === null) return null;
     let mapped = React.Children.map(children, child =>{
       let options = {};
-      if (child.type && child.type.name === "Transformation"){
+      if (child.type && child.type._displayName === "Transformation"){
         options = CloudinaryComponent.normalizeOptions(child.props, child.context);
       }
       let childOptions = this.getChildTransformations(child.props.children);
