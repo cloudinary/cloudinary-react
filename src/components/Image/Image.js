@@ -33,7 +33,7 @@ class Image extends CloudinaryComponent {
   }
 
   shouldComponentUpdate( nextProps, nextState){
-    return !( equals(this.props, nextProps) && equals(this.state, nextState));
+    return !(equals(this.props, nextProps, false, true) && equals(this.state, nextState));
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
