@@ -30,7 +30,7 @@ class CloudinaryContext extends CloudinaryComponent {
 
   render() {
     return (
-      <div>{this.props.children}</div>
+      <div {...this.props}>{this.props.children}</div>
     );
   }
 }
