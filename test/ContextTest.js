@@ -11,12 +11,13 @@ describe('CloudinaryContext', () => {
   });
   it("should pass properties to children", function() {
     let tag = mount(
-      <CloudinaryContext cloudName="demo">
+      <CloudinaryContext className="root" cloudName="demo">
         <Image publicId="sample"  />
       </CloudinaryContext>
     );
 
     expect(tag.html().startsWith("<div")).to.equal(true);
+    expect(tag.find("div").hasClass("root")).to.equal(true);
     let img = tag.childAt(0);
     expect(img.node.state["url"]).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
