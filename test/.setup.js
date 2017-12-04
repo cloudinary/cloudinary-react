@@ -1,5 +1,3 @@
-//require('babel-core/register');
-
 const { JSDOM } = require("jsdom");
 import { configure } from "enzyme";
 
