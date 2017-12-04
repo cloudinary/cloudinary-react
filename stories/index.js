@@ -5,25 +5,11 @@ import { action } from "@storybook/addon-actions";
 import { linkTo } from "@storybook/addon-links";
 import { withInfo } from "@storybook/addon-info";
 
-import { Button, Welcome } from "@storybook/react/demo";
-
 import Image from "../src/components/Image";
 import Video from "../src/components/Video";
 import Transformation from "../src/components/Transformation";
 import CloudinaryContext from "../src/components/CloudinaryContext";
 import cloudinary from "cloudinary-core";
-
-storiesOf("Welcome", module).add("to Storybook", () => (
-  <Welcome showApp={linkTo("Button")} />
-));
-
-storiesOf("Button", module)
-  .add("with text", () => (
-    <Button onClick={action("clicked")}>Hello Button</Button>
-  ))
-  .add("with some emoji", () => (
-    <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
-  ));
 
 storiesOf("Image", module)
   .add(
