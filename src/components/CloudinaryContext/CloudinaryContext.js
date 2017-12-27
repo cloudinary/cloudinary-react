@@ -1,5 +1,5 @@
-import React from 'react';
-import CloudinaryComponent from '../CloudinaryComponent';
+import React from "react";
+import CloudinaryComponent from "../CloudinaryComponent";
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
@@ -29,11 +29,25 @@ class CloudinaryContext extends CloudinaryComponent {
   }
 
   render() {
-    return (
-      <div {...this.props}>{this.props.children}</div>
-    );
+    // Remove Cloudinary custom props that don't belong to div
+    const nonCloudinaryProps = Object.keys(this.props)
+      .filter(propName => !CloudinaryContext.CLOUDINARY_PROPS[propName])
+      .reduce((allowedProps, currentProp) => {
+        allowedProps[currentProp] = this.props[currentProp];
+        return allowedProps;
+      }, {});
+    return <div {...nonCloudinaryProps}>{this.props.children}</div>;
   }
 }
+
+// Map Cloudinary props from array to object for efficient lookup
+CloudinaryContext.CLOUDINARY_PROPS = CloudinaryComponent.VALID_OPTIONS.reduce(
+  (accumulator, cloudinaryPropName) => {
+    accumulator[cloudinaryPropName] = true;
+    return accumulator;
+  },
+  {}
+);
 
 CloudinaryContext.propTypes = CloudinaryComponent.propTypes;
 CloudinaryContext.defaultProps = {};
