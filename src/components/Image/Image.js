@@ -32,10 +32,6 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  shouldComponentUpdate( nextProps, nextState){
-    return !( equals(this.props, nextProps) && equals(this.state, nextState));
-  }
-
   componentWillReceiveProps(nextProps, nextContext) {
     let state = this.prepareState(nextProps, nextContext);
     this.setState(state);
