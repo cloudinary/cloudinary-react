@@ -33,6 +33,7 @@
     "browserify": "^13.1.0",
     "browserify-shim": "^3.8.12",
     "chai": "^3.5.0",
+    "chai-string": "^1.4.0",
     "enzyme": "^2.4.1",
     "jsdom": "^9.8.3",
     "mocha": "^3.0.2",
