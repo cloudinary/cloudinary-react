@@ -1,5 +1,5 @@
-import React from "react";
-import CloudinaryComponent from "../CloudinaryComponent";
+import React from 'react';
+import CloudinaryComponent from '../CloudinaryComponent';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.

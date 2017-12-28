@@ -1,11 +1,11 @@
-import React from "react";
-import { expect } from "chai";
-import { shallow, mount, render } from "enzyme";
-import Image from "../src/components/Image";
-import Transformation from "../src/components/Transformation";
-import CloudinaryContext from "../src/components/CloudinaryContext";
+import React from 'react';
+import { expect } from 'chai';
+import { shallow, mount, render } from 'enzyme';
+import Image from '../src/components/Image';
+import Transformation from '../src/components/Transformation';
+import CloudinaryContext from '../src/components/CloudinaryContext';
 
-describe("CloudinaryContext", () => {
+describe('CloudinaryContext', () => {
   it("should pass properties to children", function() {
     let tag = mount(
       <CloudinaryContext className="root" cloudName="demo">
@@ -16,9 +16,7 @@ describe("CloudinaryContext", () => {
     expect(tag.html().startsWith("<div")).to.equal(true);
     expect(tag.find("div").hasClass("root")).to.equal(true);
     let img = tag.childAt(0);
-    expect(img.node.state["url"]).to.equal(
-      "http://res.cloudinary.com/demo/image/upload/sample"
-    );
+    expect(img.node.state["url"]).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {
@@ -27,6 +25,7 @@ describe("CloudinaryContext", () => {
         className="root"
         cloudName="demo"
         quality="auto"
+        secure="true"
         role="tab"
         aria-live="polite"
       >
@@ -39,6 +38,9 @@ describe("CloudinaryContext", () => {
     expect(html.find("[aria-live='polite']").length).to.equal(1);
     expect(html.find("[cloudName='demo']").length).to.equal(0);
     expect(html.find("[quality]").length).to.equal(0);
+
+    // Verify that transformations from context are applied to components
+    expect(html.find('img').prop("src")).to.equal("https://res.cloudinary.com/demo/image/upload/q_auto/sample");
   });
 
   it("should allow chained Contexts", function() {
