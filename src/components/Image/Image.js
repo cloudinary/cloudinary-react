@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove, requestAnimationFrame, equals, isElement} from '../../Util';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
 
 /**
  * A component representing a Cloudinary served image
