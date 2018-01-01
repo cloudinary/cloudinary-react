@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove, requestAnimationFrame, equals, isElement} from '../../Util';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
 
 /**
  * A component representing a Cloudinary served image
@@ -30,10 +30,6 @@ class Image extends CloudinaryComponent {
       windowRef = window
     }
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
-  }
-
-  shouldComponentUpdate( nextProps, nextState){
-    return !( equals(this.props, nextProps) && equals(this.state, nextState));
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
