@@ -29,7 +29,7 @@ class CloudinaryComponent extends Component {
       if (child.type && child.type.exposesProps){
         options = CloudinaryComponent.normalizeOptions(child.props, child.context);
       }
-      let childOptions = this.getChildTransformations(child.props.children);
+      let childOptions = child.props && this.getChildTransformations(child.props.children);
       if(childOptions !== undefined && childOptions !== null){
         options.transformation = childOptions;
       }
