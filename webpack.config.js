@@ -1,7 +1,9 @@
+const { resolve } = require("path");
+
 module.exports = {
   entry: './src/index.js',
   output: {
-    path: './dist',
+    path: resolve(process.cwd(), 'dist'),
     filename: 'cloudinary-react.js',
     library: 'cloudinaryReact',
     libraryTarget: 'umd',
