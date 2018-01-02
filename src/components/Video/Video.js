@@ -18,15 +18,16 @@ class Video extends CloudinaryComponent {
   }
 
   render() {
-    let {publicId, poster, sourceTypes, fallback, sourceTransformation, ...options} = Object.assign({},
+    let {publicId, poster, sourceTypes, fallback, sourceTransformation: sourceTransformations, ...options} = Object.assign({},
       this.context,
       this.props);
-    sourceTransformation = sourceTransformation || {};
+    sourceTransformations = sourceTransformations || {};
     sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;
     options = CloudinaryComponent.normalizeOptions(options, {});
     let cld = Cloudinary.new(Util.withSnakeCaseKeys(options));
     let sources = [];
     let tagAttributes = Transformation.new(options).toHtmlAttributes();
+    let childTransformations = this.getTransformation(options);
     if (Util.isPlainObject(poster)) {
       let defaults = poster.publicId !== undefined && poster.publicId !== null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
       poster = cld.url(poster.publicId || publicId, Util.defaults({}, Util.withSnakeCaseKeys(poster), defaults));
@@ -40,15 +41,17 @@ class Video extends CloudinaryComponent {
 
     if (Util.isArray(sourceTypes)) {
       sources = sourceTypes.map(srcType => {
-          let transformation = sourceTransformation[srcType] || {};
-          let src = cld.url(publicId, Util.defaults({}, transformation, {resource_type: 'video', format: srcType}));
+          let sourceTransformation = sourceTransformations[srcType] || {};
+          let src = cld.url(publicId, Util.defaults({}, sourceTransformation, childTransformations, {resource_type: 'video', format: srcType}));
           let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
-          return <source key={mimeType} src={ src} type={ mimeType}/>;
+          return <source key={mimeType} src={src} type={mimeType}/>;
         }
       );
     } else {
-      tagAttributes["src"] = cld.url(publicId, {resource_type: 'video', format: sourceTypes});
+      let sourceTransformation = sourceTransformations[sourceTypes] || {};
+      tagAttributes.src = cld.url(publicId, Util.defaults({}, sourceTransformation, childTransformations, {resource_type: 'video', format: sourceTypes}));
     }
+
     return (
       <video {...tagAttributes}>
         {sources}

@@ -15,8 +15,9 @@ describe('CloudinaryContext', () => {
 
     expect(tag.html().startsWith("<div")).to.equal(true);
     expect(tag.find("div").hasClass("root")).to.equal(true);
-    let img = tag.childAt(0);
-    expect(img.node.state["url"]).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
+    expect(tag.children()).to.have.length(1);
+    let img = tag.find("div").childAt(0);
+    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {

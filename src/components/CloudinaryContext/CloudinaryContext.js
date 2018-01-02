@@ -3,6 +3,7 @@ import CloudinaryComponent from '../CloudinaryComponent';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
+ * 
  * @example
  *<CloudinaryContext cloudName="mycloud" dpr="auto">
  *    <!-- other tags -->

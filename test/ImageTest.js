@@ -2,6 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount, render } from 'enzyme';
 import Image from '../src/components/Image';
+import Transformation from '../src/components/Transformation';
 
 describe('Image', () => {
   beforeEach(() => {
@@ -50,5 +51,18 @@ describe('Image', () => {
     expect(tag.props()).not.to.have.property('defaultImage');
     expect(tag.props()).not.to.have.property('default_image');
 
+  });
+  it("should not fail to update cyclic property on an image element with transformation", function() {
+      // makes sure Issue #31 - Error: Maximum call call stack size exceeded does not reoccur
+      let obj1 = {}, obj2 = {};
+      obj1.me = obj1;
+      obj2.me = obj2;
+
+      let tag = shallow(<Image publicId="sample" cloudName="demo"><Transformation effect='art:hokusai'/></Image>);
+      tag.setProps({cyclicProp: obj1});
+      tag.setProps({cyclicProp: obj2});
+
+      tag.setState({cyclicProp: obj1});
+      tag.setState({cyclicProp: obj2});
   });
 });
