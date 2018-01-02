@@ -34,4 +34,13 @@ describe('Video', () => {
         expect(tag.find('[type="video/webm"]').props().src).to.endWith('/q_70/l_text:verdana_30:webm!/dog.webm');
         expect(tag.find('[type="video/mp4"]').props().src).to.endWith('/q_70/l_text:verdana_30:mp4!/dog.mp4');
     });
+  
+    it('should support inner text', function () {
+        let tag = shallow(
+            <Video cloudName='demo' publicId='dog'>
+                Your browser does not support the video tag.
+            </Video>
+        );
+        expect(tag.type()).to.equal("video");
+    });
 });
