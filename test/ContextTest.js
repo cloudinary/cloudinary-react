@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount, render } from 'enzyme';
+import { mount } from 'enzyme';
 import Image from '../src/components/Image';
 import Transformation from '../src/components/Transformation';
 import CloudinaryContext from '../src/components/CloudinaryContext';
@@ -21,7 +21,7 @@ describe('CloudinaryContext', () => {
   });
 
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {
-    let html = render(
+    let html = mount(
       <CloudinaryContext
         className="root"
         cloudName="demo"
@@ -34,14 +34,15 @@ describe('CloudinaryContext', () => {
       </CloudinaryContext>
     );
 
-    expect(html.find("[class='root']").length).to.equal(1);
-    expect(html.find("[role='tab']").length).to.equal(1);
-    expect(html.find("[aria-live='polite']").length).to.equal(1);
-    expect(html.find("[cloudName='demo']").length).to.equal(0);
-    expect(html.find("[quality]").length).to.equal(0);
+    const contextDiv = html.find("div");
+    expect(contextDiv.find(".root").length).to.equal(1);
+    expect(contextDiv.find("[role='tab']").length).to.equal(1);
+    expect(contextDiv.find("[aria-live='polite']").length).to.equal(1);
+    expect(contextDiv.find("[cloudName='demo']").length).to.equal(0);
+    expect(contextDiv.find("[quality]").length).to.equal(0);
 
     // Verify that transformations from context are applied to components
-    expect(html.find('img').prop("src")).to.equal("https://res.cloudinary.com/demo/image/upload/q_auto/sample");
+    expect(contextDiv.find('img').prop("src")).to.equal("https://res.cloudinary.com/demo/image/upload/q_auto/sample");
   });
 
   it("should allow chained Contexts", function() {
