@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --require babel-core/register test/.setup.js --recursive test",
-    "compile": "node_modules/.bin/babel src -d lib && cd src && find . -name package.json -exec gcp --parents '{}' ../lib \\; -print",
+    "compile": "node_modules/.bin/babel src -d lib && cd src && find . -name package.json -exec cp --parents '{}' ../lib \\; -print",
     "dist": "node_modules/.bin/webpack",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
