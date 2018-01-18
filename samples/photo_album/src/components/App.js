@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
-import {CloudinaryContext} from 'cloudinary-react';
-// TODO: change import after the 'equals' bug is fixed
-import Image from '../../../../src/components/Image';
+import {CloudinaryContext, Image} from 'cloudinary-react';
 import PhotoListContainer from './PhotoList';
 import PhotosUploaderContainer from './PhotosUploader';
 import {fetchPhotos, photosFetched} from "../actions";

@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import {Transformation} from 'cloudinary-react';
-// TODO: change import after the 'equals' bug is fixed
-import Image from '../../../../src/components/Image';
+import {Image, Transformation} from 'cloudinary-react';
 
 class FacebookImage extends Component {
     constructor(props, context) {

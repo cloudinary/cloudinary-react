@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// TODO: change import after the 'equals' bug is fixed
-import Image from '../../../../src/components/Image';
-import {Transformation} from 'cloudinary-react';
+import {Image, Transformation} from 'cloudinary-react';
 import PhotoThumbnails from "./PhotoThumbnails";
 import Cloudinary from "../Cloudinary";
 

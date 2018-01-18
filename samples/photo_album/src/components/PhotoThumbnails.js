@@ -1,7 +1,5 @@
 import React from 'react';
-// TODO: change import after the 'equals' bug is fixed
-import Image from '../../../../src/components/Image';
-import {Transformation} from 'cloudinary-react';
+import {Image, Transformation} from 'cloudinary-react';
 
 const transformations = [
     [{crop: 'fill', width: '150', height: '150', radius: '10'}],
