@@ -1,4 +1,15 @@
 
+1.0.5 / 2018-01-18
+==================
+
+  * Filter Cloudinary custom props from rendered div (#37)
+  * React16 (#33)
+  * github-fixes-#31-error-maximum-call-stack-exceeded (#39)
+  * fixes #35 from github - video component ignores transformations (#38)
+  * Merge branch 'fBosch-master'
+  * Add test
+  * fix: pass props to CloudinaryContext's returned div
+
 1.0.4 / 2017-05-25
 ==================
 
