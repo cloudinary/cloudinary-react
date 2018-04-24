@@ -3,14 +3,16 @@ import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
 
+function defaultBreakpoints(width, steps = 100) {
+  return steps * Math.ceil(width / steps);
+}
+
 /**
  * A component representing a Cloudinary served image
  */
 class Image extends CloudinaryComponent {
   constructor(props, context) {
-    function defaultBreakpoints(width, steps = 100) {
-      return steps * Math.ceil(width / steps);
-    }
+    
 
     super(props, context);
     this.handleResize = this.handleResize.bind(this);
@@ -124,10 +126,10 @@ class Image extends CloudinaryComponent {
   };
 
   applyBreakpoints(width, steps, options) {
-    var responsive_use_breakpoints;
+    var responsiveUseBreakpoints;
     options = CloudinaryComponent.normalizeOptions(this.context, this.props, options);
-    responsive_use_breakpoints = options.responsive_use_breakpoints;
-    if ((!responsive_use_breakpoints) || (responsive_use_breakpoints === 'resize' && !options.resizing)) {
+    responsiveUseBreakpoints = options.responsiveUseBreakpoints;
+    if ((!responsiveUseBreakpoints) || (responsiveUseBreakpoints === 'resize' && !options.resizing)) {
       return width;
     } else {
       return this.calc_breakpoint(width, steps);
@@ -136,7 +138,7 @@ class Image extends CloudinaryComponent {
 
   calc_breakpoint(width, steps) {
     var breakpoints, point;
-    breakpoints = this.state.breakpoints || defaultBreakpoints;
+    breakpoints = (this.state && this.state.breakpoints) || defaultBreakpoints;
     if (Util.isFunction(breakpoints)) {
       return breakpoints(width, steps);
     } else {
@@ -180,7 +182,7 @@ class Image extends CloudinaryComponent {
 
   maxWidth(requiredWidth) {
     var imageWidth;
-    imageWidth = this.state.width || 0;
+    imageWidth = (this.state && this.state.width) || 0;
     if (requiredWidth > imageWidth) {
       imageWidth = requiredWidth;
       this.setState({width: requiredWidth});
