@@ -37,7 +37,7 @@ class CloudinaryContext extends CloudinaryComponent {
         allowedProps[currentProp] = this.props[currentProp];
         return allowedProps;
       }, {});
-    return Object.keys(nonCloudinaryProps).length === 0 && nonCloudinaryProps.constructor === Object
+    return nonCloudinaryProps.renderWithoutDiv
       ? this.props.children
       : <div {...nonCloudinaryProps}>{this.props.children}</div>;
   }

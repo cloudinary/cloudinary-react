@@ -20,6 +20,24 @@ describe('CloudinaryContext', () => {
     expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
+  it("should not render anything extra", function() {
+    let tag = mount(
+      <CloudinaryContext
+        className="root"
+        cloudName="demo"
+        quality="auto"
+        secure="true"
+        role="tab"
+        aria-live="polite"
+        renderWithoutDiv={true}
+      >
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
+
+    expect(tag.html().startsWith("<img")).to.equal(true);
+  });
+
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {
     let html = mount(
       <CloudinaryContext
