@@ -3,7 +3,7 @@ import CloudinaryComponent from '../CloudinaryComponent';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
- * 
+ *
  * @example
  *<CloudinaryContext cloudName="mycloud" dpr="auto">
  *    <!-- other tags -->
@@ -37,7 +37,9 @@ class CloudinaryContext extends CloudinaryComponent {
         allowedProps[currentProp] = this.props[currentProp];
         return allowedProps;
       }, {});
-    return <div {...nonCloudinaryProps}>{this.props.children}</div>;
+    return Object.keys(nonCloudinaryProps).length === 0 && nonCloudinaryProps.constructor === Object
+      ? this.props.children
+      : <div {...nonCloudinaryProps}>{this.props.children}</div>;
   }
 }
 
