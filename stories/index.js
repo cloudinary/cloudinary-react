@@ -62,6 +62,23 @@ storiesOf("Image", module)
     })
   )
   .add(
+    "responsive image with width/height styles applied",
+    withInfo({ text: "Basic tag" })(() => {
+      return (
+        <div style={{ width: '50%'}}>
+          <Image
+            style={{ width: '100%', height: '100%' }}
+            cloudName="demo"
+            publicId="sample"
+            crop="scale"
+            width="auto"
+            responsive
+          />
+        </div>
+      )
+    })
+  )
+  .add(
     "image with alt",
     withInfo({ text: "Demostrate using an img tag attribute" })(() => {
       let t = { width: 0.5, crop: "scale" };

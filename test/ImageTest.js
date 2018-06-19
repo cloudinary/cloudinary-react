@@ -32,7 +32,7 @@ describe('Image', () => {
     let tag2 = mount(<div width="300"><Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints /></div>);
     let tag = shallow(<Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints />);
     expect(tag.type()).to.equal("img");
-    expect(tag.state("url")).to.equal("");
+    expect(tag.state("url")).to.equal(undefined);
     expect(tag.props()).to.have.property('src');
 
     // We are checking for both snake_case and camelCase keys
@@ -64,5 +64,9 @@ describe('Image', () => {
 
       tag.setState({cyclicProp: obj1});
       tag.setState({cyclicProp: obj2});
+  });
+  it("should render a src property with an undefined value if a src is not defined", function() {
+    let tag = mount(<Image cloudName="demo" />);
+    expect(tag.find('img').prop('src')).to.equal(undefined);
   });
 });

@@ -15,7 +15,7 @@ class Image extends CloudinaryComponent {
     super(props, context);
     this.handleResize = this.handleResize.bind(this);
 
-    let state = {responsive: false, url: "", breakpoints: defaultBreakpoints};
+    let state = {responsive: false, url: undefined, breakpoints: defaultBreakpoints};
     this.state = Object.assign(state, this.prepareState(props, context));
   }
 
