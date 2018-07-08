@@ -29,4 +29,16 @@ describe('Transformation', () => {
     expect(tag.type()).to.equal("img");
     expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/a_30/c_pad,w_200/sample");
   });
+    it("array should define a set of variables", function () {
+        let tag = shallow(
+            <Image cloudName='demo'
+                   publicId='sample'
+                   variables={[
+                    ["$z", 5], ["$foo", "$z * 2"]
+                    ]}
+                    >
+            </Image>);
+        expect(tag.type()).to.equal("img");
+        expect(tag.state("url")).to.equal("http://res.cloudinary.com/demo/image/upload/$z_5,$foo_$z_mul_2/sample");
+    });
 });
