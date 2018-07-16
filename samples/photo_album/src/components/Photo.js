@@ -1,70 +1,79 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Image, Transformation} from 'cloudinary-react';
-import PhotoThumbnails from "./PhotoThumbnails";
-import Cloudinary from "../Cloudinary";
+import { Image, Transformation } from 'cloudinary-react';
+import { url } from '../utils/CloudinaryService';
+import PhotoThumbnails from './PhotoThumbnails';
 
 class Photo extends Component {
-
     constructor(props) {
         super(props);
-        this.state = {showMore: false};
+        this.state = { showMore: false };
     }
 
     render() {
-        let options = {...this.context, ...this.props};
-        let url = Cloudinary.url(options.publicId, options);
+        const options = { ...this.context, ...this.props };
+        const urlPath = url(options.publicId, options);
 
         return (
             <div className="photo">
-                {
-                    this.props.context && <h2>{this.props.context.custom.photo}</h2>
-                }
-                <a href={url} format="jpg" target="_blank">
-                    <Image publicId={this.props.publicId}
-                           className="thumbnail inline"
-                           width="150"
-                           height="150"
-                           crop="fit"
-                           quality="80"
-                           format="jpg">
-                        <Transformation quality="auto" fetchFormat="auto"/>
+                {this.props.context && (
+                    <h2>{this.props.context.custom.photo}</h2>
+                )}
+                <a href={urlPath} target="_blank">
+                    <Image
+                        publicId={this.props.publicId}
+                        className="thumbnail inline"
+                        width="150"
+                        height="150"
+                        crop="fit"
+                        quality="80"
+                    >
+                        <Transformation quality="auto" fetchFormat="auto" />
                     </Image>
                 </a>
-                {
-                    !this.state.showMore &&
+                {!this.state.showMore && (
                     <div className="less_info">
-                        <button className="toggle_info"
-                                style={{cursor: 'help'}}
-                                onClick={this.showMore.bind(this)}>
+                        <button
+                            className="toggle_info"
+                            onClick={this.showMore.bind(this)}
+                        >
                             Show transformations
                         </button>
                     </div>
-                }
+                )}
 
-                {
-                    this.state.showMore &&
+                {this.state.showMore && (
                     <div className="more_info">
-                        <button className="toggle_info"
-                                onClick={this.showLess.bind(this)}>
+                        <button
+                            className="toggle_info"
+                            onClick={this.showLess.bind(this)}
+                        >
                             Hide transformations
                         </button>
-                        <PhotoThumbnails publicId={this.props.publicId}/>
+                        <PhotoThumbnails publicId={this.props.publicId} />
                     </div>
-                }
+                )}
             </div>
         );
     }
 
     showMore() {
-        this.setState({showMore: true});
+        this.setState({ showMore: true });
     }
 
     showLess() {
-        this.setState({showMore: false});
+        this.setState({ showMore: false });
     }
 }
 
-Photo.contextTypes = {cloudName: PropTypes.string, uploadPreset: PropTypes.string};
+Photo.propTypes = {
+    context: PropTypes.object,
+    publicId: PropTypes.string,
+};
+
+Photo.contextTypes = {
+    cloudName: PropTypes.string,
+    uploadPreset: PropTypes.string,
+};
 
 export default Photo;

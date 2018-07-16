@@ -1,17 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {NavLink} from 'react-router-dom';
-import {connect} from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import request from 'superagent';
 import Dropzone from 'react-dropzone';
-import {photosUploaded, updateUploadedPhoto} from '../actions';
-import UploadedPhotoStatusContainer from './UploadedPhotosStatus'
+import { photosUploaded, updateUploadedPhoto } from '../actions';
+import UploadedPhotoStatusContainer from './UploadedPhotosStatus';
 
 class PhotosUploader extends Component {
-
     constructor(props, context) {
         super(props, context);
-        this.state = {uploadedPhotos: []};
+        this.state = { uploadedPhotos: [] };
         this.photoId = 1;
     }
 
@@ -22,53 +21,85 @@ class PhotosUploader extends Component {
                     id="direct-upload-dropzone"
                     disableClick={true}
                     multiple={false}
-                    accept='image/*'
-                    style={{position: "relative"}}
-                    onDrop={this.onPhotoSelected.bind(this)}>
+                    accept="image/*"
+                    style={{ position: 'relative' }}
+                    onDrop={this.onPhotoSelected.bind(this)}
+                >
                     <div id="direct_upload">
                         <h1>New Photo</h1>
-                        <h2>Direct upload from the browser with React File Upload</h2>
-                        <p>You can also drag and drop an image file into the dashed area.</p>
+                        <h2>
+                            Direct upload from the browser with React File
+                            Upload
+                        </h2>
+                        <p>
+                            You can also drag and drop an image file into the
+                            dashed area.
+                        </p>
                         <form>
                             <div class="form_line">
                                 <label path="title">Title:</label>
                                 <div class="form_controls">
-                                    <input type="text" ref={titleEl => this.titleEl = titleEl} class="form-control"
-                                           placeholder="Title"/>
+                                    <input
+                                        type="text"
+                                        ref={titleEl =>
+                                            (this.titleEl = titleEl)
+                                        }
+                                        class="form-control"
+                                        placeholder="Title"
+                                    />
                                 </div>
                             </div>
                             <div class="form_line">
                                 <label>Image:</label>
                                 <div class="form_controls">
                                     <div class="upload_button_holder">
-                                        <label class="upload_button" for="fileupload">Upload</label>
+                                        <label
+                                            class="upload_button"
+                                            for="fileupload"
+                                        >
+                                            Upload
+                                        </label>
                                         <input
                                             type="file"
                                             id="fileupload"
                                             accept="image/*"
                                             multiple="multiple"
-                                            ref={fileInputEl => this.fileInputEl = fileInputEl}
-                                            onChange={() => this.onPhotoSelected(this.fileInputEl.files)}/>
+                                            ref={fileInputEl =>
+                                                (this.fileInputEl = fileInputEl)
+                                            }
+                                            onChange={() =>
+                                                this.onPhotoSelected(
+                                                    this.fileInputEl.files
+                                                )
+                                            }
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </form>
                         <h2>Status</h2>
                     </div>
-                    {
-                        this.props.uploadedPhotos.map(uploadedPhoto => {
-                            return <UploadedPhotoStatusContainer key={uploadedPhoto.public_id} uploadedPhoto={uploadedPhoto}/>
-                        })
-                    }
+                    {this.props.uploadedPhotos.map(uploadedPhoto => {
+                        return (
+                            <UploadedPhotoStatusContainer
+                                key={uploadedPhoto.public_id}
+                                uploadedPhoto={uploadedPhoto}
+                            />
+                        );
+                    })}
                 </Dropzone>
 
-                <NavLink className='back_link' exact to="/photos">Back to list</NavLink>
+                <NavLink className="back_link" exact to="/photos">
+                    Back to list
+                </NavLink>
             </div>
         );
     }
 
     onPhotoSelected(files) {
-        const url = `https://api.cloudinary.com/v1_1/${this.context.cloudName}/upload`;
+        const url = `https://api.cloudinary.com/v1_1/${
+            this.context.cloudName
+        }/upload`;
         const title = this.titleEl.value;
 
         for (let file of files) {
@@ -91,7 +122,7 @@ class PhotosUploader extends Component {
         this.props.onUpdateUploadedPhoto({
             id: id,
             fileName: fileName,
-            progress: progress
+            progress: progress,
         });
     }
 
@@ -99,22 +130,35 @@ class PhotosUploader extends Component {
         this.props.onUpdateUploadedPhoto({
             id: id,
             fileName: fileName,
-            response: response
+            response: response,
         });
 
         this.props.onPhotosUploaded([response.body]);
     }
 }
 
-PhotosUploader.contextTypes = {cloudName: PropTypes.string, uploadPreset: PropTypes.string};
+PhotosUploader.propTypes = {
+    uploadedPhotos: PropTypes.array,
+    onUpdateUploadedPhoto: PropTypes.func,
+    onPhotosUploaded: PropTypes.func,
+};
+
+PhotosUploader.contextTypes = {
+    cloudName: PropTypes.string,
+    uploadPreset: PropTypes.string,
+};
 
 const PhotosUploaderContainer = connect(
     state => state,
     {
         onUpdateUploadedPhoto: updateUploadedPhoto,
-        onPhotosUploaded: photosUploaded
-    })(PhotosUploader);
+        onPhotosUploaded: photosUploaded,
+    }
+)(PhotosUploader);
 
-Object.assign(PhotosUploaderContainer.contextTypes, PhotosUploader.contextTypes);
+Object.assign(
+    PhotosUploaderContainer.contextTypes,
+    PhotosUploader.contextTypes
+);
 
 export default PhotosUploaderContainer;

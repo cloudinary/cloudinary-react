@@ -17,9 +17,6 @@ body {
 }
 
 #posterframe {
-    /*position: absolute;*/
-    /*right: 10px;*/
-    /*top: 10px;*/
     position: relative;
 }
 
@@ -51,13 +48,6 @@ a {
     color: #0b63b6
 }
 
-.photo-upload div {
-    margin: auto;
-    width: 400px !important;
-    height: 400px !important;
-    text-align: center;
-}
-
 .manipulation-video {
     margin: 10px 0;
 }
@@ -73,7 +63,6 @@ a {
     font-size: 18px;
     padding: 5px 10px;
     width: 250px;
-    margin: 10px 0 20px 0;
     font-weight: bold;
     text-align: center;
     text-decoration: none;
@@ -108,6 +97,7 @@ img.static-photo {
     font-weight: bold;
     color: #e62401;
     display: block;
+    cursor: help;
 }
 
 .thumbnail_holder {
@@ -194,7 +184,6 @@ form .error { color: #c55; margin: 0 10px; }
 }
 .upload_button_holder .cloudinary_fileupload {
     opacity: 0;
-    filter: alpha(opacity=0);
     cursor: pointer;
     position: absolute;
     top: 0;
