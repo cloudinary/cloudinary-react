@@ -59,7 +59,7 @@ App.contextTypes = {
 };
 
 const AppContainer = connect(
-    () => {},
+    null,
     { onPhotosFetched: photosFetched }
 )(App);
 Object.assign(AppContainer.contextTypes, App.contextTypes);
