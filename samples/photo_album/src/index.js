@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import AppContainer from './components/App';
+import App from './components/App';
 import PhotosListReducer from './reducers/PhotosListReducer';
 import UploadedPhotosReducer from './reducers/UploadedPhotosReducer';
 import Config from './config/config';
