@@ -7,7 +7,7 @@ import {
 const PhotosListReducer = (photos = [], action) => {
     switch (action.type) {
         case PHOTOS_FETCHED:
-            return action.photos;
+            return [...action.photos];
         case PHOTOS_UPLOADED: {
             return [...action.photos, ...photos];
         }
@@ -16,7 +16,7 @@ const PhotosListReducer = (photos = [], action) => {
                 photo => photo.public_id !== action.publicId
             );
         default:
-            return photos;
+            return [...photos];
     }
 };
 

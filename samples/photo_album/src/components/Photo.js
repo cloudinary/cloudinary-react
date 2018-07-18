@@ -19,7 +19,7 @@ class Photo extends Component {
                 {this.props.context && (
                     <h2>{this.props.context.custom.photo}</h2>
                 )}
-                <a href={urlPath} target="_blank">
+                <a href={urlPath} target="_blank" rel="noopener noreferrer">
                     <Image
                         publicId={this.props.publicId}
                         className="thumbnail inline"

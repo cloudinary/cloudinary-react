@@ -49,6 +49,7 @@ class PhotoList extends Component {
                     <a
                         href="https://cloudinary.com/documentation/image_transformations"
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         Image Transformations
                     </a>{' '}

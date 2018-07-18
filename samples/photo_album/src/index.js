@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import AppContainer from './components/App';
 import PhotosListReducer from './reducers/PhotosListReducer';
 import UploadedPhotosReducer from './reducers/UploadedPhotosReducer';
+import Config from './config/config';
 
 const rootReducer = combineReducers({
     photos: PhotosListReducer,
@@ -15,7 +16,8 @@ const store = createStore(rootReducer);
 
 render(
     <Provider store={store}>
-        <AppContainer cloudName="danashalev" uploadPreset="hvs8orho" />
+        <AppContainer cloudName={Config.cloud_name}
+                      uploadPreset={Config.upload_preset} />
     </Provider>,
     document.getElementById('root')
 );

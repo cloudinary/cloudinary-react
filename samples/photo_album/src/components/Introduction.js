@@ -21,7 +21,6 @@ const Introduction = () => (
                     // This embeds a <video> element in the page, retrieved from a different cloud
                 }
                 <Video
-                    sourceTypes={'webm'}
                     publicId="manipulation_video"
                     cloudName="cloudinary"
                     controls="true"

@@ -30,7 +30,7 @@ const UploadedPhotosReducer = (uploadedPhotos = [], action) => {
             ];
         }
         default:
-            return uploadedPhotos;
+            return [...uploadedPhotos];
     }
 };
 
