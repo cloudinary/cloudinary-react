@@ -1,0 +1,210 @@
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+#posterframe {
+    position: relative;
+}
+
+h1 {
+    color: #0e2953;
+    font-size: 18px;
+}
+
+h1.welcome {
+    margin-top: 25px;
+}
+
+h2 {
+    color: #666;
+    font-size: 16px;
+}
+
+p {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+#logo {
+    height: 51px;
+    width: 241px;
+}
+
+a {
+    color: #0b63b6
+}
+
+.manipulation-video {
+    margin: 10px 0;
+}
+
+.actions {
+    margin: 20px 0;
+}
+
+.upload_link {
+    color: #000;
+    border: 1px solid #aaa;
+    background-color: #e0e0e0;
+    font-size: 18px;
+    padding: 5px 10px;
+    width: 250px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px;
+    cursor:pointer;
+}
+
+.introducing-cloudinary {
+    max-width: 80%;
+}
+
+img.static-photo {
+    max-width: 20%;
+    position: absolute;
+    right: 0;
+}
+
+.photo {
+    margin: 10px;
+    padding: 10px;
+    border-top: 2px solid #ccc;
+}
+
+.photo .thumbnail {
+    margin-top: 10px;
+    max-width: 200px;
+    border: none;
+}
+
+.toggle_info {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #e62401;
+    display: block;
+    cursor: help;
+}
+
+.thumbnail_holder {
+    height: 182px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.note {
+    margin: 20px 0
+}
+
+.inline {
+    display: inline-block;
+}
+
+td {
+    vertical-align: top;
+    padding-right: 5px;
+}
+
+.back_link {
+    font-weight: bold;
+    display: block;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+#direct_upload_jquery, #direct_upload {
+    box-sizing: content-box;
+}
+
+#direct_upload_jquery, #direct_upload { padding: 20px 20px; margin: 20px 0;
+    border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; }
+
+#direct_upload_jquery h1, #direct_upload h1 { margin: 0 0 15px 0; }
+
+.back_link { font-weight: bold; display: block; font-size: 16px; margin: 10px 0; }
+
+form { border: 1px solid #ddd; margin: 15px 0; padding: 15px 0; border-radius: 4px; }
+form .form_line { margin-bottom: 20px; }
+form .form_controls { margin-left: 180px; }
+form label { float: left; width: 160px; padding-top: 3px; text-align: right; }
+form .error { color: #c55; margin: 0 10px; }
+
+#direct_upload, #direct_upload_jquery { border: 4px dashed #ccc; }
+#direct_upload.dragover { border-color: #0c0; }
+#direct_upload.dragover-err { border-color: #c00; }
+
+.upload_details { font-size: 12px; margin: 20px; border-top: 1px solid #ccc; word-wrap: break-word; }
+.upload_button_holder {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload_button {
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: rgb(15, 97, 172);
+    color: #fff;
+    padding: 5px 0;
+    border: 1px solid #000;
+    border-radius: 4px;
+    width: 100px;
+    height: 18px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.upload_button_holder .upload_button {
+    display: block;
+}
+
+.upload_button_holder input {
+    display: none;
+}
+
+.upload_button:hover {
+    background-color: rgb(17, 133, 240);
+}
+.upload_button_holder .cloudinary_fileupload {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+.progress-bar{
+    width: 100px;
+    position: relative;
+    height: 4px;
+}
+.progress-bar .progress{
+    height: 4px;
+    background-color: #ff0000;
+    width: 0;
+}
+.preview img, .preview audio, .preview video {
+    max-width: 300px;
+    max-height: 150px;
+}
