@@ -111,6 +111,9 @@ Contact us at [http://cloudinary.com/contact](http://cloudinary.com/contact).
 
 Stay tuned for updates, tips and tutorials: [Blog](http://cloudinary.com/blog), [Twitter](https://twitter.com/cloudinary), [Facebook](http://www.facebook.com/Cloudinary).
 
+## Join the Community ##########################################################
+
+Impact the product, hear updates, test drive new features and more! Join [here](https://www.facebook.com/groups/CloudinaryCommunity).
 
 ## License
 
