@@ -47,20 +47,20 @@ class CloudinaryComponent extends Component {
   /**
    * Returns an object with all the transformation parameters based on the context and properties of this element
    * and any children.
-   * @param options
+   * @param extendedProps
    * @returns {object} a hash of transformation and configuration parameters
    * @protected
    */
-  getTransformation(options) {
+  getTransformation(extendedProps) {
     var transformation;
-    if (this.props.children !== undefined) {
-      let childrenOptions = this.getChildTransformations(this.props.children);
+    if (extendedProps.children !== undefined) {
+      let childrenOptions = this.getChildTransformations(extendedProps.children);
       if (!Util.isEmpty(childrenOptions)) {
         transformation = childrenOptions;
-        return {...options, transformation};
+        return {...extendedProps, transformation};
       }
     }
-    return {...options};
+    return {...extendedProps};
   }
 
   /**
@@ -85,14 +85,14 @@ class CloudinaryComponent extends Component {
 
   /**
    * Generate a Cloudinary resource URL based on the options provided and child Transformation elements
-   * @param options
+   * @param extendedProps React props combined with custom Cloudinary configuration options
    * @returns {string} a cloudinary URL
    * @protected
    */
-  getUrl(options) {
-    let transformation = this.getTransformation(options);
-    let cl = Cloudinary.new(Util.withSnakeCaseKeys(options));
-    return cl.url(options.publicId, transformation);
+  getUrl(extendedProps) {
+    let transformation = this.getTransformation(extendedProps);
+    let cl = Cloudinary.new(Util.withSnakeCaseKeys(extendedProps));
+    return cl.url(extendedProps.publicId, transformation);
   }
 
 }
