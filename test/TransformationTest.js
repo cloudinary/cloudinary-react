@@ -50,9 +50,9 @@ describe("Transformation", () => {
         <Transformation width="100" crop="scale" />
       </Image>
     );
-    expect(image.find('img [src="http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample"]')).to.have.lengthOf(1);
+    expect(image.find('img').getElement().props.src).to.equal('http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample');
     let transformation = mount(<Transformation width="200" crop="scale" />);
     image.setProps({children: [transformation]});
-    expect(image.find('img [src="http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample"]')).to.have.lengthOf(1);
+    expect(image.find('img').getElement().props.src).to.equal('http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample');
   });
 });
