@@ -45,13 +45,13 @@ class Image extends CloudinaryComponent {
    * @private
    */
   prepareState(props = this.props, context = this.context) {
-    let options = CloudinaryComponent.normalizeOptions(context, props);
-    let url = this.getUrl(options);
+    let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
+    let url = this.getUrl(extendedProps);
     let state = {};
-    if (options.breakpoints !== undefined) {
-      state.breakpoints = options.breakpoints;
+    if (extendedProps.breakpoints !== undefined) {
+      state.breakpoints = extendedProps.breakpoints;
     }
-    if (options.responsive) {
+    if (extendedProps.responsive) {
       state.responsive = true;
       url = this.cloudinary_update(url, state);
     }
