@@ -46,3 +46,6 @@ stories/
 samples/
 test/
 storybook-static/
+
+babel.config.js
+.babelrc

@@ -2,6 +2,7 @@ const { resolve } = require("path");
 
 module.exports = {
   entry: './src/index.js',
+  mode: 'production',
   output: {
     path: resolve(process.cwd(), 'dist'),
     filename: 'cloudinary-react.js',
@@ -10,11 +11,17 @@ module.exports = {
     umdNamedDefine: true
   },
   module: {
-    loaders: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          rootMode: "upward",
+        }
+      }
+    ]
+
   },
   externals: {
     "react": "React",
