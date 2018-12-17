@@ -4,7 +4,7 @@
   "description": "Present Cloudinary images and videos using React components",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha --require babel-core/register test/.setup.js --recursive test",
+    "test": "node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "compile": "node_modules/.bin/babel -v --copy-files src -d lib ",
     "dist": "node_modules/.bin/webpack",
     "storybook": "start-storybook -p 6006",
@@ -26,6 +26,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "@storybook/addon-actions": "^4.1.2",
     "@storybook/addon-info": "^4.1.2",
     "@storybook/addon-links": "^4.1.2",
