@@ -49,3 +49,8 @@ storybook-static/
 
 babel.config.js
 .babelrc
+package-lock.json
+yarn.lock
+.nvmrc
+.travis.yml
+webpack.config.js

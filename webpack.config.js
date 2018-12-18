@@ -24,7 +24,7 @@ module.exports = {
 
   },
   externals: {
-    "react": "React",
-    "cloudinary-core": "cloudinary"
+    "React": "react",
+    "cloudinary": "cloudinary-core"
   }
 };

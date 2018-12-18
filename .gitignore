@@ -43,3 +43,6 @@ dist/
 storybook-static/
 .storybook/
 .idea/
+package-lock.json
+yarn.lock
+.nvmrc

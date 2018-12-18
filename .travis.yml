@@ -5,4 +5,11 @@ node_js:
   - "lts/*"
   - "6"
 install:
+  - npm install react@^16.0.0 --no-save
   - npm install
+  - npm run compile
+  - npm run dist
+env:
+  - TEST_SUBJECT=src
+  - TEST_SUBJECT=lib
+  - TEST_SUBJECT=dist

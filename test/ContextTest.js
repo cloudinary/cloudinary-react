@@ -1,9 +1,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import Image from '../src/components/Image';
-import Transformation from '../src/components/Transformation';
-import CloudinaryContext from '../src/components/CloudinaryContext';
+import cloudinary from './cloudinary-proxy';
+const {Image, CloudinaryContext} = cloudinary;
 
 describe('CloudinaryContext', () => {
   it("should pass properties to children", function() {

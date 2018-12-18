@@ -1,8 +1,8 @@
 import React from "react";
 import { expect } from "chai";
 import { shallow, mount, render } from "enzyme";
-import Image from "../src/components/Image";
-import Transformation from "../src/components/Transformation";
+import cloudinary from './cloudinary-proxy';
+const {Image, Transformation} = cloudinary;
 
 describe("Transformation", () => {
   beforeEach(() => {});

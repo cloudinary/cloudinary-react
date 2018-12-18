@@ -5,6 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
+    "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
+    "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "compile": "node_modules/.bin/babel -v --copy-files src -d lib ",
     "dist": "node_modules/.bin/webpack",
     "storybook": "start-storybook -p 6006",
@@ -41,14 +43,13 @@
     "enzyme-adapter-react-16": "^1.7.1",
     "jsdom": "^11.12.0",
     "mocha": "^4.0.1",
-    "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "webpack": "4.27.1",
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "cloudinary-core": "^2.3.0",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.2"
   },
   "peerDependencies": {
     "react": "^16.2.0"
