@@ -1,5 +1,6 @@
 import React from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
+import { Util } from 'cloudinary-core';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
@@ -19,9 +20,11 @@ class CloudinaryContext extends CloudinaryComponent {
 
   getChildContext() {
     let context = {};
+    const camelProps = Util.withCamelCaseKeys(this.props);
+
     // only pass valid Cloudinary options
     CloudinaryComponent.VALID_OPTIONS.forEach(key => {
-      let val = this.props[key] || this.context[key];
+      let val = camelProps[key] || this.context[key];
       if (val !== undefined && val !== null) {
         context[key] = val;
       }
