@@ -1,4 +1,23 @@
 
+1.1.0 / 2018-12-20
+==================
+
+  * Add the `tools` folder and the `update_version` script
+  * Update package configuration
+  * Update tests configuration
+  * Upgrade webpack and babel
+  * Add "Join the Community"
+  * Use nextProps for updating calculated URL correctly (#73)
+  * Add test for user variables
+  * Merge pull request #59 from lisamartin00/bug/src-empty-string
+    * Default src to undefined instead of empty string
+  * Merge pull request #42 from cloudinary/react-sample
+    * create react sample application
+    * use new react-sdk and fix imports
+  * Merge pull request #46 from IndependentContractor/master
+    * Link to react documentation for configuration
+  * Undo `cp` rename
+
 1.0.6 / 2018-01-18
 ==================
 
