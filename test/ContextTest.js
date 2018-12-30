@@ -19,6 +19,28 @@ describe('CloudinaryContext', () => {
     expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
+  it("should pass properties to children with snake case", function() {
+      let tag = mount(
+          <CloudinaryContext className="root" cloudName="demo" fetch_format="auto" >
+              <Image publicId="sample" />
+          </CloudinaryContext>
+      );
+
+      let img = tag.find("div").childAt(0);
+      expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+  });
+
+  it("should pass properties to children with kebab case", function() {
+      let tag = mount(
+          <CloudinaryContext className="root" cloudName="demo" fetch-format="auto" >
+              <Image publicId="sample" />
+          </CloudinaryContext>
+      );
+
+      let img = tag.find("div").childAt(0);
+      expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+  });
+
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {
     let html = mount(
       <CloudinaryContext
