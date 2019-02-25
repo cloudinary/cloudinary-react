@@ -21,7 +21,6 @@ class CloudinaryContext extends CloudinaryComponent {
 
   getChildContext() {
     let context = {};
-    let shouldReturnDiv = true;
     const camelProps = Util.withCamelCaseKeys(this.props);
 
     // only pass valid Cloudinary options
@@ -43,9 +42,8 @@ class CloudinaryContext extends CloudinaryComponent {
         return allowedProps;
       }, {});
     const {includeOwnBody, ...props} = nonCloudinaryProps;
-    //{console.log(nonCloudinaryProps.includeonbody);}
-  
-  return nonCloudinaryProps.includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>;  
+
+  return includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>;  
   }
 }
 
@@ -59,8 +57,6 @@ CloudinaryContext.CLOUDINARY_PROPS = CloudinaryComponent.VALID_OPTIONS.reduce(
 );
 
 CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
-//CloudinaryContext.propTypes.includeonbody = PropTypes.bool;
-
 CloudinaryContext.defaultProps = {includeOwnBody: false };
 CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
 

@@ -28,6 +28,15 @@ describe('CloudinaryContext', () => {
 
     expect(tag.html().startsWith("<div")).to.equal(false);
   });
+  it("should render with div", function() {
+    let tag = mount(
+      <CloudinaryContext className="root" cloudName="demo" includeOwnBody={false}>
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
+
+    expect(tag.html().startsWith("<div")).to.equal(true);
+  }); 
 
   it("should pass properties to children with snake case", function() {
       let tag = mount(
