@@ -52,15 +52,14 @@ class CloudinaryComponent extends Component {
    * @protected
    */
   getTransformation(extendedProps) {
-    var transformation;
+    let transformation = {};
     if (extendedProps.children !== undefined) {
       let childrenOptions = this.getChildTransformations(extendedProps.children);
       if (!Util.isEmpty(childrenOptions)) {
-        transformation = childrenOptions;
-        return {...extendedProps, transformation};
+        transformation = {transformation: childrenOptions};
       }
     }
-    return {...extendedProps};
+    return transformation;
   }
 
   /**
@@ -91,11 +90,12 @@ class CloudinaryComponent extends Component {
    */
   getUrl(extendedProps) {
     let transformation = this.getTransformation(extendedProps);
-    let cl = Cloudinary.new(Util.withSnakeCaseKeys(extendedProps));
+    delete extendedProps.children;
+    let cl = new Cloudinary(Util.withSnakeCaseKeys(extendedProps));
     return cl.url(extendedProps.publicId, transformation);
   }
-
 }
+
 CloudinaryComponent.VALID_OPTIONS = Transformation.PARAM_NAMES.map(camelCase);
 CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 
