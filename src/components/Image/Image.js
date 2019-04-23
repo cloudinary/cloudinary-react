@@ -64,7 +64,7 @@ class Image extends CloudinaryComponent {
   }
 
   handleResize(e) {
-    if (this.rqf) return;
+    if (!this.props.responsive || this.rqf) return;
     this.rqf = requestAnimationFrame(() => {
       this.rqf = null;
       let newState = this.prepareState();
