@@ -6,6 +6,22 @@ const camelCase = Util.camelCase;
 const snakeCase = Util.snakeCase;
 
 /**
+ * Return a new object containing keys and values where keys are in the keys list
+ * @param {object} source Object to copy values from
+ * @param {string[]} [keys=[]] a list of keys
+ * @returns {object} an object with copied values
+ */
+function only(source, keys = []) {
+  if(!source) return source
+  return keys.reduce((tr, key) => {
+    if (key in source) {
+      tr[key] = source[key]
+    }
+    return tr;
+  }, {});
+}
+
+/**
  * A base component for Cloudinary components.
  * @protected
  */
@@ -52,15 +68,13 @@ class CloudinaryComponent extends Component {
    * @protected
    */
   getTransformation(extendedProps) {
-    var transformation;
-    if (extendedProps.children !== undefined) {
-      let childrenOptions = this.getChildTransformations(extendedProps.children);
-      if (!Util.isEmpty(childrenOptions)) {
-        transformation = childrenOptions;
-        return {...extendedProps, transformation};
-      }
+    let {children, ...rest} = extendedProps;
+    let ownTransformation = only(Util.withCamelCaseKeys(rest), Transformation.methods) || {};
+    let childrenOptions = this.getChildTransformations(children);
+    if (!Util.isEmpty(childrenOptions)) {
+      ownTransformation.transformation = childrenOptions;
     }
-    return {...extendedProps};
+    return ownTransformation;
   }
 
   /**
@@ -91,10 +105,10 @@ class CloudinaryComponent extends Component {
    */
   getUrl(extendedProps) {
     let transformation = this.getTransformation(extendedProps);
-    let cl = Cloudinary.new(Util.withSnakeCaseKeys(extendedProps));
+    let options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
+    let cl = Cloudinary.new(options);
     return cl.url(extendedProps.publicId, transformation);
   }
-
 }
 CloudinaryComponent.VALID_OPTIONS = Transformation.PARAM_NAMES.map(camelCase);
 CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
