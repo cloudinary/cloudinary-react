@@ -20,6 +20,30 @@ describe('Video', () => {
         expect(tag.props().src).to.endWith('/q_70/l_text:verdana_30:webm!/dog.webm');
     });
 
+    it("should support fps parameter", function () {
+        let tag = shallow(
+            <Video cloudName='demo'
+                   sourceTypes={'webm'}
+                   publicId='dog'>
+                <Transformation fps='24'/>
+            </Video>);
+        expect(tag.props().src).to.endWith('/fps_24/dog.webm');
+        tag = shallow(
+            <Video cloudName='demo'
+                   sourceTypes={'webm'}
+                   publicId='dog'>
+                <Transformation fps='24-29.97'/>
+            </Video>);
+        expect(tag.props().src).to.endWith('/fps_24-29.97/dog.webm');
+        tag = shallow(
+            <Video cloudName='demo'
+                   sourceTypes={'webm'}
+                   publicId='dog'>
+                <Transformation fps='25-'/>
+            </Video>);
+        expect(tag.props().src).to.endWith('/fps_25-/dog.webm');
+    });
+
     it("should include child transformation for multiple source types", function () {
         let tag = shallow(
             <Video cloudName='demo'
