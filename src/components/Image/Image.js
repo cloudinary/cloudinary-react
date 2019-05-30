@@ -120,7 +120,7 @@ class Image extends CloudinaryComponent {
         containerWidth = Util.width(element);
       }
     }
-    return containerWidth;
+    return Math.round(containerWidth);
   };
 
   applyBreakpoints(width, steps, options) {
