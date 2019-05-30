@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CloudinaryComponent from '../CloudinaryComponent';
 import { Util } from 'cloudinary-core';
 
@@ -40,7 +41,9 @@ class CloudinaryContext extends CloudinaryComponent {
         allowedProps[currentProp] = this.props[currentProp];
         return allowedProps;
       }, {});
-    return <div {...nonCloudinaryProps}>{this.props.children}</div>;
+    const {includeOwnBody, ...props} = nonCloudinaryProps;
+
+  return includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>;  
   }
 }
 
@@ -53,8 +56,8 @@ CloudinaryContext.CLOUDINARY_PROPS = CloudinaryComponent.VALID_OPTIONS.reduce(
   {}
 );
 
-CloudinaryContext.propTypes = CloudinaryComponent.propTypes;
-CloudinaryContext.defaultProps = {};
+CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
+CloudinaryContext.defaultProps = {includeOwnBody: false };
 CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
 
 export default CloudinaryContext;

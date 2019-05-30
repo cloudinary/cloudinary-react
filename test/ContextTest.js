@@ -19,6 +19,25 @@ describe('CloudinaryContext', () => {
     expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
+   it("should render without div", function() {
+    let tag = mount(
+      <CloudinaryContext className="root" cloudName="demo" includeOwnBody={true}>
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
+
+    expect(tag.html().startsWith("<div")).to.equal(false);
+  });
+  it("should render with div", function() {
+    let tag = mount(
+      <CloudinaryContext className="root" cloudName="demo" includeOwnBody={false}>
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
+
+    expect(tag.html().startsWith("<div")).to.equal(true);
+  }); 
+
   it("should pass properties to children with snake case", function() {
       let tag = mount(
           <CloudinaryContext className="root" cloudName="demo" fetch_format="auto" >
