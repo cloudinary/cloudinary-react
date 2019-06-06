@@ -1,4 +1,17 @@
 
+1.1.1 / 2019-06-06
+==================
+
+  * Merge pull request #50 from runar-rkmedia/issue#49
+    * Round off containerWidth
+  * Don't render Context as div (#81)
+  * Add fps test (#84)
+  * Update Dependencies
+  * Add test pages
+  * Separate transformation parameters from configuration
+    * Increase performance of image rendering
+  * Add support for kebab-case and snake_case attribute names (#78)
+
 1.1.0 / 2018-12-20
 ==================
 
