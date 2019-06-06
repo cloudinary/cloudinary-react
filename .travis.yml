@@ -15,5 +15,5 @@ env:
   - TEST_SUBJECT=dist
 matrix:
   exclude:
-  - node_js: 6
-    env: TEST_SUBJECT=src
+    - node_js: "6"
+      env: TEST_SUBJECT=src
