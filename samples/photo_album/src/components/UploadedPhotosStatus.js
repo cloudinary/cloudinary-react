@@ -41,14 +41,16 @@ class UploadedPhotoStatus extends Component {
                 {data && (
                     <div className="info">
                         <table>
+                            <tbody>
                             {Object.keys(data).map(key => {
                                 return (
-                                    <tr>
+                                    <tr key={key}>
                                         <td>{key}</td>
                                         <td>{JSON.stringify(data[key])}</td>
                                     </tr>
                                 );
                             })}
+                            </tbody>
                         </table>
                     </div>
                 )}

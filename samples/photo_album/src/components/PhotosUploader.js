@@ -36,26 +36,26 @@ class PhotosUploader extends Component {
                             dashed area.
                         </p>
                         <form>
-                            <div class="form_line">
+                            <div className="form_line">
                                 <label path="title">Title:</label>
-                                <div class="form_controls">
+                                <div className="form_controls">
                                     <input
                                         type="text"
                                         ref={titleEl =>
                                             (this.titleEl = titleEl)
                                         }
-                                        class="form-control"
+                                        className="form-control"
                                         placeholder="Title"
                                     />
                                 </div>
                             </div>
-                            <div class="form_line">
+                            <div className="form_line">
                                 <label>Image:</label>
-                                <div class="form_controls">
-                                    <div class="upload_button_holder">
+                                <div className="form_controls">
+                                    <div className="upload_button_holder">
                                         <label
-                                            class="upload_button"
-                                            for="fileupload"
+                                            className="upload_button"
+                                            htmlFor="fileupload"
                                         >
                                             Upload
                                         </label>
@@ -82,7 +82,7 @@ class PhotosUploader extends Component {
                     {this.props.uploadedPhotos.map(uploadedPhoto => {
                         return (
                             <UploadedPhotoStatusContainer
-                                key={uploadedPhoto.public_id}
+                                key={uploadedPhoto.fileName}
                                 uploadedPhoto={uploadedPhoto}
                             />
                         );
