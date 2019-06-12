@@ -44,6 +44,24 @@ describe('Video', () => {
         expect(tag.props().src).to.endWith('/fps_25-/dog.webm');
     });
 
+    it('should support startOffset parameter', function() {
+        let tag = shallow(
+            <Video cloudName="demo" sourceTypes={'webm'} publicId="dog">
+                <Transformation startOffset="auto" />
+            </Video>);
+        expect(tag.props().src).to.endWith('/so_auto/dog.webm');
+        tag = shallow(
+            <Video cloudName="demo" sourceTypes={'webm'} publicId="dog">
+                <Transformation startOffset="2" />
+            </Video>);
+        expect(tag.props().src).to.endWith('/so_2/dog.webm');
+        tag = shallow(
+            <Video cloudName="demo" sourceTypes={'webm'} publicId="dog">
+                <Transformation startOffset="2.34" />
+            </Video>);
+        expect(tag.props().src).to.endWith('/so_2.34/dog.webm');
+    });
+
     it("should include child transformation for multiple source types", function () {
         let tag = shallow(
             <Video cloudName='demo'
