@@ -79,10 +79,10 @@ class PhotosUploader extends Component {
                         </form>
                         <h2>Status</h2>
                     </div>
-                    {this.props.uploadedPhotos.map(uploadedPhoto => {
+                    {this.props.uploadedPhotos.map((uploadedPhoto, index) => {
                         return (
                             <UploadedPhotoStatusContainer
-                                key={uploadedPhoto.fileName}
+                                key={index}
                                 uploadedPhoto={uploadedPhoto}
                             />
                         );
@@ -99,7 +99,7 @@ class PhotosUploader extends Component {
     onPhotoSelected(files) {
         const url = `https://api.cloudinary.com/v1_1/${
             this.context.cloudName
-        }/upload`;
+            }/upload`;
         const title = this.titleEl.value;
 
         for (let file of files) {
