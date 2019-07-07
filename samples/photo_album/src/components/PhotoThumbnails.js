@@ -19,12 +19,13 @@ const transformations = [
     ],
 ];
 
-const PhotoThumbnails = ({ publicId }) => (
+const PhotoThumbnails = ({publicId}) => (
     <table className="thumbnails">
+        <tbody>
         <tr>
-            {transformations.map(transformation => {
+            {transformations.map((transformation, transformationIndex) => {
                 return (
-                    <td>
+                    <td key={transformationIndex}>
                         <div className="thumbnail_holder">
                             <Image
                                 publicId={publicId}
@@ -32,11 +33,11 @@ const PhotoThumbnails = ({ publicId }) => (
                                 format="jpg"
                             >
                                 {transformation.map(
-                                    (subTransformation, index) => {
+                                    (subTransformation, subTransformationIndex) => {
                                         return (
                                             <Transformation
                                                 {...subTransformation}
-                                                key={index}
+                                                key={subTransformationIndex}
                                             />
                                         );
                                     }
@@ -44,11 +45,12 @@ const PhotoThumbnails = ({ publicId }) => (
                             </Image>
                         </div>
                         <table className="info">
+                            <tbody>
                             {transformation.map(subTransformation => {
                                 return Object.keys(subTransformation).map(
-                                    prop => {
+                                    (prop, propIndex) => {
                                         return (
-                                            <tr>
+                                            <tr key={propIndex}>
                                                 <td>{prop}</td>
                                                 <td>
                                                     {subTransformation[prop]}
@@ -58,12 +60,14 @@ const PhotoThumbnails = ({ publicId }) => (
                                     }
                                 );
                             })}
+                            </tbody>
                         </table>
                         <br />
                     </td>
                 );
             })}
         </tr>
+        </tbody>
     </table>
 );
 
