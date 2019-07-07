@@ -43,7 +43,7 @@ const PhotoThumbnails = ({ publicId }) => (
                                 )}
                             </Image>
                         </div>
-                        <table class="info">
+                        <table className="info">
                             {transformation.map(subTransformation => {
                                 return Object.keys(subTransformation).map(
                                     prop => {

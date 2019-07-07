@@ -36,26 +36,26 @@ class PhotosUploader extends Component {
                             dashed area.
                         </p>
                         <form>
-                            <div class="form_line">
+                            <div className="form_line">
                                 <label path="title">Title:</label>
-                                <div class="form_controls">
+                                <div className="form_controls">
                                     <input
                                         type="text"
                                         ref={titleEl =>
                                             (this.titleEl = titleEl)
                                         }
-                                        class="form-control"
+                                        className="form-control"
                                         placeholder="Title"
                                     />
                                 </div>
                             </div>
-                            <div class="form_line">
+                            <div className="form_line">
                                 <label>Image:</label>
-                                <div class="form_controls">
-                                    <div class="upload_button_holder">
+                                <div className="form_controls">
+                                    <div className="upload_button_holder">
                                         <label
-                                            class="upload_button"
-                                            for="fileupload"
+                                            className="upload_button"
+                                            htmlFor="fileupload"
                                         >
                                             Upload
                                         </label>
@@ -79,10 +79,10 @@ class PhotosUploader extends Component {
                         </form>
                         <h2>Status</h2>
                     </div>
-                    {this.props.uploadedPhotos.map(uploadedPhoto => {
+                    {this.props.uploadedPhotos.map((uploadedPhoto, index) => {
                         return (
                             <UploadedPhotoStatusContainer
-                                key={uploadedPhoto.public_id}
+                                key={index}
                                 uploadedPhoto={uploadedPhoto}
                             />
                         );
@@ -99,7 +99,7 @@ class PhotosUploader extends Component {
     onPhotoSelected(files) {
         const url = `https://api.cloudinary.com/v1_1/${
             this.context.cloudName
-        }/upload`;
+            }/upload`;
         const title = this.titleEl.value;
 
         for (let file of files) {
