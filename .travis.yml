@@ -3,10 +3,17 @@ language: node_js
 node_js:
   - "node"
   - "lts/*"
-before_script:
+  - "6"
+install:
+  - npm install react@^16.0.0 --no-save
+  - npm install
   - npm run compile
   - npm run dist
 env:
   - TEST_SUBJECT=src
   - TEST_SUBJECT=lib
   - TEST_SUBJECT=dist
+matrix:
+  exclude:
+    - node_js: "6"
+      env: TEST_SUBJECT=src
