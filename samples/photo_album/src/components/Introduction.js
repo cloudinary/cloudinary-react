@@ -23,7 +23,7 @@ const Introduction = () => (
                 <Video
                     publicId="manipulation_video"
                     cloudName="cloudinary"
-                    controls="true"
+                    controls={true}
                     preload="none"
                     width="925"
                     crop="scale"

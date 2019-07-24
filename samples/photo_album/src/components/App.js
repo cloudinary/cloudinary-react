@@ -22,7 +22,6 @@ class App extends Component {
             >
                 {/*This will render the image fetched from a remote HTTP URL using Cloudinary*/}
                 <Image
-                    type="fetch"
                     publicId="https://cloudinary.com/images/logo.png"
                     fetch-format="auto"
                     quality="auto"
