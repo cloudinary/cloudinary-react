@@ -1,18 +1,18 @@
 
+1.1.3 / 2019-07-25
+==================
+  * Update CHANGELOG.md
+
 1.1.2 / 2019-07-25
 ==================
 
-  * Add test for startOffset parameter
-  * Bump eslint from 4.10.0 to 4.18.2 in /samples/photo_album
-  * Bump diff from 3.4.0 to 3.5.0 in /samples/photo_album
-  * Bump clean-css from 4.1.9 to 4.1.11 in /samples/photo_album
-  * Bump handlebars from 4.0.11 to 4.1.2 in /samples/photo_album (#99)
-  * Bump lodash.template from 4.4.0 to 4.5.0 in /samples/photo_album
-  * Bump lodash from 4.17.11 to 4.17.14 in /samples/photo_album
-  * Merge pull request #102 from felixmosh/fix-album-demo
-  * Make index as key
+  * Fix responsiveUseBreakpoints not affecting image size
   * Fix build & console errors
   * Exclude tests for Node 6 with sources
+  * Fix photo album sample app
+  * Add test for startOffset parameter
+  * Update TravisCI configuration
+  * Bump packages versions in /samples/photo_album
 
 1.1.1 / 2019-06-06
 ==================
