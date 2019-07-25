@@ -1,4 +1,19 @@
 
+1.1.2 / 2019-07-25
+==================
+
+  * Add test for startOffset parameter
+  * Bump eslint from 4.10.0 to 4.18.2 in /samples/photo_album
+  * Bump diff from 3.4.0 to 3.5.0 in /samples/photo_album
+  * Bump clean-css from 4.1.9 to 4.1.11 in /samples/photo_album
+  * Bump handlebars from 4.0.11 to 4.1.2 in /samples/photo_album (#99)
+  * Bump lodash.template from 4.4.0 to 4.5.0 in /samples/photo_album
+  * Bump lodash from 4.17.11 to 4.17.14 in /samples/photo_album
+  * Merge pull request #102 from felixmosh/fix-album-demo
+  * Make index as key
+  * Fix build & console errors
+  * Exclude tests for Node 6 with sources
+
 1.1.1 / 2019-06-06
 ==================
 
@@ -67,7 +82,22 @@
 ==================
 
   * Don't convert keys to snake_case in `normalizeOptions`. Fixes #6.
-  * Separate class definition and export statements. Updated documentation comments.
+  * SpponsiveUseBreakpoints not affecting image size
+  * Update photo album sample app
+  * Update TravisCI configuration
+  * Bump lodash-es from 4.17.4 to 4.17.15 in /samples/photo_album
+  * Add test for startOffset parameter
+  * Bump eslint from 4.10.0 to 4.18.2 in /samples/photo_album
+  * Bump diff from 3.4.0 to 3.5.0 in /samples/photo_album
+  * Bump clean-css from 4.1.9 to 4.1.11 in /samples/photo_album
+  * Bump handlebars from 4.0.11 to 4.1.2 in /samples/photo_album (#99)
+  * Bump lodash.template from 4.4.0 to 4.5.0 in /samples/photo_album
+  * Bump lodash from 4.17.11 to 4.17.14 in /samples/photo_album
+  * Merge pull request #102 from felixmosh/fix-album-demo
+  * Make index as key
+  * Fix build & console errors
+  * Exclude tests for Node 6 with sources
+rate class definition and export statements. Updated documentation comments.
   * Use traditional array traversing to solve react native issue on Android
   * Force Travis-ci to use npm version >=3. Add test for Node 6.x
 
