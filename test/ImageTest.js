@@ -29,9 +29,8 @@ describe('Image', () => {
   });
   it("should not pass-through Cloudinary attributes", function() {
     let width = 300;
-
-    let tag2 = mount(<div width="300"><Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints /></div>);
     let tag = shallow(<Image publicId="sample" cloudName="demo" width="auto" crop="scale" privateCdn="private" defaultImage="foobar" responsive responsiveUseBreakpoints />);
+
     expect(tag.type()).to.equal("img");
     expect(tag.state("url")).to.equal(undefined);
     expect(tag.props()).to.have.property('src');
@@ -69,5 +68,34 @@ describe('Image', () => {
   it("should render a src property with an undefined value if a src is not defined", function() {
     let tag = mount(<Image cloudName="demo" />);
     expect(tag.find('img').prop('src')).to.equal(undefined);
+  });
+  it('should use breakpoints to calculate image width', function () {
+    const expectedSizing = [
+      {containerWidth: 225, imageWidth: 700},
+      {containerWidth: 275, imageWidth: 300},
+      {containerWidth: 350, imageWidth: 400}
+    ];
+
+    const context = {
+      cloudName: "demo",
+      responsive: true,
+      responsiveUseBreakpoints: true
+    };
+
+    expectedSizing.forEach(({containerWidth, imageWidth}) => {
+      Image.prototype.findContainerWidth = () => containerWidth;
+
+      const tag = shallow(
+        <Image
+          publicId="sample"
+          width="auto"
+          crop="scale"
+        />, {
+          context: context
+        });
+
+      expect(tag.type()).to.equal("img");
+      expect(tag.state("url")).to.equal(`http://res.cloudinary.com/demo/image/upload/c_scale,w_${Math.ceil(containerWidth / 100) * 100}/sample`);
+    });
   });
 });

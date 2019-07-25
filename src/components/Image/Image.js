@@ -1,19 +1,21 @@
-import React, {Component} from 'react';
+import React from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
+
+const defaultBreakpoints = (width, steps = 100) => {
+  return steps * Math.ceil(width / steps);
+};
 
 /**
  * A component representing a Cloudinary served image
  */
 class Image extends CloudinaryComponent {
   constructor(props, context) {
-    function defaultBreakpoints(width, steps = 100) {
-      return steps * Math.ceil(width / steps);
-    }
-
     super(props, context);
     this.handleResize = this.handleResize.bind(this);
+
+    this.state = {};
 
     let state = {responsive: false, url: undefined, breakpoints: defaultBreakpoints};
     this.state = Object.assign(state, this.prepareState(props, context));
@@ -26,7 +28,7 @@ class Image extends CloudinaryComponent {
    */
   get window() {
     let windowRef = null;
-    if(typeof window !== "undefined"){
+    if (typeof window !== "undefined") {
       windowRef = window
     }
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
@@ -37,38 +39,39 @@ class Image extends CloudinaryComponent {
     this.setState(state);
   }
 
-  /**
-   * Generate update state of this element
-   * @param {Object} [props=this.props]
-   * @param {Object} [context=this.context]
-   * @returns {Object} state updates
-   * @private
-   */
   prepareState(props = this.props, context = this.context) {
     let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
     let url = this.getUrl(extendedProps);
     let state = {};
+    let updatedOptions = {};
+
     if (extendedProps.breakpoints !== undefined) {
       state.breakpoints = extendedProps.breakpoints;
     }
     if (extendedProps.responsive) {
       state.responsive = true;
-      url = this.cloudinary_update(url, state);
+      updatedOptions = this.cloudinaryUpdate(url, state);
+      url = updatedOptions.url;
     }
 
     let currentState = this.state || {};
+
+    state.width = updatedOptions.width;
+
     if (!Util.isEmpty(url) && url !== currentState.url) {
       state.url = url;
     }
+
+
     return state;
   }
 
-  handleResize(e) {
+  handleResize() {
     if (!this.props.responsive || this.rqf) return;
     this.rqf = requestAnimationFrame(() => {
       this.rqf = null;
       let newState = this.prepareState();
-      if(!Util.isEmpty(newState.url)) {
+      if (!Util.isEmpty(newState.url)) {
         this.setState(newState);
       }
     });
@@ -124,10 +127,9 @@ class Image extends CloudinaryComponent {
   };
 
   applyBreakpoints(width, steps, options) {
-    var responsive_use_breakpoints;
     options = CloudinaryComponent.normalizeOptions(this.context, this.props, options);
-    responsive_use_breakpoints = options.responsive_use_breakpoints;
-    if ((!responsive_use_breakpoints) || (responsive_use_breakpoints === 'resize' && !options.resizing)) {
+    let responsiveUseBreakpoints = options.responsiveUseBreakpoints;
+    if ((!responsiveUseBreakpoints) || (responsiveUseBreakpoints === 'resize' && !options.resizing)) {
       return width;
     } else {
       return this.calc_breakpoint(width, steps);
@@ -136,7 +138,7 @@ class Image extends CloudinaryComponent {
 
   calc_breakpoint(width, steps) {
     var breakpoints, point;
-    breakpoints = this.state.breakpoints || defaultBreakpoints;
+    breakpoints = (this.state && this.state.breakpoints) || defaultBreakpoints;
     if (Util.isFunction(breakpoints)) {
       return breakpoints(width, steps);
     } else {
@@ -179,16 +181,10 @@ class Image extends CloudinaryComponent {
   };
 
   maxWidth(requiredWidth) {
-    var imageWidth;
-    imageWidth = this.state.width || 0;
-    if (requiredWidth > imageWidth) {
-      imageWidth = requiredWidth;
-      this.setState({width: requiredWidth});
-    }
-    return imageWidth;
+    return Math.max((this.state && this.state.width) || 0, requiredWidth);
   };
 
-  cloudinary_update(url, options = {}) {
+  cloudinaryUpdate(url, options = {}) {
     var requiredWidth;
     var match;
     let resultUrl = this.updateDpr(url, options.roundDpr);
@@ -199,16 +195,19 @@ class Image extends CloudinaryComponent {
           requiredWidth = this.maxWidth(containerWidth, this.element);
           resultUrl = resultUrl.replace(/w_auto:breakpoints([_0-9]*)(:[0-9]+)?/,
             "w_auto:breakpoints$1:" + requiredWidth);
-        } else if (match = /w_auto(:(\d+))?/.exec(resultUrl)) {
-          requiredWidth = this.applyBreakpoints(containerWidth, match[2], options);
-          requiredWidth = this.maxWidth(requiredWidth, this.element);
-          resultUrl = resultUrl.replace(/w_auto[^,\/]*/g, "w_" + requiredWidth);
+        } else {
+          match = /w_auto(:(\d+))?/.exec(resultUrl);
+          if (match) {
+            requiredWidth = this.applyBreakpoints(containerWidth, match[2], options);
+            requiredWidth = this.maxWidth(requiredWidth, this.element);
+            resultUrl = resultUrl.replace(/w_auto[^,\/]*/g, "w_" + requiredWidth);
+          }
         }
       } else {
         resultUrl = "";
       }
     }
-    return resultUrl;
+    return {url: resultUrl, width: requiredWidth};
   }
 }
 
