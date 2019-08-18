@@ -98,4 +98,30 @@ describe('Image', () => {
       expect(tag.state("url")).to.equal(`http://res.cloudinary.com/demo/image/upload/c_scale,w_${Math.ceil(containerWidth / 100) * 100}/sample`);
     });
   });
+  it('should support custom function remote', () => {
+    const customFunction = {
+      function_type: "remote",
+      source: "https://df34ra4a.execute-api.us-west-2.amazonaws.com/default/cloudinaryFunction"
+    };
+
+    let tag = mount(
+      <Image publicId="sample" cloudName="demo"><Transformation customFunction={customFunction}/></Image>
+    );
+
+    expect(tag.find('img').prop('src')).to.match(
+      /fn_remote:aHR0cHM6Ly9kZjM0cmE0YS5leGVjdXRlLWFwaS51cy13ZXN0LTIuYW1hem9uYXdzLmNvbS9kZWZhdWx0L2Nsb3VkaW5hcnlGdW5jdGlvbg==\/sample/
+    );
+  });
+  it('should support custom function wasm', () => {
+    const customFunction = {
+      function_type: "wasm",
+      source: "blur.wasm"
+    };
+
+    let tag = mount(
+      <Image publicId="sample" cloudName="demo"><Transformation customFunction={customFunction}/></Image>
+    );
+
+    expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
+  });
 });
