@@ -105,6 +105,7 @@ class Image extends CloudinaryComponent {
   render() {
     var {publicId, responsive, responsiveDebounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
       this.context);
+    console.log('image context:', this.context);
     var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     return (
       <img {...attributes} src={this.state.url} ref={(e)=> {this.element = e;}}/>
@@ -212,7 +213,6 @@ class Image extends CloudinaryComponent {
 }
 
 Image.defaultProps = {};
-Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
 
 export default Image;

@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CloudinaryComponent from '../CloudinaryComponent';
 import { Util } from 'cloudinary-core';
+import {CloudinaryContextType} from './CloudinaryContextType';
+
+
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
- * 
+ *
  * @example
  *<CloudinaryContext cloudName="mycloud" dpr="auto">
  *    <!-- other tags -->
@@ -14,18 +17,20 @@ import { Util } from 'cloudinary-core';
  *
  */
 class CloudinaryContext extends CloudinaryComponent {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.getProps = this.getProps.bind(this);
+    this.state = this.getProps();
   }
 
-  getChildContext() {
+  getProps() {
     let context = {};
     const camelProps = Util.withCamelCaseKeys(this.props);
 
     // only pass valid Cloudinary options
     CloudinaryComponent.VALID_OPTIONS.forEach(key => {
-      let val = camelProps[key] || this.context[key];
+      //let val = camelProps[key] || this.context[key];
+      let val = this.context ? camelProps[key] || this.context[key] : camelProps[key];
       if (val !== undefined && val !== null) {
         context[key] = val;
       }
@@ -43,7 +48,11 @@ class CloudinaryContext extends CloudinaryComponent {
       }, {});
     const {includeOwnBody, ...props} = nonCloudinaryProps;
 
-  return includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>;  
+  return (
+    <CloudinaryContextType.Provider value={this.context ? {...this.context, ...this.state} : {...this.state}}>
+      {includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>}
+    </CloudinaryContextType.Provider>
+  );
   }
 }
 
@@ -58,6 +67,6 @@ CloudinaryContext.CLOUDINARY_PROPS = CloudinaryComponent.VALID_OPTIONS.reduce(
 
 CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
 CloudinaryContext.defaultProps = {includeOwnBody: false };
-CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
+CloudinaryContext.contextType = CloudinaryContextType;
 
 export default CloudinaryContext;

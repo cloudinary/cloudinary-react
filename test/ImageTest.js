@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount} from 'enzyme';
 
 import cloudinary from './cloudinary-proxy';
 const {Image, Transformation} = cloudinary;
@@ -82,7 +82,7 @@ describe('Image', () => {
       responsiveUseBreakpoints: true
     };
 
-    expectedSizing.forEach(({containerWidth, imageWidth}) => {
+    expectedSizing.forEach(({containerWidth}) => {
       Image.prototype.findContainerWidth = () => containerWidth;
 
       const tag = shallow(
@@ -90,9 +90,8 @@ describe('Image', () => {
           publicId="sample"
           width="auto"
           crop="scale"
-        />, {
-          context: context
-        });
+          {...context}
+        />);
 
       expect(tag.type()).to.equal("img");
       expect(tag.state("url")).to.equal(`http://res.cloudinary.com/demo/image/upload/c_scale,w_${Math.ceil(containerWidth / 100) * 100}/sample`);
