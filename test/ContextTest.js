@@ -36,7 +36,7 @@ describe('CloudinaryContext', () => {
     );
 
     expect(tag.html().startsWith("<div")).to.equal(true);
-  }); 
+  });
 
   it("should pass properties to children with snake case", function() {
       let tag = mount(
@@ -94,9 +94,7 @@ describe('CloudinaryContext', () => {
       </CloudinaryContext>
     );
     expect(
-      tag.containsMatchingElement(
-        <img src="http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample" />
-      )
-    ).to.equal(true);
+      tag.find('img').prop('src')
+    ).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample");
   });
 });

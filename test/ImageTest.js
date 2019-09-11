@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { shallow, mount} from 'enzyme';
 
 import cloudinary from './cloudinary-proxy';
-const {Image, Transformation} = cloudinary;
+const {Image, Transformation, CloudinaryContext} = cloudinary;
 
 describe('Image', () => {
   beforeEach(() => {
@@ -85,16 +85,18 @@ describe('Image', () => {
     expectedSizing.forEach(({containerWidth}) => {
       Image.prototype.findContainerWidth = () => containerWidth;
 
-      const tag = shallow(
+      const tag = mount(
+        <CloudinaryContext {...context}>
         <Image
           publicId="sample"
           width="auto"
           crop="scale"
-          {...context}
-        />);
+        />
+        </CloudinaryContext>
+      );
 
-      expect(tag.type()).to.equal("img");
-      expect(tag.state("url")).to.equal(`http://res.cloudinary.com/demo/image/upload/c_scale,w_${Math.ceil(containerWidth / 100) * 100}/sample`);
+      expect(tag.exists('img')).to.equal(true);
+      expect(tag.find('img').prop("src")).to.equal(`http://res.cloudinary.com/demo/image/upload/c_scale,w_${Math.ceil(containerWidth / 100) * 100}/sample`);
     });
   });
   it('should support custom function remote', () => {

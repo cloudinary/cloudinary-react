@@ -1,6 +1,6 @@
 import React from "react";
 import { expect } from "chai";
-import { shallow, mount, render } from "enzyme";
+import { shallow, mount } from "enzyme";
 import cloudinary from './cloudinary-proxy';
 const {Image, Transformation} = cloudinary;
 
@@ -51,8 +51,8 @@ describe("Transformation", () => {
       </Image>
     );
     expect(image.find('img').getElement().props.src).to.equal('http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample');
-    let transformation = mount(<Transformation width="200" crop="scale" />);
-    image.setProps({children: [transformation]});
+    let transformation = mount(<Transformation width="200" crop="scale"/>);
+    image.setProps({children: [transformation]}).update();
     expect(image.find('img').getElement().props.src).to.equal('http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample');
   });
 });

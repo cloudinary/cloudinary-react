@@ -2,6 +2,8 @@ import React from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
+import isEqual from 'lodash.isequal';
+
 
 const defaultBreakpoints = (width, steps = 100) => {
   return steps * Math.ceil(width / steps);
@@ -86,21 +88,12 @@ class Image extends CloudinaryComponent {
     this.listener = undefined;
   }
 
-  /*
-  UNSAFE_componentWillUpdate(nextProps, nextState, nextContext) {
-    if (nextState.responsive) {
-      const wait = firstDefined(nextProps.responsiveDebounce, nextContext.responsiveDebounce, 100);
-      if (this.listener) {
-        this.window && this.window.removeEventListener('resize', this.listener);
-      }
-      this.listener = debounce(this.handleResize, wait);
-      this.window && this.window.addEventListener('resize', this.listener);
+  componentDidUpdate(prevProps) {
+    if(!isEqual(prevProps, this.props)) {
+      this.setState(this.prepareState(this.props, this.state));
     }
-  }
-  */
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.state.responsive) {
+    else if (this.state.responsive) {
       const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
       if (this.listener) {
         this.window && this.window.removeEventListener('resize', this.listener);
@@ -110,20 +103,16 @@ class Image extends CloudinaryComponent {
     }
   }
 
-  /*
-  componentWillReceiveProps(nextProps, nextContext) {
-    let state = this.prepareState(nextProps, nextContext);
-    this.setState(state);
-  }
-  */
-
   render() {
-    var {publicId, responsive, responsiveDebounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
-      this.context);
-    console.log('image context:', this.context);
-    var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    const {publicId, responsive, responsiveDebounce, children, ...options} =
+      CloudinaryComponent.normalizeOptions(this.props, this.context);
+    const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    const {url} = this.state;
+
     return (
-      <img {...attributes} src={this.state.url} ref={(e)=> {this.element = e;}}/>
+      <img {...attributes} src={url} ref={(e) => {
+        this.element = e;
+      }}/>
     );
   }
 
