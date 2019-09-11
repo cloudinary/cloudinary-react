@@ -34,11 +34,6 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    let state = this.prepareState(nextProps, nextContext);
-    this.setState(state);
-  }
-
   prepareState(props = this.props, context = this.context) {
     let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
     let url = this.getUrl(extendedProps);
@@ -91,7 +86,8 @@ class Image extends CloudinaryComponent {
     this.listener = undefined;
   }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
+  /*
+  UNSAFE_componentWillUpdate(nextProps, nextState, nextContext) {
     if (nextState.responsive) {
       const wait = firstDefined(nextProps.responsiveDebounce, nextContext.responsiveDebounce, 100);
       if (this.listener) {
@@ -101,6 +97,25 @@ class Image extends CloudinaryComponent {
       this.window && this.window.addEventListener('resize', this.listener);
     }
   }
+  */
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.responsive) {
+      const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
+      if (this.listener) {
+        this.window && this.window.removeEventListener('resize', this.listener);
+      }
+      this.listener = debounce(this.handleResize, wait);
+      this.window && this.window.addEventListener('resize', this.listener);
+    }
+  }
+
+  /*
+  componentWillReceiveProps(nextProps, nextContext) {
+    let state = this.prepareState(nextProps, nextContext);
+    this.setState(state);
+  }
+  */
 
   render() {
     var {publicId, responsive, responsiveDebounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
