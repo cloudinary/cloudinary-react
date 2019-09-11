@@ -2,7 +2,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import cloudinary from './cloudinary-proxy';
-const {Image, CloudinaryContext} = cloudinary;
+const {Image, CloudinaryContext, Transformation} = cloudinary;
 
 describe('CloudinaryContext', () => {
   it("should pass properties to children", function() {
@@ -96,5 +96,21 @@ describe('CloudinaryContext', () => {
     expect(
       tag.find('img').prop('src')
     ).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample");
+  });
+  it("updates transformations dynamically on context change", function () {
+    const cloudName1 = "demo";
+    const cloudName2 = "demo2";
+
+    let image = mount(
+      <CloudinaryContext cloudName={cloudName1}>
+        <Image publicId="sample">
+          <Transformation width="100" crop="scale"/>
+        </Image>
+      </CloudinaryContext>
+    );
+
+    expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName1}/image/upload/c_scale,w_100/sample`);
+    image.setProps({cloudName: "demo2"}).update();
+    expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
   });
 });
