@@ -109,8 +109,17 @@ describe('CloudinaryContext', () => {
       </CloudinaryContext>
     );
 
+    image.promisifiedSetProps = (props) => {
+      return new Promise(function (resolve) {
+        image.setProps(props, () => {
+          resolve();
+        });
+      });
+    };
+
     expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName1}/image/upload/c_scale,w_100/sample`);
-    image.setProps({cloudName: "demo2"}).update();
-    expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
+    image.promisifiedSetProps({cloudName: "demo2"}).then(image => {
+      expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
+    });
   });
 });

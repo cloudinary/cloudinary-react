@@ -27,11 +27,11 @@ class CloudinaryContext extends CloudinaryComponent {
   constructor(props) {
     super(props);
     this.calcState = this.calcState.bind(this);
-    this.context = this.context || {};
     this.state = this.calcState();
   }
 
   calcState() {
+    this.context = this.context || {};
     let context = {};
     const camelProps = Util.withCamelCaseKeys(this.props);
 
@@ -42,7 +42,6 @@ class CloudinaryContext extends CloudinaryComponent {
         context[key] = val;
       }
     });
-    //return {value: {...this.context, ...context}};
     return context;
   }
 
