@@ -51,7 +51,6 @@
   },
   "dependencies": {
     "cloudinary-core": "^2.7.4",
-    "lodash.isequal": "^4.5.0",
     "prop-types": "^15.6.2"
   },
   "peerDependencies": {

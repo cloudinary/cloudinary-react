@@ -1,8 +1,7 @@
 import React from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
-import isEqual from 'lodash.isequal';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement, isEqual} from '../../Util';
 
 
 const defaultBreakpoints = (width, steps = 100) => {
