@@ -109,7 +109,6 @@ class CloudinaryComponent extends Component {
 CloudinaryComponent.VALID_OPTIONS = Transformation.PARAM_NAMES.map(camelCase);
 CloudinaryComponent.contextType = CloudinaryContextType;
 
-//CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes;
 CloudinaryComponent.propTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
 CloudinaryComponent.propTypes.responsive = PropTypes.bool;
