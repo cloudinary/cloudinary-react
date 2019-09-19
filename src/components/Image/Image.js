@@ -1,7 +1,7 @@
 import React from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement, isEqual} from '../../Util';
+import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
 
 
 const defaultBreakpoints = (width, steps = 100) => {
@@ -88,7 +88,7 @@ class Image extends CloudinaryComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if(!isEqual(prevProps, this.props)) {
+    if(!Util.isEqual(prevProps, this.props)) {
       this.setState(this.prepareState(this.props, this.state));
     }
 
