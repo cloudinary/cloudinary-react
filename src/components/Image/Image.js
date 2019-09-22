@@ -3,7 +3,6 @@ import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
 
-
 const defaultBreakpoints = (width, steps = 100) => {
   return steps * Math.ceil(width / steps);
 };
@@ -88,11 +87,9 @@ class Image extends CloudinaryComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if(!Util.isEqual(prevProps, this.props)) {
+    if (!Util.isEqual(prevProps, this.props)) {
       this.setState(this.prepareState(this.props, this.state));
-    }
-
-    else if (this.state.responsive) {
+    } else if (this.state.responsive) {
       const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
       if (this.listener) {
         this.window && this.window.removeEventListener('resize', this.listener);
