@@ -87,9 +87,8 @@ class Image extends CloudinaryComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!Util.isEqual(prevProps, this.props)) {
-      this.setState(this.prepareState(this.props, this.state));
-    } else if (this.state.responsive) {
+    this.setState(this.prepareState(this.props, this.state));
+    if (this.state.responsive) {
       const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
       if (this.listener) {
         this.window && this.window.removeEventListener('resize', this.listener);

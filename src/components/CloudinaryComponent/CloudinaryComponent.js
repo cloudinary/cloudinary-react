@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Cloudinary, Transformation, Util} from 'cloudinary-core';
 import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
@@ -25,7 +25,7 @@ function only(source, keys = []) {
  * A base component for Cloudinary components.
  * @protected
  */
-class CloudinaryComponent extends Component {
+class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
   }
