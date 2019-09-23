@@ -1,17 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {Util} from 'cloudinary-core';
+import {cloudinaryProps, nonCloudinaryProps} from '../../Util';
 import {CloudinaryContextType} from './CloudinaryContextType';
-
-const getNonCloudinaryProps = (props) => {
-  return Object.keys(props)
-    .filter(propName => !CloudinaryContext.CLOUDINARY_PROPS[propName])
-    .reduce((allowedProps, currentProp) => {
-      allowedProps[currentProp] = props[currentProp];
-      return allowedProps;
-    }, {});
-};
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
@@ -24,35 +15,32 @@ const getNonCloudinaryProps = (props) => {
  *
  */
 class CloudinaryContext extends CloudinaryComponent {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+
     this.calcState = this.calcState.bind(this);
     this.state = this.calcState();
   }
 
   calcState() {
-    this.context = this.context || {};
-    let context = {};
-    const camelProps = Util.withCamelCaseKeys(this.props);
+    const mergedProps = {...(this.context || {}), ...this.props};
+    const context = cloudinaryProps(mergedProps, CloudinaryComponent.VALID_OPTIONS);
+    const {includeOwnBody, ...childrenProps} = nonCloudinaryProps(this.props, CloudinaryContext.CLOUDINARY_PROPS);
 
-    // only pass valid Cloudinary options
-    CloudinaryComponent.VALID_OPTIONS.forEach(key => {
-      let val = camelProps[key] || this.context[key];
-      if (val !== undefined && val !== null) {
-        context[key] = val;
-      }
-    });
-    return context;
+    return {
+      context,
+      childrenProps,
+      includeOwnBody
+    };
   }
 
   render() {
-    // Remove Cloudinary custom props that don't belong to div
-    const {includeOwnBody, ...props} = getNonCloudinaryProps(this.props);
-    const value = {...this.context, ...this.state};
+    const {children} = this.props;
+    const {context, childrenProps, includeOwnBody} = this.state;
 
     return (
-      <CloudinaryContextType.Provider value={value}>
-        {includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>}
+      <CloudinaryContextType.Provider value={context}>
+        {includeOwnBody ? children : <div {...childrenProps}>{children}</div>}
       </CloudinaryContextType.Provider>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
+import setProps from './setProps';
 import cloudinary from './cloudinary-proxy';
 const {Image, CloudinaryContext, Transformation} = cloudinary;
 
@@ -101,7 +102,7 @@ describe('CloudinaryContext', () => {
     const cloudName1 = "demo";
     const cloudName2 = "demo2";
 
-    let image = mount(
+    let tag = mount(
       <CloudinaryContext cloudName={cloudName1}>
         <Image publicId="sample">
           <Transformation width="100" crop="scale"/>
@@ -109,17 +110,11 @@ describe('CloudinaryContext', () => {
       </CloudinaryContext>
     );
 
-    image.promisifiedSetProps = (props) => {
-      return new Promise(function (resolve) {
-        image.setProps(props, () => {
-          resolve();
-        });
-      });
-    };
+    expect(tag.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName1}/image/upload/c_scale,w_100/sample`);
 
-    expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName1}/image/upload/c_scale,w_100/sample`);
-    image.promisifiedSetProps({cloudName: cloudName2}).then(image => {
-      expect(image.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
+    tag.setProps({cloudName: cloudName2});
+    setProps(tag, {cloudName: cloudName2}).then(tag => {
+      expect(tag.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
     });
   });
 });

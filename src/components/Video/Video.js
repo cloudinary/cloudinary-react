@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
+import {Cloudinary, Transformation, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 
 const DEFAULT_POSTER_OPTIONS = {
@@ -12,8 +12,8 @@ const DEFAULT_POSTER_OPTIONS = {
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {};
   }
 
