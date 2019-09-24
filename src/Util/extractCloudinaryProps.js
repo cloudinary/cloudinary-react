@@ -5,31 +5,27 @@ const isDefined = (props, key) => {
 };
 
 /**
- * Extracts cloudinaryProps and nonCloudinaryProps from given context+props
- * according to given validProps
- * @param context
+ * Extracts cloudinaryProps and nonCloudinaryProps from given props according to given validProps
  * @param props
  * @param validProps
- * @returns {{cloudinaryProps, nonCloudinaryProps}}
+ * @returns {{cloudinaryProps: {}, nonCloudinaryProps: {}}}
  */
-export default (context = {}, props = {}, validProps = {}) => {
-  const mergedProps = {...context, ...props};
-
+export default (props = {}, validProps = {}) => {
   let result = {
     cloudinaryProps: {},
     nonCloudinaryProps: {}
   };
 
-  Object.keys(mergedProps).forEach(key => {
+  Object.keys(props).forEach(key => {
     const camelKey = Util.camelCase(key);
 
     //if valid and defined add to cloudinaryProps
     if (validProps[camelKey]) {
-      if (isDefined(mergedProps, key)) {
-        result.cloudinaryProps[camelKey] = mergedProps[key];
+      if (isDefined(props, key)) {
+        result.cloudinaryProps[camelKey] = props[key];
       }
     } else { //not valid so add to nonCloudinaryProps
-      result.nonCloudinaryProps[key] = mergedProps[key];
+      result.nonCloudinaryProps[key] = props[key];
     }
   });
 

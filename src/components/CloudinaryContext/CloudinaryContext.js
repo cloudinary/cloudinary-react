@@ -22,11 +22,20 @@ class CloudinaryContext extends CloudinaryComponent {
     this.state = this.calcState();
   }
 
+  /**
+   * Calculates current state
+   * @returns {context, childrenProps, includeOwnBody}
+   */
   calcState() {
+    const context = this.context || {}; //context might not exist
+    const props = {...context, ...this.props}; //merge context with props
+
+    //split the props to cloudinary/non-cloudinary props
     const {cloudinaryProps, nonCloudinaryProps} = extractCloudinaryProps(
-      this.context, this.props, CloudinaryContext.CLOUDINARY_PROPS
+      props, CloudinaryContext.CLOUDINARY_PROPS
     );
 
+    //extract includeOwnBody which is used only by this context and should not be passed to children
     const {includeOwnBody, ...childrenProps} = nonCloudinaryProps;
 
     return {
