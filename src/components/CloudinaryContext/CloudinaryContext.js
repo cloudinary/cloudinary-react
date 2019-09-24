@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {cloudinaryProps, nonCloudinaryProps} from '../../Util';
+import {extractCloudinaryProps} from '../../Util';
 import {CloudinaryContextType} from './CloudinaryContextType';
 
 /**
@@ -23,12 +23,14 @@ class CloudinaryContext extends CloudinaryComponent {
   }
 
   calcState() {
-    const mergedProps = {...(this.context || {}), ...this.props};
-    const context = cloudinaryProps(mergedProps, CloudinaryComponent.VALID_OPTIONS);
-    const {includeOwnBody, ...childrenProps} = nonCloudinaryProps(this.props, CloudinaryContext.CLOUDINARY_PROPS);
+    const {cloudinaryProps, nonCloudinaryProps} = extractCloudinaryProps(
+      this.context, this.props, CloudinaryContext.CLOUDINARY_PROPS
+    );
+
+    const {includeOwnBody, ...childrenProps} = nonCloudinaryProps;
 
     return {
-      context,
+      context: cloudinaryProps,
       childrenProps,
       includeOwnBody
     };
