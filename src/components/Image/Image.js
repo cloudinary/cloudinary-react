@@ -34,11 +34,6 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    let state = this.prepareState(nextProps, nextContext);
-    this.setState(state);
-  }
-
   prepareState(props = this.props, context = this.context) {
     let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
     let url = this.getUrl(extendedProps);
@@ -91,9 +86,10 @@ class Image extends CloudinaryComponent {
     this.listener = undefined;
   }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if (nextState.responsive) {
-      const wait = firstDefined(nextProps.responsiveDebounce, nextContext.responsiveDebounce, 100);
+  componentDidUpdate(prevProps) {
+    this.setState(this.prepareState(this.props, this.state));
+    if (this.state.responsive) {
+      const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
       if (this.listener) {
         this.window && this.window.removeEventListener('resize', this.listener);
       }
@@ -103,11 +99,15 @@ class Image extends CloudinaryComponent {
   }
 
   render() {
-    var {publicId, responsive, responsiveDebounce, children, ...options} = CloudinaryComponent.normalizeOptions(this.props,
-      this.context);
-    var attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    const {publicId, responsive, responsiveDebounce, children, ...options} =
+      CloudinaryComponent.normalizeOptions(this.props, this.context);
+    const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
+    const {url} = this.state;
+
     return (
-      <img {...attributes} src={this.state.url} ref={(e)=> {this.element = e;}}/>
+      <img {...attributes} src={url} ref={(e) => {
+        this.element = e;
+      }}/>
     );
   }
 
@@ -212,7 +212,6 @@ class Image extends CloudinaryComponent {
 }
 
 Image.defaultProps = {};
-Image.contextTypes = CloudinaryComponent.contextTypes;
 Image.propTypes = CloudinaryComponent.propTypes;
 
 export default Image;

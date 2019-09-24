@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Configuration, Transformation, Util} from 'cloudinary-core';
+import {Cloudinary, Transformation, Util} from 'cloudinary-core';
+import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
 
 const camelCase = Util.camelCase;
-const snakeCase = Util.snakeCase;
 
 /**
  * Return a new object containing keys and values where keys are in the keys list
@@ -25,13 +25,9 @@ function only(source, keys = []) {
  * A base component for Cloudinary components.
  * @protected
  */
-class CloudinaryComponent extends Component {
+class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
-  }
-
-  getChildContext() {
-    return {};
   }
 
   render() {
@@ -111,13 +107,11 @@ class CloudinaryComponent extends Component {
   }
 }
 CloudinaryComponent.VALID_OPTIONS = Transformation.PARAM_NAMES.map(camelCase);
-CloudinaryComponent.contextTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
+CloudinaryComponent.contextType = CloudinaryContextType;
 
-CloudinaryComponent.propTypes = CloudinaryComponent.contextTypes;
+CloudinaryComponent.propTypes = typesFrom(CloudinaryComponent.VALID_OPTIONS);
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
 CloudinaryComponent.propTypes.responsive = PropTypes.bool;
-
-CloudinaryComponent.childContextTypes = {};
 
 /**
  * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].

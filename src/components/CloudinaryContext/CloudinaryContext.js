@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CloudinaryComponent from '../CloudinaryComponent';
-import { Util } from 'cloudinary-core';
+import {extractCloudinaryProps} from '../../Util';
+import {CloudinaryContextType} from './CloudinaryContextType';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
- * 
+ *
  * @example
  *<CloudinaryContext cloudName="mycloud" dpr="auto">
  *    <!-- other tags -->
@@ -16,34 +17,43 @@ import { Util } from 'cloudinary-core';
 class CloudinaryContext extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+
+    this.calcState = this.calcState.bind(this);
+    this.state = this.calcState();
   }
 
-  getChildContext() {
-    let context = {};
-    const camelProps = Util.withCamelCaseKeys(this.props);
+  /**
+   * Calculates current state
+   * @returns {context, childrenProps, includeOwnBody}
+   */
+  calcState() {
+    const context = this.context || {}; //context might not exist
+    const props = {...context, ...this.props}; //merge context with props
 
-    // only pass valid Cloudinary options
-    CloudinaryComponent.VALID_OPTIONS.forEach(key => {
-      let val = camelProps[key] || this.context[key];
-      if (val !== undefined && val !== null) {
-        context[key] = val;
-      }
-    });
-    return context;
+    //split the props to cloudinary/non-cloudinary props
+    const {cloudinaryProps, nonCloudinaryProps} = extractCloudinaryProps(
+      props, CloudinaryContext.CLOUDINARY_PROPS
+    );
+
+    //extract includeOwnBody which is used only by this context and should not be passed to children
+    const {includeOwnBody, ...childrenProps} = nonCloudinaryProps;
+
+    return {
+      context: cloudinaryProps,
+      childrenProps,
+      includeOwnBody
+    };
   }
 
   render() {
-    // Remove Cloudinary custom props that don't belong to div
-    const nonCloudinaryProps = Object.keys(this.props)
-      .filter(propName => !CloudinaryContext.CLOUDINARY_PROPS[propName])
-      .reduce((allowedProps, currentProp) => {
-        allowedProps[currentProp] = this.props[currentProp];
-        return allowedProps;
-      }, {});
-    const {includeOwnBody, ...props} = nonCloudinaryProps;
+    const {children} = this.props;
+    const {context, childrenProps, includeOwnBody} = this.state;
 
-  return includeOwnBody ? this.props.children : <div {...props}>{this.props.children}</div>;  
+    return (
+      <CloudinaryContextType.Provider value={context}>
+        {includeOwnBody ? children : <div {...childrenProps}>{children}</div>}
+      </CloudinaryContextType.Provider>
+    );
   }
 }
 
@@ -57,7 +67,7 @@ CloudinaryContext.CLOUDINARY_PROPS = CloudinaryComponent.VALID_OPTIONS.reduce(
 );
 
 CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
-CloudinaryContext.defaultProps = {includeOwnBody: false };
-CloudinaryContext.childContextTypes = CloudinaryComponent.contextTypes;
+CloudinaryContext.defaultProps = {includeOwnBody: false};
+CloudinaryContext.contextType = CloudinaryContextType;
 
 export default CloudinaryContext;
