@@ -1,9 +1,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import setProps from './setProps';
 import cloudinary from './cloudinary-proxy';
-const {Image, CloudinaryContext, Transformation} = cloudinary;
+const {Image, CloudinaryContext} = cloudinary;
 
 describe('CloudinaryContext', () => {
   it("should pass properties to children", function() {
@@ -20,7 +19,7 @@ describe('CloudinaryContext', () => {
     expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
   });
 
-   it("should render without div", function() {
+  it("should render without div", function() {
     let tag = mount(
       <CloudinaryContext className="root" cloudName="demo" includeOwnBody={true}>
         <Image publicId="sample" />
@@ -40,25 +39,25 @@ describe('CloudinaryContext', () => {
   });
 
   it("should pass properties to children with snake case", function() {
-      let tag = mount(
-          <CloudinaryContext className="root" cloudName="demo" fetch_format="auto" >
-              <Image publicId="sample" />
-          </CloudinaryContext>
-      );
+    let tag = mount(
+      <CloudinaryContext className="root" cloudName="demo" fetch_format="auto" >
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
 
-      let img = tag.find("div").childAt(0);
-      expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+    let img = tag.find("div").childAt(0);
+    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
   });
 
   it("should pass properties to children with kebab case", function() {
-      let tag = mount(
-          <CloudinaryContext className="root" cloudName="demo" fetch-format="auto" >
-              <Image publicId="sample" />
-          </CloudinaryContext>
-      );
+    let tag = mount(
+      <CloudinaryContext className="root" cloudName="demo" fetch-format="auto" >
+        <Image publicId="sample" />
+      </CloudinaryContext>
+    );
 
-      let img = tag.find("div").childAt(0);
-      expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+    let img = tag.find("div").childAt(0);
+    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
   });
 
   it("should remove Cloudinary custom properties from CloudinaryContext component", function() {
@@ -97,24 +96,5 @@ describe('CloudinaryContext', () => {
     expect(
       tag.find('img').prop('src')
     ).to.equal("http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample");
-  });
-  it("updates transformations dynamically on context change", function () {
-    const cloudName1 = "demo";
-    const cloudName2 = "demo2";
-
-    let tag = mount(
-      <CloudinaryContext cloudName={cloudName1}>
-        <Image publicId="sample">
-          <Transformation width="100" crop="scale"/>
-        </Image>
-      </CloudinaryContext>
-    );
-
-    expect(tag.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName1}/image/upload/c_scale,w_100/sample`);
-
-    tag.setProps({cloudName: cloudName2});
-    setProps(tag, {cloudName: cloudName2}).then(tag => {
-      expect(tag.find('img').getElement().props.src).to.equal(`http://res.cloudinary.com/${cloudName2}/image/upload/c_scale,w_100/sample`);
-    });
   });
 });
