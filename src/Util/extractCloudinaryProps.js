@@ -1,5 +1,7 @@
 import {Util} from "cloudinary-core";
 
+const CLOUDINARY_REACT_PROPS = {includeOwnBody: true};
+
 const isDefined = (props, key) => {
   return (props[key] !== undefined && props[key] !== null);
 };
@@ -13,19 +15,23 @@ const isDefined = (props, key) => {
 export default (props = {}, validProps = {}) => {
   let result = {
     cloudinaryProps: {},
-    nonCloudinaryProps: {}
+    nonCloudinaryProps: {},
+    cloudinaryReactProps: {}
   };
 
   Object.keys(props).forEach(key => {
     const camelKey = Util.camelCase(key);
+    const value = props[key];
 
     //if valid and defined add to cloudinaryProps
     if (validProps[camelKey]) {
       if (isDefined(props, key)) {
-        result.cloudinaryProps[camelKey] = props[key];
+        result.cloudinaryProps[camelKey] = value;
       }
+    } else if (CLOUDINARY_REACT_PROPS[camelKey]) { //cloudinary-react spesific prop
+      result.cloudinaryReactProps[camelKey] = value;
     } else { //not valid so add to nonCloudinaryProps
-      result.nonCloudinaryProps[key] = props[key];
+      result.nonCloudinaryProps[key] = value;
     }
   });
 
