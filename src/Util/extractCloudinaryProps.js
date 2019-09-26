@@ -1,19 +1,29 @@
-import {Util} from "cloudinary-core";
+import {Transformation, Util} from 'cloudinary-core';
 
 const CLOUDINARY_REACT_PROPS = {includeOwnBody: true};
+
+// Map Cloudinary props from array to object for efficient lookup
+const CLOUDINARY_PROPS = Transformation.PARAM_NAMES.map(Util.camelCase).reduce(
+  (accumulator, cloudinaryPropName) => {
+    accumulator[cloudinaryPropName] = true;
+    return accumulator;
+  },
+  {}
+);
 
 const isDefined = (props, key) => {
   return (props[key] !== undefined && props[key] !== null);
 };
 
 /**
- * Extracts cloudinaryProps and nonCloudinaryProps from given props according to given validProps
+ * Extracts cloudinaryProps and nonCloudinaryProps from given props
+ *
  * @param props
- * @param validProps
- * @returns {{cloudinaryProps: {}, nonCloudinaryProps: {}}}
+ * @returns {{children: *, cloudinaryReactProps: {}, cloudinaryProps: {}, nonCloudinaryProps: {}}}
  */
-export default (props = {}, validProps = {}) => {
+export default ({children, ...props}) => {
   let result = {
+    children,
     cloudinaryProps: {},
     nonCloudinaryProps: {},
     cloudinaryReactProps: {}
@@ -24,7 +34,7 @@ export default (props = {}, validProps = {}) => {
     const value = props[key];
 
     //if valid and defined add to cloudinaryProps
-    if (validProps[camelKey]) {
+    if (CLOUDINARY_PROPS[camelKey]) {
       if (isDefined(props, key)) {
         result.cloudinaryProps[camelKey] = value;
       }
