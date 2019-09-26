@@ -1,15 +1,15 @@
+1.2.0 / 2019-09-26
+==================
+
+  * Feature/upgrade to react 16.3.3 (#120)
+    * Use new context api in CloudinaryContext
+    * Remove usage of componentWillReceiveProps and componentWillUpdate in Image 
+  * Add test for custom function invocation
+  * Add test for dynamic context
+  * Bump webpack-dev-server from 2.9.4 to 3.1.11 in /samples/photo_album
 
 1.1.4 / 2019-07-25
 =============
-
-  * Update changelog
-
-1.1.3 / 2019-07-25
-==================
-  * Update CHANGELOG.md
-
-1.1.2 / 2019-07-25
-==================
 
   * Fix responsiveUseBreakpoints not affecting image size
   * Fix build & console errors
