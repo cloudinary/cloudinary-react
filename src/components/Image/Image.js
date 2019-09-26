@@ -57,7 +57,6 @@ class Image extends CloudinaryComponent {
       state.url = url;
     }
 
-
     return state;
   }
 
@@ -87,7 +86,7 @@ class Image extends CloudinaryComponent {
   }
 
   componentDidUpdate(prevProps) {
-    this.setState(this.prepareState(this.props, this.state));
+    this.setState(this.prepareState());
     if (this.state.responsive) {
       const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
       if (this.listener) {
@@ -103,7 +102,6 @@ class Image extends CloudinaryComponent {
       CloudinaryComponent.normalizeOptions(this.props, this.context);
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     const {url} = this.state;
-
     return (
       <img {...attributes} src={url} ref={(e) => {
         this.element = e;
