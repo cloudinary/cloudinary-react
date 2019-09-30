@@ -20,8 +20,7 @@ class CloudinaryContext extends CloudinaryComponent {
   }
 
   render() {
-    const context = this.context || {};
-    const props = {...context, ...this.props};
+    const props = {...this.getContext(), ...this.props};
 
     const {children, cloudinaryProps, nonCloudinaryProps, cloudinaryReactProps} = extractCloudinaryProps(props);
 

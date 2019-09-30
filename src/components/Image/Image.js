@@ -34,7 +34,7 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  prepareState(props = this.props, context = this.context) {
+  prepareState(props = this.props, context = this.getContext()) {
     let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
     let url = this.getUrl(extendedProps);
     let state = {};
@@ -88,7 +88,7 @@ class Image extends CloudinaryComponent {
   componentDidUpdate(prevProps) {
     this.setState(this.prepareState());
     if (this.state.responsive) {
-      const wait = firstDefined(this.props.responsiveDebounce, this.context.responsiveDebounce, 100);
+      const wait = firstDefined(this.props.responsiveDebounce, this.getContext().responsiveDebounce, 100);
       if (this.listener) {
         this.window && this.window.removeEventListener('resize', this.listener);
       }
@@ -99,7 +99,7 @@ class Image extends CloudinaryComponent {
 
   render() {
     const {publicId, responsive, responsiveDebounce, children, ...options} =
-      CloudinaryComponent.normalizeOptions(this.props, this.context);
+      CloudinaryComponent.normalizeOptions(this.props, this.getContext());
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     const {url} = this.state;
     return (
@@ -125,7 +125,7 @@ class Image extends CloudinaryComponent {
   };
 
   applyBreakpoints(width, steps, options) {
-    options = CloudinaryComponent.normalizeOptions(this.context, this.props, options);
+    options = CloudinaryComponent.normalizeOptions(this.getContext(), this.props, options);
     let responsiveUseBreakpoints = options.responsiveUseBreakpoints;
     if ((!responsiveUseBreakpoints) || (responsiveUseBreakpoints === 'resize' && !options.resizing)) {
       return width;

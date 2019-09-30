@@ -19,7 +19,7 @@ class Video extends CloudinaryComponent {
 
   render() {
     let {publicId, poster, sourceTypes, fallback, sourceTransformation: sourceTransformations, ...options} = Object.assign({},
-      this.context,
+      this.getContext(),
       this.props);
     sourceTransformations = sourceTransformations || {};
     sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;

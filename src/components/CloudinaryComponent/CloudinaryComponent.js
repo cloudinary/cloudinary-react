@@ -12,7 +12,10 @@ const camelCase = Util.camelCase;
  * @returns {object} an object with copied values
  */
 function only(source, keys = []) {
-  if(!source) return source
+  if(!source){
+    return source;
+  }
+
   return keys.reduce((tr, key) => {
     if (key in source) {
       tr[key] = source[key]
@@ -28,10 +31,15 @@ function only(source, keys = []) {
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
+    this.getContext = this.getContext.bind(this);
   }
 
   render() {
     return null;
+  }
+
+  getContext(){
+    return this.context || {};
   }
 
   getChildTransformations(children) {
