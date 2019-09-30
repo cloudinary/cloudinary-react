@@ -1,7 +1,13 @@
+
+1.2.1 / 2019-09-30
+==================
+
+  * Fix image component responsive prop
+  
 1.2.0 / 2019-09-26
 ==================
 
-  * Feature/upgrade to react 16.3.3 (#120)
+  * Upgrade to react 16.3.3 (#120)
     * Use new context api in CloudinaryContext
     * Remove usage of componentWillReceiveProps and componentWillUpdate in Image 
   * Add test for custom function invocation
