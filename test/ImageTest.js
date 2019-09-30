@@ -125,4 +125,9 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
   });
+  it('should support responsive prop', () => {
+    let tag = mount(<Image publicId="sample" cloudName="demo"/>);
+    tag.setProps({responsive:true});
+    expect(tag.find('img').prop('src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
+  });
 });
