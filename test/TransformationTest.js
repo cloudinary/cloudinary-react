@@ -58,4 +58,31 @@ describe("Transformation", () => {
 
     expect(image.props().src).to.equal('http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample');
   });
+  it("should accept font antialiasing and hinting in overlay object or overlay text", function() {
+    let image = shallow(<Image publicId="sample" cloudName="demo" />);
+
+    const transformOverlayObject = (
+      <Transformation
+        overlay={{
+          text: "Hello World, Nice to meet you?",
+          font_family: "Arial",
+          font_size: 18,
+          font_antialiasing: "best",
+          font_hinting: "medium",
+        }}
+      />
+    );
+    image.setProps({ children: [transformOverlayObject] });
+    expect(image.props().src).to.equal(
+      "http://res.cloudinary.com/demo/image/upload/l_text:Arial_18_antialias_best_hinting_medium:Hello%20World%252C%20Nice%20to%20meet%20you%3F/sample"
+    );
+
+    const transformOverlayString = (
+      <Transformation overlay="text:arial_20_antialiasing_best_hinting_medium:Cloudinary%20features" />
+    );
+    image.setProps({ children: [transformOverlayString] });
+    expect(image.props().src).to.equal(
+      "http://res.cloudinary.com/demo/image/upload/l_text:arial_20_antialiasing_best_hinting_medium:Cloudinary%20features/sample"
+    );
+  });
 });
