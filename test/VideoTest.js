@@ -1,6 +1,6 @@
 import React from 'react';
 import chai, { expect } from 'chai';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import Video from '../src/components/Video';
 import Transformation from '../src/components/Transformation';
 
@@ -85,4 +85,26 @@ describe('Video', () => {
         );
         expect(tag.type()).to.equal("video");
     });
+
+  it('Should support forwarding innerRef to underlying video element', function () {
+    let myRef = React.createRef();
+
+    let tag = mount(
+      <Video
+        innerRef={myRef}
+        cloudName='demo'
+        sourceTypes='webm'
+        publicId='dog'
+        sourceTransformation={{
+          webm: {overlay: 'text:verdana_30:webm!'}
+        }}
+      />
+    );
+
+    const video = myRef.current;
+
+    expect(tag.find('video').prop('src')).to.endWith('/l_text:verdana_30:webm!/dog.webm');
+    expect(video.src).to.endWith('/l_text:verdana_30:webm!/dog.webm');
+    ['play','pause','canPlayType','addTextTrack'].forEach(func=>expect(video[func]).to.be.a('function'));
+  });
 });
