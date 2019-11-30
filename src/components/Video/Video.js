@@ -18,7 +18,7 @@ class Video extends CloudinaryComponent {
   }
 
   render() {
-    let {publicId, poster, sourceTypes, fallback, sourceTransformation: sourceTransformations, ...options} = Object.assign({},
+    let {publicId, poster, sourceTypes, fallback, sourceTransformation: sourceTransformations, innerRef, ...options} = Object.assign({},
       this.getContext(),
       this.props);
     sourceTransformations = sourceTransformations || {};
@@ -53,7 +53,7 @@ class Video extends CloudinaryComponent {
     }
 
     return (
-      <video {...tagAttributes}>
+      <video ref={innerRef} {...tagAttributes}>
         {sources}
         {fallback}
         {this.props.children}
