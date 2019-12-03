@@ -8,7 +8,7 @@
     "test:all": "run-s compile dist test test-dist test-lib",
     "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "compile": "node_modules/.bin/babel -v --copy-files src -d lib ",
+    "compile": "node_modules/.bin/babel src --out-dir lib --copy-files ",
     "dist": "node_modules/.bin/webpack",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
