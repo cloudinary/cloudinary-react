@@ -130,4 +130,21 @@ describe('Image', () => {
     tag.setProps({responsive:true});
     expect(tag.find('img').prop('src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
   });
+  it('Should support forwarding innerRef to underlying image element', function () {
+    const expected = 'http://res.cloudinary.com/demo/image/upload/sample';
+    let myRef = React.createRef();
+
+    let tag = mount(
+      <Image
+        innerRef={myRef}
+        cloudName='demo'
+        publicId='sample'
+      />
+    );
+
+    const image = myRef.current;
+
+    expect(tag.find('img').prop('src')).to.equal(expected);
+    expect(image.src).to.equal(expected);
+  });
 });
