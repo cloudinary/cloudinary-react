@@ -1,4 +1,11 @@
 
+1.3.0 / 2019-12-26
+==================
+
+  * Add support for innerRef to the Image & Video components
+  * Fix compile script
+  * Fix photo album sample app startup
+
 1.2.1 / 2019-09-30
 ==================
 
