@@ -14,11 +14,10 @@ class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.handleResize = this.handleResize.bind(this);
-
-    this.state = {};
+    this.attachRef = this.attachRef.bind(this);
 
     let state = {responsive: false, url: undefined, breakpoints: defaultBreakpoints};
-    this.state = Object.assign(state, this.prepareState(props, context));
+    this.state = {...state, ...this.prepareState(props, context)};
   }
 
   /**
@@ -60,6 +59,19 @@ class Image extends CloudinaryComponent {
     return state;
   }
 
+  attachRef(element) {
+    this.element = element;
+    const {innerRef} = this.props;
+
+    if (innerRef) {
+      if (innerRef instanceof Function) {
+        innerRef(element);
+      } else {
+        innerRef.current = element;
+      }
+    }
+  }
+
   handleResize() {
     if (!this.props.responsive || this.rqf) return;
     this.rqf = requestAnimationFrame(() => {
@@ -98,14 +110,12 @@ class Image extends CloudinaryComponent {
   }
 
   render() {
-    const {publicId, responsive, responsiveDebounce, children, ...options} =
+    const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} =
       CloudinaryComponent.normalizeOptions(this.props, this.getContext());
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     const {url} = this.state;
     return (
-      <img {...attributes} src={url} ref={(e) => {
-        this.element = e;
-      }}/>
+      <img {...attributes} src={url} ref={this.attachRef}/>
     );
   }
 
