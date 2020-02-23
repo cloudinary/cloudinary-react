@@ -78,11 +78,11 @@ describe("Transformation", () => {
     );
 
     const transformOverlayString = (
-      <Transformation overlay="text:arial_20_antialiasing_best_hinting_medium:Cloudinary%20features" />
+      <Transformation overlay="text:arial_20_antialias_best_hinting_medium:Cloudinary%20features" />
     );
     image.setProps({ children: [transformOverlayString] });
     expect(image.props().src).to.equal(
-      "http://res.cloudinary.com/demo/image/upload/l_text:arial_20_antialiasing_best_hinting_medium:Cloudinary%20features/sample"
+      "http://res.cloudinary.com/demo/image/upload/l_text:arial_20_antialias_best_hinting_medium:Cloudinary%20features/sample"
     );
   });
 });
