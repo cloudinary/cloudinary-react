@@ -1,3 +1,12 @@
+1.3.1 / 2020-03-01
+==================
+
+  * Fix contextType to be class property of CloudinaryComponent (#145)
+  * Update sample project's dependencies (#127)
+  * Add Transformation test for font antialiasing and hinting (#126)
+  * Add /docs folder with storybook output
+  * Fix spelling in README.md
+
 
 1.3.0 / 2019-12-26
 ==================
