@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Image, Transformation } from 'cloudinary-react';
 import { url } from '../utils/CloudinaryService';
 import PhotoThumbnails from './PhotoThumbnails';
+import {CloudinaryContext} from 'cloudinary-react';
 
 class Photo extends Component {
     constructor(props) {
@@ -64,16 +65,13 @@ class Photo extends Component {
     showLess() {
         this.setState({ showMore: false });
     }
+
+    static contextType = CloudinaryContext.contextType;
 }
 
 Photo.propTypes = {
     context: PropTypes.object,
     publicId: PropTypes.string,
-};
-
-Photo.contextTypes = {
-    cloudName: PropTypes.string,
-    uploadPreset: PropTypes.string,
 };
 
 export default Photo;

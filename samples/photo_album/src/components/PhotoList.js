@@ -7,6 +7,7 @@ import { photosUploaded } from '../actions';
 import Photo from './Photo';
 import FacebookImage from './FacebookImage';
 import Introduction from './Introduction';
+import {CloudinaryContext} from 'cloudinary-react';
 
 class PhotoList extends Component {
     render() {
@@ -69,16 +70,13 @@ class PhotoList extends Component {
             }
         });
     }
+
+    static contextType = CloudinaryContext.contextType;
 }
 
 PhotoList.propTypes = {
     photos: PropTypes.array,
     onPhotosUploaded: PropTypes.func,
-};
-
-PhotoList.contextTypes = {
-    cloudName: PropTypes.string,
-    uploadPreset: PropTypes.string,
 };
 
 const PhotoListContainer = connect(

@@ -113,9 +113,10 @@ class CloudinaryComponent extends PureComponent {
     let cl = Cloudinary.new(options);
     return cl.url(extendedProps.publicId, transformation);
   }
+
+  static contextType = CloudinaryContextType;
 }
 
-CloudinaryComponent.contextType = CloudinaryContextType;
 CloudinaryComponent.propTypes = typesFrom(Transformation.PARAM_NAMES.map(camelCase));
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
 CloudinaryComponent.propTypes.responsive = PropTypes.bool;
