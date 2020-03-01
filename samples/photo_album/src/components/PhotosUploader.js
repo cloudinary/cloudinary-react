@@ -11,7 +11,6 @@ import {CloudinaryContext} from "cloudinary-react";
 class PhotosUploader extends Component {
     constructor(props, context) {
         super(props, context);
-        console.log('uploader context:', context);
         this.state = { uploadedPhotos: [] };
         this.photoId = 1;
     }
