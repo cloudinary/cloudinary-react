@@ -43,6 +43,8 @@ bower_components/
 *-compiled.js*
 stories/
 .storybook/
+tools/
+docs/
 samples/
 test/
 storybook-static/
