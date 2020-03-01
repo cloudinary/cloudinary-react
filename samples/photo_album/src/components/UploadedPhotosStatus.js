@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import request from 'superagent';
 import { deleteUploadedPhoto } from '../actions';
+import {CloudinaryContext} from "cloudinary-react";
 
 class UploadedPhotoStatus extends Component {
     render() {
@@ -78,16 +79,13 @@ class UploadedPhotoStatus extends Component {
             this.props.uploadedPhoto.response.body.public_id
         );
     }
+
+    static contextType = CloudinaryContext.contextType;
 }
 
 UploadedPhotoStatus.propTypes = {
     uploadedPhoto: PropTypes.object,
     onDeleteUploadedPhoto: PropTypes.func,
-};
-
-UploadedPhotoStatus.contextTypes = {
-    cloudName: PropTypes.string,
-    uploadPreset: PropTypes.string,
 };
 
 const UploadedPhotoStatusContainer = connect(

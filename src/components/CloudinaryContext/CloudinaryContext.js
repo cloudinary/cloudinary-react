@@ -34,6 +34,5 @@ class CloudinaryContext extends CloudinaryComponent {
 
 CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
 CloudinaryContext.defaultProps = {includeOwnBody: false};
-CloudinaryContext.contextType = CloudinaryContextType;
 
 export default CloudinaryContext;

@@ -1,9 +1,13 @@
 "use strict";
 
-module.exports = function (api){
+module.exports = function (api) {
   api.cache.never();
   return {
-    plugins: ["@babel/proposal-export-default-from"],
-  "presets":
-    ["@babel/preset-env", "@babel/preset-react"],
-}};
+    plugins: [
+      "@babel/proposal-export-default-from",
+      "@babel/plugin-proposal-class-properties"
+    ],
+    "presets":
+      ["@babel/preset-env", "@babel/preset-react"],
+  }
+};

@@ -6,6 +6,7 @@ import request from 'superagent';
 import Dropzone from 'react-dropzone';
 import { photosUploaded, updateUploadedPhoto } from '../actions';
 import UploadedPhotoStatusContainer from './UploadedPhotosStatus';
+import {CloudinaryContext} from "cloudinary-react";
 
 class PhotosUploader extends Component {
     constructor(props, context) {
@@ -135,17 +136,14 @@ class PhotosUploader extends Component {
 
         this.props.onPhotosUploaded([response.body]);
     }
+
+    static contextType = CloudinaryContext.contextType;
 }
 
 PhotosUploader.propTypes = {
     uploadedPhotos: PropTypes.array,
     onUpdateUploadedPhoto: PropTypes.func,
     onPhotosUploaded: PropTypes.func,
-};
-
-PhotosUploader.contextTypes = {
-    cloudName: PropTypes.string,
-    uploadPreset: PropTypes.string,
 };
 
 const PhotosUploaderContainer = connect(
