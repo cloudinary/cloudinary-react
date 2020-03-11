@@ -1,68 +1,119 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Transformation, Util} from 'cloudinary-core';
+import {Cloudinary, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-
-const DEFAULT_POSTER_OPTIONS = {
-  format: 'jpg',
-  resource_type: 'video'
-};
 
 /**
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {};
-  }
+  /**
+   * Merge context with props
+   * @return {*}
+   */
+  getMergedProps = () => {
+    return {...this.getContext(), ...this.props};
+  };
 
-  render() {
-    let {publicId, poster, sourceTypes, fallback, sourceTransformation: sourceTransformations, innerRef, ...options} = Object.assign({},
-      this.getContext(),
-      this.props);
-    sourceTransformations = sourceTransformations || {};
-    sourceTypes = sourceTypes || Cloudinary.DEFAULT_VIDEO_PARAMS.source_types;
+  /**
+   * Generate a video source url
+   * @param cld - preconfigured cloudinary-core object
+   * @param publicId - identifier of the video asset
+   * @param childTransformations - child transformations for this video element
+   * @param sourceTransformations - source transformations fot this video element
+   * @param sourceType - format of the video url
+   * @return {*}
+   */
+  generateVideoUrl = (cld, publicId, childTransformations, sourceTransformations, sourceType) => {
+    const sourceTransformation = sourceTransformations[sourceType] || {};
+    const urlOptions = Util.defaults({}, sourceTransformation, childTransformations, {
+      resource_type: 'video',
+      format: sourceType
+    });
+
+    return cld.url(publicId, urlOptions);
+  };
+
+  /**
+   * Generate <source> tags for this video element
+   * @param cld - preconfigured cloudinary-core object
+   * @param publicId - identifier of the video asset
+   * @param childTransformations - child transformations fot this video element
+   * @param sourceTransformations - source transformations for this video element
+   * @param sourceTypes - formats for each video url that will be generated
+   * @return {*}
+   */
+  generateSources = (cld, publicId, childTransformations, sourceTransformations, sourceTypes) => (
+    sourceTypes.map(sourceType => {
+      const src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformations, sourceType);
+      const mimeType = 'video/' + (sourceType === 'ogv' ? 'ogg' : sourceType);
+
+      return <source key={mimeType} src={src} type={mimeType}/>;
+    })
+  );
+
+  /**
+   * Get props for the video element that will be rendered
+   * @return {{tagAttributes: Object, sources: [<source>] | string}}
+   */
+  getVideoTagProps = () => {
+    let {
+      innerRef,
+      publicId,
+      fallback,
+      children,
+      sourceTypes = Cloudinary.DEFAULT_VIDEO_PARAMS.source_types,
+      sourceTransformation = {},
+      ...options
+    } = this.getMergedProps();
+
     options = CloudinaryComponent.normalizeOptions(options, {});
-    let cld = Cloudinary.new(Util.withSnakeCaseKeys(options));
-    let sources = [];
-    let tagAttributes = Transformation.new(options).toHtmlAttributes();
-    let childTransformations = this.getTransformation(options);
-    if (Util.isPlainObject(poster)) {
-      let defaults = poster.publicId !== undefined && poster.publicId !== null ? Cloudinary.DEFAULT_IMAGE_PARAMS : DEFAULT_POSTER_OPTIONS;
-      poster = cld.url(poster.publicId || publicId, Util.defaults({}, Util.withSnakeCaseKeys(poster), defaults));
-    }
-    if (!Util.isEmpty(poster)) {
-      tagAttributes.poster = poster;
-    }
-    if (!Util.isEmpty(this.state.poster)) {
-      tagAttributes.poster = this.state.poster;
-    }
+    const snakeCaseOptions = Util.withSnakeCaseKeys(options);
+    const cld = Cloudinary.new(snakeCaseOptions);
+
+    // Let cloudinary-core handle genrating this video tag attributes
+    const tagAttributes = cld.videoTag(publicId, snakeCaseOptions).attributes();
+
+    // Aggregate child transformations, used for generating <source> tags for this video element
+    const childTransformations = this.getTransformation({...options, children});
+
+    let sources = null;
 
     if (Util.isArray(sourceTypes)) {
-      sources = sourceTypes.map(srcType => {
-          let sourceTransformation = sourceTransformations[srcType] || {};
-          let src = cld.url(publicId, Util.defaults({}, sourceTransformation, childTransformations, {resource_type: 'video', format: srcType}));
-          let mimeType = 'video/' + (srcType === 'ogv' ? 'ogg' : srcType);
-          return <source key={mimeType} src={src} type={mimeType}/>;
-        }
-      );
+      // We have multiple sourceTypes, so we generate <source> tags.
+      sources = this.generateSources(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
     } else {
-      let sourceTransformation = sourceTransformations[sourceTypes] || {};
-      tagAttributes.src = cld.url(publicId, Util.defaults({}, sourceTransformation, childTransformations, {resource_type: 'video', format: sourceTypes}));
+      // We have a single source type so we generate the src attribute of this video element.
+      tagAttributes.src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
     }
 
+    return {sources, tagAttributes};
+  };
+
+  /**
+   * Render a video element
+   */
+  render() {
+    const {innerRef, fallback, children} = this.props;
+
+    const {
+      tagAttributes, // Attributes of this video element
+      sources        // <source> tags of this video element
+    } = this.getVideoTagProps();
+
     return (
-      <video ref={innerRef} {...tagAttributes}>
+      <video
+        ref={innerRef}
+        {...tagAttributes}>
         {sources}
         {fallback}
-        {this.props.children}
+        {children}
       </video>
     );
   }
 }
+
 Video.propTypes = {publicId: PropTypes.string};
 Video.defaultProps = {};
-Video.contextTypes = CloudinaryComponent.contextTypes;
 
 export default Video;
