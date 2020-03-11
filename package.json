@@ -11,7 +11,7 @@
     "compile": "node_modules/.bin/babel src --out-dir lib --copy-files ",
     "dist": "node_modules/.bin/webpack && npm run build-storybook",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -c .storybook -o docs"
+    "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "browserify-shim": "^3.8.14",
     "chai": "^4.1.2",
     "chai-string": "^1.4.0",
+    "del-cli": "^3.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jsdom": "^11.12.0",
