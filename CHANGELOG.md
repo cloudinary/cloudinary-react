@@ -1,3 +1,8 @@
+1.3.3 / 2020-03-17
+==================
+
+* Fix video poster default frame to be the middle frame
+
 1.3.2 / 2020-03-01
 ==================
 
