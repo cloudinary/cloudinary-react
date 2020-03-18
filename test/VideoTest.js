@@ -166,4 +166,29 @@ describe('Video', () => {
 
     expect(tag.props().poster).to.equal('http://res.cloudinary.com/demo/video/upload/c_scale,w_100/dpr_2.0/elephants.jpg');
   });
+  it('Should pass camelCase attributes to Video component', function () {
+    const tag = shallow(
+      <Video playsInline autoPlay cloudName='demo' publicId='dog'/>
+    );
+
+    const {autoPlay, auto_play, playsInline, plays_inline} = tag.props();
+
+    expect(playsInline).to.equal(true);
+    expect(autoPlay).to.equal(true);
+
+    expect(plays_inline).to.equal(undefined);
+    expect(auto_play).to.equal(undefined);
+  });
+  it('Should pass camelCase attributes to inner video element', function () {
+    let tag = mount(
+      <Video playsInline autoPlay cloudName='demo' publicId='dog'/>
+    );
+
+    const video = tag.find('video');
+    expect(video.prop('playsInline')).to.equal(true);
+    expect(video.prop('autoPlay')).to.equal(true);
+
+    expect(video.prop('plays_inline')).to.equal(undefined);
+    expect(video.prop('auto_play')).to.equal(undefined);
+  });
 });

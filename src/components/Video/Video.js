@@ -71,8 +71,8 @@ class Video extends CloudinaryComponent {
     const snakeCaseOptions = Util.withSnakeCaseKeys(options);
     const cld = Cloudinary.new(snakeCaseOptions);
 
-    // Let cloudinary-core handle genrating this video tag attributes
-    const tagAttributes = cld.videoTag(publicId, snakeCaseOptions).attributes();
+    // Let cloudinary-core generate this video tag attributes
+    const tagAttributes = Util.withCamelCaseKeys(cld.videoTag(publicId, options).attributes());
 
     // Aggregate child transformations, used for generating <source> tags for this video element
     const childTransformations = this.getTransformation({...options, children});
