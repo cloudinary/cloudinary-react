@@ -1,3 +1,8 @@
+1.3.4 / 2020-03-18
+==================
+
+* Fix video tag props were passed as snake_case instead of camelCase
+
 1.3.3 / 2020-03-17
 ==================
 
