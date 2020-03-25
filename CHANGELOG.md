@@ -2,7 +2,7 @@
 ==================
 
 * Add support for signature param
-* Upgrade cloudianry-core version to ^2.8.2
+* Upgrade cloudinary-core version to ^2.8.2
 
 1.3.4 / 2020-03-18
 ==================
