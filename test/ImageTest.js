@@ -137,8 +137,8 @@ describe('Image', () => {
     let tag = mount(
       <Image
         innerRef={myRef}
-        cloudName='demo'
-        publicId='sample'
+        cloudName="demo"
+        publicId="sample"
       />
     );
 
@@ -146,5 +146,18 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.equal(expected);
     expect(image.src).to.equal(expected);
+  });
+  it('Should support signature param', function () {
+    const expected = 'http://res.cloudinary.com/demo/image/upload/s--signature--/sample';
+
+    let tag = mount(
+      <Image
+        cloudName="demo"
+        publicId="sample"
+        signature="signature"
+      />
+    );
+
+    expect(tag.find('img').prop('src')).to.equal(expected);
   });
 });
