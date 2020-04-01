@@ -3,5 +3,6 @@ import CloudinaryContext from './components/CloudinaryContext';
 import Image from './components/Image';
 import Transformation from './components/Transformation';
 import Video from './components/Video';
+import VideoPlayerWidget from './components/Video';
 
-export  { CloudinaryContext, Image, Transformation, Video};
+export  { CloudinaryContext, Image, Transformation, Video, VideoPlayerWidget};
