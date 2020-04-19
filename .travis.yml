@@ -4,8 +4,7 @@ node_js:
   - "node"
   - "lts/*"
 before_script:
-  - npm run compile
-  - npm run dist
+  - npm run build
 env:
   - TEST_SUBJECT=src
   - TEST_SUBJECT=lib
