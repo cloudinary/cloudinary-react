@@ -7,6 +7,8 @@ import CloudinaryComponent from '../CloudinaryComponent';
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
+  mimeType = 'video';
+
   /**
    * Merge context with props
    * @return {*}
@@ -46,7 +48,8 @@ class Video extends CloudinaryComponent {
   generateSources = (cld, publicId, childTransformations, sourceTransformations, sourceTypes) => (
     sourceTypes.map(sourceType => {
       const src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformations, sourceType);
-      const mimeType = 'video/' + (sourceType === 'ogv' ? 'ogg' : sourceType);
+      //const mimeType = 'video/' + (sourceType === 'ogv' ? 'ogg' : sourceType);
+      const mimeType = `${this.mimeType}/${sourceType === 'ogv' ? 'ogg' : sourceType}`;
 
       return <source key={mimeType} src={src} type={mimeType}/>;
     })
@@ -62,7 +65,7 @@ class Video extends CloudinaryComponent {
       publicId,
       fallback,
       children,
-      sourceTypes = Cloudinary.DEFAULT_VIDEO_PARAMS.source_types,
+      sourceTypes,
       sourceTransformation = {},
       ...options
     } = this.getMergedProps();
@@ -114,6 +117,8 @@ class Video extends CloudinaryComponent {
 }
 
 Video.propTypes = {publicId: PropTypes.string};
-Video.defaultProps = {};
+Video.defaultProps = {
+  sourceTypes: Cloudinary.DEFAULT_VIDEO_PARAMS.source_types
+};
 
 export default Video;

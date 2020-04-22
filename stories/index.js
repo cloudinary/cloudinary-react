@@ -337,7 +337,7 @@ storiesOf("Audio", module)
           cloudName="demo"
           controls="controls"
           publicId="dog"
-          sourceTypes={["mp3", "wav", "mp4"]}
+          sourceTypes={["mp3", "wav", "aac"]}
           sourceTransformation={{
             mp3: { duration: 2 },
             wav: { duration: 3 }

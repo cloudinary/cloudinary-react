@@ -65,16 +65,16 @@ describe('Audio', () => {
   it("should include child transformation for multiple source types", function () {
     let tag = shallow(
       <Audio cloudName='demo'
-             sourceTypes={['webm', 'mp4']}
+             sourceTypes={['wav', 'mp3']}
              publicId='dog'
              sourceTransformation={{
-               webm: {overlay: 'text:verdana_30:webm!'},
-               mp4: {overlay: 'text:verdana_30:mp4!'}
+               wav: {overlay: 'text:verdana_30:wav!'},
+               mp3: {overlay: 'text:verdana_30:mp3!'}
              }}>
         <Transformation quality='70'/>
       </Audio>);
-    expect(tag.find('[type="video/webm"]').props().src).to.endWith('/q_70/l_text:verdana_30:webm!/dog.webm');
-    expect(tag.find('[type="video/mp4"]').props().src).to.endWith('/q_70/l_text:verdana_30:mp4!/dog.mp4');
+    expect(tag.find('[type="audio/wav"]').props().src).to.endWith('/q_70/l_text:verdana_30:wav!/dog.wav');
+    expect(tag.find('[type="audio/mp3"]').props().src).to.endWith('/q_70/l_text:verdana_30:mp3!/dog.mp3');
   });
 
   it('should support inner text', function () {
@@ -137,5 +137,20 @@ describe('Audio', () => {
 
     expect(audio.prop('plays_inline')).to.equal(undefined);
     expect(audio.prop('auto_play')).to.equal(undefined);
+  });
+  it("should generate default source tags", function () {
+    let tag = shallow(
+      <Audio cloudName='demo'
+             publicId='dog'
+             sourceTransformation={{
+               aac: {overlay: 'text:verdana_30:aac!'},
+               mp3: {overlay: 'text:verdana_30:mp3!'},
+               wav: {overlay: 'text:verdana_30:wav!'}
+             }}>
+        <Transformation quality='70'/>
+      </Audio>);
+    expect(tag.find('[type="audio/aac"]').props().src).to.endWith('/q_70/l_text:verdana_30:aac!/dog.aac');
+    expect(tag.find('[type="audio/mp3"]').props().src).to.endWith('/q_70/l_text:verdana_30:mp3!/dog.mp3');
+    expect(tag.find('[type="audio/wav"]').props().src).to.endWith('/q_70/l_text:verdana_30:wav!/dog.wav');
   });
 });

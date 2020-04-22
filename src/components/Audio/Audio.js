@@ -9,6 +9,8 @@ import Video from '../Video';
  * An <audio> tag with a video source, will play the audio only.
  */
 class Audio extends Video {
+  mimeType = 'audio';
+
   /**
    * Render an audio element
    */
@@ -36,6 +38,6 @@ class Audio extends Video {
 }
 
 Audio.propTypes = {publicId: PropTypes.string};
-Audio.defaultProps = {};
+Audio.defaultProps = {sourceTypes: ["aac","mp3","wav"]};
 
 export default Audio;
