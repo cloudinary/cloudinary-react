@@ -38,6 +38,6 @@ class Audio extends Video {
 }
 
 Audio.propTypes = {publicId: PropTypes.string};
-Audio.defaultProps = {sourceTypes: ["aac","mp3","wav"]};
+Audio.defaultProps = {sourceTypes: ["aac","mp3","ogg"]};
 
 export default Audio;
