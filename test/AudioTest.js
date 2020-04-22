@@ -69,22 +69,22 @@ describe('Audio', () => {
       <Audio
         innerRef={myRef}
         cloudName='demo'
-        sourceTypes='webm'
+        sourceTypes='ogg'
         publicId='dog'
         sourceTransformation={{
-          webm: {overlay: 'text:verdana_30:webm!'}
+          ogg: {duration: 2}
         }}
       />
     );
 
     const audio = myRef.current;
 
-    expect(tag.find('audio').prop('src')).to.endWith('/l_text:verdana_30:webm!/dog.webm');
-    expect(audio.src).to.endWith('/l_text:verdana_30:webm!/dog.webm');
+    expect(tag.find('audio').prop('src')).to.endWith('/du_2/dog.ogg');
+    expect(audio.src).to.endWith('/du_2/dog.ogg');
     ['play', 'pause', 'canPlayType', 'addTextTrack'].forEach(func => expect(audio[func]).to.be.a('function'));
   });
 
-  it('Should not set a video poster', function () {
+  it('Should not set a poster attribute', function () {
     let tag = shallow(
       <Audio cloudName='demo' publicId='dog'/>
     );
