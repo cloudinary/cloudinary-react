@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "test:all": "run-s compile dist test test-dist test-lib",
+    "test:all": "run-s build test test-dist test-lib",
     "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
