@@ -1,3 +1,17 @@
+1.5.0 / 2020-04-23
+==================
+
+New functionality and features
+------------------------------
+  * Add Audio component
+
+Other Changes
+-------------
+  * Fix test:all script in package.json
+  * Add bundle size check using bundlewatch (#157)
+  * Update issue templates (#155)
+  * Fix typo in CHANGELOG.md
+
 1.4.0 / 2020-03-25
 ==================
 
