@@ -48,7 +48,6 @@ class Video extends CloudinaryComponent {
   generateSources = (cld, publicId, childTransformations, sourceTransformations, sourceTypes) => (
     sourceTypes.map(sourceType => {
       const src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformations, sourceType);
-      //const mimeType = 'video/' + (sourceType === 'ogv' ? 'ogg' : sourceType);
       const mimeType = `${this.mimeType}/${sourceType === 'ogv' ? 'ogg' : sourceType}`;
 
       return <source key={mimeType} src={src} type={mimeType}/>;
