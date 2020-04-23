@@ -7,6 +7,7 @@ import { withInfo } from "@storybook/addon-info";
 
 import Image from "../src/components/Image";
 import Video from "../src/components/Video";
+import Audio from "../src/components/Audio";
 import Transformation from "../src/components/Transformation";
 import CloudinaryContext from "../src/components/CloudinaryContext";
 import cloudinary from "cloudinary-core";
@@ -295,6 +296,55 @@ storiesOf("Video", module)
           crop="scale"
           poster={{ publicId: "sample" }}
         />
+      );
+    })
+  );
+storiesOf("Audio", module)
+  .add(
+    "Simple tag",
+    withInfo({ text: "Simple tag" })(() => {
+      return <Audio cloudName="demo" controls publicId="dog" />;
+    })
+  )
+  .add(
+    "With fallback",
+    withInfo({ text: "With fallback" })(() => {
+      return (
+        <Audio
+          cloudName="demo"
+          controls="controls"
+          publicId="dog"
+          fallback="Cannot play audio"
+        />
+      );
+    })
+  )
+  .add(
+    "With inline fallback",
+    withInfo({ text: "With inline fallback" })(() => {
+      return (
+        <Audio cloudName="demo" controls="controls" publicId="dog">
+          Cannot play <b>audio</b>.
+        </Audio>
+      );
+    })
+  )
+  .add(
+    "With source types",
+    withInfo({ text: "With source types" })(() => {
+      return (
+        <Audio
+          cloudName="demo"
+          controls="controls"
+          publicId="dog"
+          sourceTypes={["mp3", "wav", "aac"]}
+          sourceTransformation={{
+            mp3: { duration: 2 },
+            wav: { duration: 3 }
+          }}
+        >
+          Cannot play audio.
+        </Audio>
       );
     })
   );
