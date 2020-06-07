@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Cloudinary, Transformation, Util} from 'cloudinary-core';
 import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
 
-const camelCase = Util.camelCase;
+const {camelCase} = Util;
 
 /**
  * Return a new object containing keys and values where keys are in the keys list
@@ -32,6 +32,7 @@ class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this.getContext = this.getContext.bind(this);
+    this.onIntersect = this.onIntersect.bind(this);
   }
 
   render() {
@@ -40,6 +41,13 @@ class CloudinaryComponent extends PureComponent {
 
   getContext(){
     return this.context || {};
+  }
+
+  /**
+   * React function: Called when this element is in view
+   */
+  onIntersect(){
+    this.setState({isInView: true})
   }
 
   getChildTransformations(children) {
@@ -120,6 +128,7 @@ class CloudinaryComponent extends PureComponent {
 CloudinaryComponent.propTypes = typesFrom(Transformation.PARAM_NAMES.map(camelCase));
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
 CloudinaryComponent.propTypes.responsive = PropTypes.bool;
+CloudinaryComponent.propTypes.loading = PropTypes.string;
 
 /**
  * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].

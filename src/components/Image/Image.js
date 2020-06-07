@@ -15,9 +15,12 @@ class Image extends CloudinaryComponent {
     super(props, context);
     this.handleResize = this.handleResize.bind(this);
     this.attachRef = this.attachRef.bind(this);
+    this.getExtendedProps = this.getExtendedProps.bind(this);
+    this.prepareState = this.prepareState.bind(this);
 
+    let options = this.getExtendedProps(props, context);
     let state = {responsive: false, url: undefined, breakpoints: defaultBreakpoints};
-    this.state = {...state, ...this.prepareState(props, context)};
+    this.state = {...state, ...this.prepareState(options)};
   }
 
   /**
@@ -33,16 +36,19 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  prepareState(props = this.props, context = this.getContext()) {
-    let extendedProps = CloudinaryComponent.normalizeOptions(context, props);
-    let url = this.getUrl(extendedProps);
+  getExtendedProps(props = this.props, context = this.getContext()){
+    return CloudinaryComponent.normalizeOptions(context, props);
+  }
+
+  prepareState(options = this.getExtendedProps()) {
+    let url = this.getUrl(options);
     let state = {};
     let updatedOptions = {};
 
-    if (extendedProps.breakpoints !== undefined) {
-      state.breakpoints = extendedProps.breakpoints;
+    if (options.breakpoints !== undefined) {
+      state.breakpoints = options.breakpoints;
     }
-    if (extendedProps.responsive) {
+    if (options.responsive) {
       state.responsive = true;
       updatedOptions = this.cloudinaryUpdate(url, state);
       url = updatedOptions.url;
@@ -84,6 +90,10 @@ class Image extends CloudinaryComponent {
   }
 
   componentDidMount() {
+    const {loading} = this.getExtendedProps();
+    if (loading && loading !== "eager") {
+      Util.detectIntersection(this.element, this.onIntersect);
+    }
     // now that we have a this.element, we need to calculate the URL
     this.handleResize();
   }
@@ -110,13 +120,16 @@ class Image extends CloudinaryComponent {
   }
 
   render() {
-    const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} =
-      CloudinaryComponent.normalizeOptions(this.props, this.getContext());
+    const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} = this.getExtendedProps();
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
-    const {url} = this.state;
-    return (
-      <img {...attributes} src={url} ref={this.attachRef}/>
-    );
+    const {url, isInView} = this.state;
+    const shouldRender = !options.loading || options.loading === "eager" || isInView;
+    const srcAttributeName = shouldRender ? "src" : "data-src";
+
+    let imageProps = {...attributes, ref: this.attachRef};
+    imageProps[srcAttributeName] = url;
+
+    return <img {...imageProps} />;
   }
 
   // Methods from cloudinary_js
