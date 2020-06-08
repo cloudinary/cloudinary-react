@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
@@ -13,10 +13,6 @@ const defaultBreakpoints = (width, steps = 100) => {
 class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    this.handleResize = this.handleResize.bind(this);
-    this.attachRef = this.attachRef.bind(this);
-    this.getExtendedProps = this.getExtendedProps.bind(this);
-    this.prepareState = this.prepareState.bind(this);
 
     let options = this.getExtendedProps(props, context);
     let state = {responsive: false, url: undefined, breakpoints: defaultBreakpoints};
@@ -36,11 +32,22 @@ class Image extends CloudinaryComponent {
     return (this.element && this.element.ownerDocument) ? (this.element.ownerDocument.defaultView || windowRef) : windowRef;
   }
 
-  getExtendedProps(props = this.props, context = this.getContext()){
+  /**
+   * Merges context & props
+   * @param props of this component
+   * @param context of this component
+   * @return {Object}
+   */
+  getExtendedProps = (props = this.props, context = this.getContext()) => {
     return CloudinaryComponent.normalizeOptions(context, props);
-  }
+  };
 
-  prepareState(options = this.getExtendedProps()) {
+  /**
+   * Generates new state based on this Image's props & context.
+   * @param options - props to consider when generating the new state
+   * @return {Object}
+   */
+  prepareState = (options = this.getExtendedProps()) => {
     let url = this.getUrl(options);
     let state = {};
     let updatedOptions = {};
@@ -63,9 +70,13 @@ class Image extends CloudinaryComponent {
     }
 
     return state;
-  }
+  };
 
-  attachRef(element) {
+  /**
+   * Attach props.innerRef as ref to the given element
+   * @param element - the element to attach a ref to
+   */
+  attachRef = (element) => {
     this.element = element;
     const {innerRef} = this.props;
 
@@ -76,9 +87,12 @@ class Image extends CloudinaryComponent {
         innerRef.current = element;
       }
     }
-  }
+  };
 
-  handleResize() {
+  /**
+   * Update this Image's state, called on resize event
+   */
+  handleResize = () => {
     if (!this.props.responsive || this.rqf) return;
     this.rqf = requestAnimationFrame(() => {
       this.rqf = null;
@@ -87,7 +101,7 @@ class Image extends CloudinaryComponent {
         this.setState(newState);
       }
     });
-  }
+  };
 
   componentDidMount() {
     const {loading} = this.getExtendedProps();
@@ -107,6 +121,19 @@ class Image extends CloudinaryComponent {
     this.listener = undefined;
   }
 
+  /**
+   * Updates this Image's isLoaded state,
+   * And fires props.onLoad if exists.
+   */
+  handleImageLoaded = () => {
+    const {onLoad} = this.props;
+    this.setState({isLoaded: true}, ()=>{
+      if (onLoad){
+        onLoad();
+      }
+    });
+  };
+
   componentDidUpdate(prevProps) {
     this.setState(this.prepareState());
     if (this.state.responsive) {
@@ -119,8 +146,13 @@ class Image extends CloudinaryComponent {
     }
   }
 
-  render() {
-    const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} = this.getExtendedProps();
+  /**
+   * Gets props that will be passed to the underlying <img> element
+   * @param extendedProps - combined context & props
+   * @return {Object}
+   */
+  getImageProps = (extendedProps) => {
+    const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} = extendedProps;
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     const {url, isInView} = this.state;
     const shouldRender = !options.loading || options.loading === "eager" || isInView;
@@ -128,6 +160,58 @@ class Image extends CloudinaryComponent {
 
     let imageProps = {...attributes, ref: this.attachRef};
     imageProps[srcAttributeName] = url;
+
+    return imageProps;
+  }
+
+  /**
+   * Gets props that will be passed to the underlying placeholder's <img> element
+   * @param imageProps - props of the underlying original image
+   * @return {Object}
+   */
+  getPlaceholderProps = (imageProps) => {
+    const placeHolderProps = {...imageProps};
+    delete placeHolderProps['data-src'];
+    delete placeHolderProps['ref'];
+    delete placeHolderProps['onLoad'];
+    return placeHolderProps;
+  }
+
+  /**
+   * Renders JSX of this Image's placeholder
+   * @param placeholder, placeholder child of this Image
+   * @return {string}
+   */
+  renderPlaceholder = (placeholder) => {
+    const {isLoaded} = this.state;
+    const extendedProps = this.getExtendedProps();
+    const imageProps = this.getImageProps(extendedProps);
+    const placeHolderProps = this.getPlaceholderProps(imageProps);
+
+    if (!isLoaded){
+      imageProps.onLoad = this.handleImageLoaded;
+    }
+
+    return (
+      <Fragment>
+        <img {...imageProps} style={{display: isLoaded ? "inline" : "none"}}/>
+        <div style={{display: isLoaded ? "none" : "inline"}}>
+          <img {...placeHolderProps} src={this.getPlaceholderUrl(extendedProps, placeholder.props.type)}/>
+        </div>
+      </Fragment>
+    );
+  };
+
+  render() {
+    const {children} = this.props;
+    const placeholder = this.getPlaceholderChild(children);
+
+    if (placeholder){
+      return this.renderPlaceholder(placeholder);
+    }
+
+    const extendedProps = this.getExtendedProps();
+    const imageProps = this.getImageProps(extendedProps);
 
     return <img {...imageProps} />;
   }

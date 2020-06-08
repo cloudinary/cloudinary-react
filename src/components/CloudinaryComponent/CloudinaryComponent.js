@@ -6,6 +6,18 @@ import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType'
 const {camelCase} = Util;
 
 /**
+ * Check if given component is a Cloudinary Component with given displayName
+ * @param component the component to check
+ * @param displayName of wanted component
+ * @return {boolean}
+ */
+const isCloudinaryComponent = (component, displayName) => {
+  return !!(React.isValidElement(component)
+    && component.type
+    && component.type.displayName === displayName);
+};
+
+/**
  * Return a new object containing keys and values where keys are in the keys list
  * @param {object} source Object to copy values from
  * @param {string[]} [keys=[]] a list of keys
@@ -50,26 +62,27 @@ class CloudinaryComponent extends PureComponent {
     this.setState({isInView: true})
   }
 
+  getPlaceholderChild(children){
+    if (!children) {
+      return null;
+    }
+    return React.Children.toArray(children)
+      .find(child => isCloudinaryComponent(child, "CloudinaryPlaceholder"));
+  }
+
   getChildTransformations(children) {
-    if(children === undefined || children === null) return null;
-    let mapped = React.Children.map(children, child =>{
-      if (!React.isValidElement(child)) {
-        // child is not an element (e.g. simple text)
-        return;
-      }
-      let options = {};
-      if (child.type && child.type.exposesProps){
-        options = CloudinaryComponent.normalizeOptions(child.props, child.context);
-      }
-      let childOptions = this.getChildTransformations(child.props.children);
-      if(childOptions !== undefined && childOptions !== null){
-        options.transformation = childOptions;
-      }
-      return options;
-    });
-    if(mapped != null){
-      return mapped.filter(o=>!Util.isEmpty(o));
-    } else return null;
+    let result = children ? React.Children.toArray(children)
+      .filter(child => isCloudinaryComponent(child, "CloudinaryTransformation"))
+      .map(child => {
+        const options = CloudinaryComponent.normalizeOptions(child.props, child.context);
+        const childOptions = this.getChildTransformations(child.props.children);
+        if (childOptions) {
+          options.transformation = childOptions;
+        }
+        return options;
+      }) : [];
+
+    return result.length ? result : null;
   }
 
   /**
@@ -110,17 +123,38 @@ class CloudinaryComponent extends PureComponent {
   }
 
   /**
+   * Generated a configured Cloudinary object.
+   * @param extendedProps React props combined with custom Cloudinary configuration options
+   * @return {Cloudinary} configured using extendedProps
+   */
+  getConfiguredCloudinary(extendedProps){
+    const options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
+    return Cloudinary.new(options);
+  }
+
+  /**
    * Generate a Cloudinary resource URL based on the options provided and child Transformation elements
    * @param extendedProps React props combined with custom Cloudinary configuration options
    * @returns {string} a cloudinary URL
    * @protected
    */
   getUrl(extendedProps) {
-    let transformation = this.getTransformation(extendedProps);
-    let options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
-    let cl = Cloudinary.new(options);
-    return cl.url(extendedProps.publicId, transformation);
+    const cl = this.getConfiguredCloudinary(extendedProps);
+    return cl.url(extendedProps.publicId, this.getTransformation(extendedProps));
   }
+
+  /**
+   * Generate a Cloudinary placeholder URL based on the options provided and child Transformation elements
+   * @param extendedProps React props combined with custom Cloudinary configuration options
+   * @param {string} placeholderType type of placeholder
+   * @returns {string} a cloudinary URL
+   * @protected
+   */
+  getPlaceholderUrl(extendedProps, placeholderType) {
+    const cl = this.getConfiguredCloudinary(extendedProps);
+    return cl.placeholder_url(extendedProps.publicId, placeholderType, this.getTransformation(extendedProps));
+  }
+
 
   static contextType = CloudinaryContextType;
 }
