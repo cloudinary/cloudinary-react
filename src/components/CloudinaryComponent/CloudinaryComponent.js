@@ -92,12 +92,19 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getTransformation(extendedProps) {
-    let {children, ...rest} = extendedProps;
+    let {children, accessibility, placeholder, ...rest} = extendedProps;
     let ownTransformation = only(Util.withCamelCaseKeys(rest), Transformation.methods) || {};
     let childrenOptions = this.getChildTransformations(children);
     if (!Util.isEmpty(childrenOptions)) {
       ownTransformation.transformation = childrenOptions;
     }
+
+    //Append placeholder and accessibility if exists
+    const advancedTransformations = {accessibility, placeholder};
+    Object.keys(advancedTransformations).filter(k=>advancedTransformations[k]).map(k=>{
+      ownTransformation[k] = advancedTransformations[k];
+    });
+
     return ownTransformation;
   }
 
@@ -153,7 +160,7 @@ class CloudinaryComponent extends PureComponent {
   getPlaceholderUrl(extendedProps, placeholderType) {
     const {publicId} = extendedProps;
     const cl = this.getConfiguredCloudinary(extendedProps);
-    return cl.url(publicId, {...this.getTransformation(extendedProps), placeholder: placeholderType});
+    return cl.url(publicId, this.getTransformation({...extendedProps, placeholder: placeholderType}));
   }
 
   static contextType = CloudinaryContextType;

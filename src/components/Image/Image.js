@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import cloudinary, {Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {debounce, firstDefined, closestAbove, requestAnimationFrame, isElement} from '../../Util';
+import PropTypes from "prop-types";
 
 const defaultBreakpoints = (width, steps = 100) => {
   return steps * Math.ceil(width / steps);
@@ -50,7 +51,7 @@ class Image extends CloudinaryComponent {
   prepareState = (options = this.getExtendedProps()) => {
     const placeholder = this.getChildPlaceholder(options.children);
     let url = this.getUrl(options);
-    let placeholderUrl = placeholder ? this.getPlaceholderUrl(options, placeholder.props.type) : null;
+    let placeholderUrl = placeholder ? this.getUrl({...options, placeholder: placeholder.props.type}) : null;
     let state = {};
     let updatedOptions = {};
 
@@ -348,6 +349,10 @@ class Image extends CloudinaryComponent {
 }
 
 Image.defaultProps = {};
-Image.propTypes = CloudinaryComponent.propTypes;
+Image.propTypes = {
+  ...CloudinaryComponent.propTypes,
+  placeholder: PropTypes.string,
+  accessibility: PropTypes.string
+}
 
 export default Image;

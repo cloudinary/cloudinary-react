@@ -215,7 +215,44 @@ describe('Image', () => {
       tag.find('img').first().simulate('load');
 
       expect(tag.html()).to.equal(
-        `<img src="http://res.cloudinary.com/demo/image/upload/sample"/>`,
+        `<img src="http://res.cloudinary.com/demo/image/upload/sample"/>`
+      );
+    });
+  });
+  describe('Accessibility', () => {
+    it('Should render accessibility url', function () {
+      //By disabling lifecycle methods, we make sure detectIntersection() is not called yet.
+      let tag = shallow(
+        <Image publicId="sample" cloudName="demo" accessibility="monochrome"/>
+      );
+
+      expect(tag.html()).to.equal(
+        `<img src="http://res.cloudinary.com/demo/image/upload/e_grayscale/sample"/>`
+      );
+    });
+  });
+  describe('Accessibility & Placeholder', () => {
+    it('Should render accessible placeholder', function () {
+      //By disabling lifecycle methods, we make sure detectIntersection() is not called yet.
+      let tag = shallow(
+        <Image publicId="sample" cloudName="demo" accessibility="monochrome">
+          <Placeholder type="blur"/>
+        </Image>
+        ,
+        {disableLifecycleMethods: true}
+      );
+
+      expect(tag.html()).to.equal([
+        `<img src="http://res.cloudinary.com/demo/image/upload/e_grayscale/sample" style="opacity:0;position:absolute"/>`,
+        `<div style="display:inline">`,
+        `<img src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/e_grayscale/sample"/>`,
+        `</div>`
+      ].join(''));
+
+      tag.find('img').first().simulate('load');
+
+      expect(tag.html()).to.equal(
+        `<img src="http://res.cloudinary.com/demo/image/upload/e_grayscale/sample"/>`
       );
     });
   });
