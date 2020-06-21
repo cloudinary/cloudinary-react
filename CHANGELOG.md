@@ -1,3 +1,9 @@
+1.5.1 / 2020-06-21
+==================
+
+* Fix Audio component export
+* Update cloudinary-core to version 2.9.0
+
 1.5.0 / 2020-04-23
 ==================
 
