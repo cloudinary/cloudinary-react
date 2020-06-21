@@ -48,7 +48,9 @@ class Image extends CloudinaryComponent {
    * @return {Object}
    */
   prepareState = (options = this.getExtendedProps()) => {
+    const placeholder = this.getChildPlaceholder(options.children);
     let url = this.getUrl(options);
+    let placeholderUrl = placeholder ? this.getPlaceholderUrl(options, placeholder.props.type) : null;
     let state = {};
     let updatedOptions = {};
 
@@ -59,6 +61,9 @@ class Image extends CloudinaryComponent {
       state.responsive = true;
       updatedOptions = this.cloudinaryUpdate(url, state);
       url = updatedOptions.url;
+      if (placeholderUrl){
+        placeholderUrl = this.cloudinaryUpdate(placeholderUrl, state).url;
+      }
     }
 
     let currentState = this.state || {};
@@ -67,6 +72,7 @@ class Image extends CloudinaryComponent {
 
     if (!Util.isEmpty(url) && url !== currentState.url) {
       state.url = url;
+      state.placeholderUrl = placeholderUrl;
     }
 
     return state;
@@ -103,9 +109,12 @@ class Image extends CloudinaryComponent {
     });
   };
 
+  shouldLazyLoad = ({loading}) => {
+    return loading === "lazy" || loading === "auto";
+  }
+
   componentDidMount() {
-    const {loading} = this.getExtendedProps();
-    if (loading && loading !== "eager") {
+    if (this.shouldLazyLoad(this.getExtendedProps())) {
       Util.detectIntersection(this.element, this.onIntersect);
     }
     // now that we have a this.element, we need to calculate the URL
@@ -155,7 +164,7 @@ class Image extends CloudinaryComponent {
     const {publicId, responsive, responsiveDebounce, children, innerRef, ...options} = extendedProps;
     const attributes = cloudinary.Transformation.new(options).toHtmlAttributes();
     const {url, isInView} = this.state;
-    const shouldRender = !options.loading || options.loading === "eager" || isInView;
+    const shouldRender = !this.shouldLazyLoad(options) || isInView;
     const srcAttributeName = shouldRender ? "src" : "data-src";
 
     let imageProps = {...attributes, ref: this.attachRef};
@@ -170,51 +179,73 @@ class Image extends CloudinaryComponent {
    * @return {Object}
    */
   getPlaceholderProps = (imageProps) => {
-    const placeHolderProps = {...imageProps};
-    delete placeHolderProps['data-src'];
-    delete placeHolderProps['ref'];
-    delete placeHolderProps['onLoad'];
-    return placeHolderProps;
+    const placeholderProps = {...imageProps};
+    delete placeholderProps['data-src'];
+    delete placeholderProps['ref'];
+    delete placeholderProps['onLoad'];
+
+    placeholderProps.src = this.state.placeholderUrl;
+    return placeholderProps;
   }
 
-  /**
-   * Renders JSX of this Image's placeholder
-   * @param placeholder, placeholder child of this Image
-   * @return {string}
-   */
-  renderPlaceholder = (placeholder) => {
-    const {isLoaded} = this.state;
-    const extendedProps = this.getExtendedProps();
-    const imageProps = this.getImageProps(extendedProps);
-    const placeHolderProps = this.getPlaceholderProps(imageProps);
-
-    if (!isLoaded){
-      imageProps.onLoad = this.handleImageLoaded;
-    }
-
-    return (
-      <Fragment>
-        <img {...imageProps} style={{display: isLoaded ? "inline" : "none"}}/>
-        <div style={{display: isLoaded ? "none" : "inline"}}>
-          <img {...placeHolderProps} src={this.getPlaceholderUrl(extendedProps, placeholder.props.type)}/>
-        </div>
-      </Fragment>
-    );
-  };
-
   render() {
-    const {children} = this.props;
-    const placeholder = this.getPlaceholderChild(children);
-
-    if (placeholder){
-      return this.renderPlaceholder(placeholder);
-    }
-
+    const {placeholderUrl, isLoaded} = this.state;
     const extendedProps = this.getExtendedProps();
     const imageProps = this.getImageProps(extendedProps);
+
+    //If image wasn't loaded and there's a placeholder then we render it alongside the image.
+    if (!isLoaded && placeholderUrl) {
+      const placeHolderProps = this.getPlaceholderProps(imageProps);
+      const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
+      let imageStyle = imageProps.style || {};
+      imageStyle = {...imageStyle, opacity: 0, position: 'absolute'}
+      imageProps.onLoad = this.handleImageLoaded;
+      imageProps.style = imageStyle;
+
+      return (
+        <Fragment>
+          <img {...imageProps} />
+          <div style={placeholderStyle}>
+            <img {...placeHolderProps}/>
+          </div>
+        </Fragment>
+      );
+    }
 
     return <img {...imageProps} />;
   }
+  /*
+  render() {
+    const {isLoaded} = this.state;
+    const extendedProps = this.getExtendedProps();
+    const imageProps = this.getImageProps(extendedProps);
+    const placeholder = this.getChildPlaceholder(extendedProps.children);
+
+    //If image wasn't loaded and there's a placeholder then we render it alongside the image.
+    if (!isLoaded && placeholder) {
+      const placeHolderProps = this.getPlaceholderProps(imageProps);
+      const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
+      let imageStyle = imageProps.style || {};
+
+      if (!isLoaded) {
+        imageStyle = {...imageStyle, opacity: 0, position: 'absolute'}
+        imageProps.onLoad = this.handleImageLoaded;
+        imageProps.style = imageStyle;
+      }
+
+      return (
+        <Fragment>
+          <img {...imageProps} />
+          <div style={placeholderStyle}>
+            <img {...placeHolderProps} src={this.getPlaceholderUrl(extendedProps, placeholder.props.type)}/>
+          </div>
+        </Fragment>
+      );
+    }
+
+    return <img {...imageProps} />;
+  }
+   */
 
   // Methods from cloudinary_js
 
@@ -293,7 +324,7 @@ class Image extends CloudinaryComponent {
     var requiredWidth;
     var match;
     let resultUrl = this.updateDpr(url, options.roundDpr);
-    if (options.responsive || this.state && this.state.responsive) {
+    if (options.responsive || (this.state && this.state.responsive)) {
       let containerWidth = this.findContainerWidth();
       if (containerWidth !== 0) {
         if (/w_auto:breakpoints/.test(resultUrl)) {

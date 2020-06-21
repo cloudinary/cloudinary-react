@@ -62,12 +62,11 @@ class CloudinaryComponent extends PureComponent {
     this.setState({isInView: true})
   }
 
-  getPlaceholderChild(children){
-    if (!children) {
-      return null;
+  getChildPlaceholder(children){
+    if (children) {
+      return React.Children.toArray(children)
+        .find(child => isCloudinaryComponent(child, "CloudinaryPlaceholder"));
     }
-    return React.Children.toArray(children)
-      .find(child => isCloudinaryComponent(child, "CloudinaryPlaceholder"));
   }
 
   getChildTransformations(children) {
@@ -139,8 +138,9 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getUrl(extendedProps) {
+    const {publicId} = extendedProps;
     const cl = this.getConfiguredCloudinary(extendedProps);
-    return cl.url(extendedProps.publicId, this.getTransformation(extendedProps));
+    return cl.url(publicId, this.getTransformation(extendedProps));
   }
 
   /**
@@ -151,10 +151,10 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getPlaceholderUrl(extendedProps, placeholderType) {
+    const {publicId} = extendedProps;
     const cl = this.getConfiguredCloudinary(extendedProps);
-    return cl.placeholder_url(extendedProps.publicId, placeholderType, this.getTransformation(extendedProps));
+    return cl.url(publicId, {...this.getTransformation(extendedProps), placeholder: placeholderType});
   }
-
 
   static contextType = CloudinaryContextType;
 }
