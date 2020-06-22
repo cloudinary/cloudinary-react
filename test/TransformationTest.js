@@ -85,16 +85,16 @@ describe("Transformation", () => {
       "http://res.cloudinary.com/demo/image/upload/l_text:arial_20_antialias_best_hinting_medium:Cloudinary%20features/sample"
     );
   });
-  it("should not change variable names even if they are keywords", function() {
+  it("should not change variable names even if they are keywords", function () {
     let tag = shallow(
       <Image publicId="sample" cloudName="demo">
-      <Transformation variables={[["$width", 10]]}/>
-      <Transformation width="$width + 10 + width" crop="scale"/>
+        <Transformation variables={[["$width", 10]]}/>
+        <Transformation width="$width + 10 + width" crop="scale"/>
       </Image>
     );
     expect(tag.name()).to.equal("img");
     expect(tag.state("url")).to.equal(
       "http://res.cloudinary.com/demo/image/upload/$width_10/c_scale,w_$width_add_10_add_w/sample"
     );
-  })
+  });
 });
