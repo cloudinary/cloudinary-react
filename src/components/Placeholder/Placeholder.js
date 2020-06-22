@@ -15,6 +15,10 @@ Placeholder.propTypes = {
   type: PropTypes.string
 };
 
+Placeholder.defaultProps = {
+  type: 'blur'
+};
+
 Placeholder.displayName = "CloudinaryPlaceholder";
 
 export default Placeholder;

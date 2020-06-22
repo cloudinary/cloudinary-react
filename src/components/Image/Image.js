@@ -181,11 +181,11 @@ class Image extends CloudinaryComponent {
    */
   getPlaceholderProps = (imageProps) => {
     const placeholderProps = {...imageProps};
-    delete placeholderProps['data-src'];
     delete placeholderProps['ref'];
     delete placeholderProps['onLoad'];
+    const srcAttributeName = placeholderProps['data-src'] ? 'data-src' : 'src'
 
-    placeholderProps.src = this.state.placeholderUrl;
+    placeholderProps[srcAttributeName] = this.state.placeholderUrl;
     return placeholderProps;
   }
 
