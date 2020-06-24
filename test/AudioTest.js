@@ -1,8 +1,8 @@
 import React from 'react';
 import chai, {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
-import Audio from '../src/components/Audio';
-import Transformation from '../src/components/Transformation';
+import cloudinary from './cloudinary-proxy';
+const {Audio, Transformation} = cloudinary;
 
 chai.use(require('chai-string'));
 
