@@ -16,8 +16,8 @@ describe('CloudinaryContext', () => {
     expect(tag.html().startsWith("<div")).to.equal(true);
     expect(tag.find("div").hasClass("root")).to.equal(true);
     expect(tag.children()).to.have.length(1);
-    let img = tag.find("div").childAt(0);
-    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/sample");
+    const img = tag.find("div").childAt(0);
+    expect(img.html()).to.equal(`<img src="http://res.cloudinary.com/demo/image/upload/sample">`);
   });
 
   it("should render without div", function () {
@@ -40,14 +40,14 @@ describe('CloudinaryContext', () => {
   });
 
   it("should pass properties to children with snake case", function () {
-    let tag = mount(
+    const tag = mount(
       <CloudinaryContext className="root" cloudName="demo" fetch_format="auto">
         <Image publicId="sample"/>
       </CloudinaryContext>
     );
 
-    let img = tag.find("div").childAt(0);
-    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+    const img = tag.find("div").childAt(0);
+    expect(img.html()).to.equal(`<img src="http://res.cloudinary.com/demo/image/upload/f_auto/sample">`);
   });
 
   it("should pass properties to children with kebab case", function () {
@@ -58,7 +58,7 @@ describe('CloudinaryContext', () => {
     );
 
     let img = tag.find("div").childAt(0);
-    expect(img.instance().state.url).to.equal("http://res.cloudinary.com/demo/image/upload/f_auto/sample");
+    expect(img.html()).to.equal(`<img src="http://res.cloudinary.com/demo/image/upload/f_auto/sample">`);
   });
 
   it("should remove Cloudinary custom properties from CloudinaryContext component", function () {

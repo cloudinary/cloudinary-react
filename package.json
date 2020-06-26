@@ -9,7 +9,7 @@
     "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
-    "build": "node_modules/.bin/webpack && npm run build-storybook && npm run bundlewatch",
+    "build": "node_modules/.bin/webpack && npm run bundlewatch",
     "bundlewatch": "bundlewatch --config ./bundlewatch.config.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs"
