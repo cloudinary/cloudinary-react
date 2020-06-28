@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {createRef} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {getImageTag, responsive} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
 
 /**
  * A component representing a Cloudinary served image
@@ -8,50 +8,83 @@ import {getImageTag, responsive} from "../../Util";
 class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {isResponsive: false};
-    this.imgElement = null;
+    this.state = {attributes: {}, imgElement: null};
+    this.imgElement = createRef();
   }
 
   /**
-   * Attach props.innerRef as ref to the given element
-   * @param element - the element to attach a ref to
+   * @return true when this image element should be made responsive, false otherwise.
    */
-  attachRef = (element) => {
-    this.element = element;
+  isResponsive = () => {
+    return this.props.responsive && this.imgElement && this.imgElement.current;
+  }
+
+  /**
+   * @return merged props & context with aggregated transformation, excluding children and innerRef.
+   */
+  getOptions = () => {
+    const extendedProps = this.getExtendedProps();
+    const {children, innerRef, ...options} = {...extendedProps, ...this.getTransformation(extendedProps)};
+
+    return options;
+  }
+
+  /**
+   * @return attributes for the underlying <img> element.
+   */
+  getAttributes = () => {
+    const options = this.getOptions();
+    const {nonCloudinaryProps} = extractCloudinaryProps(options);
+    const attributes = getImageTag(options).attributes();
+    const {breakpoints, ...result} = {...attributes, ...nonCloudinaryProps};
+
+    return result;
+  }
+
+  /**
+   * Update this image using cloudinary-core
+   */
+  update = () => {
+    if (this.isResponsive()){
+      makeElementResponsive(this.imgElement.current, this.getOptions());
+    }
+  }
+
+  /**
+   * Attach both this.imgElement and props.innerRef as ref to the given element
+   * @param imgElement - the element to attach a ref to
+   */
+  attachRef = (imgElement) => {
     const {innerRef} = this.props;
+    this.imgElement.current = imgElement;
 
     if (innerRef) {
       if (innerRef instanceof Function) {
-        innerRef(element);
+        innerRef(imgElement);
       } else {
-        innerRef.current = element;
+        innerRef.current = imgElement;
       }
     }
   };
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const {isResponsive} = prevState;
-    const {imgElement} = this;
+  /**
+   * Invoked immediately after a component is mounted (inserted into the tree)
+   */
+  componentDidMount() {
+    this.update();
+  }
 
-    this.setState({
-      isResponsive: this.props.responsive && imgElement && !isResponsive
-    });
-
-    // Run responsive() only when props.responsive is updated to truthy value
-    if (isResponsive) {
-      responsive(imgElement, $$props);
-    }
+  /**
+   * Invoked immediately after updating occurs. This method is not called for the initial render.
+   */
+  componentDidUpdate() {
+    this.update();
   }
 
   render() {
-    const {attachRef} = this;
-    let options = this.getExtendedProps();
-    options = {...options, ...this.getTransformation(options)};
-    delete options.children;
-    delete options.innerRef;
-    const attributes = getImageTag(options).attributes();
+    const {attachRef, getAttributes} = this;
 
-    return <img ref={attachRef} {...attributes}/>
+    return <img ref={attachRef} {...getAttributes()}/>
   }
 }
 

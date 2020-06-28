@@ -13,14 +13,14 @@ const nonEmpty = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ?
  */
 const getConfiguredCloudinary = (extendedProps) => {
   const { public_id, ...ops } = nonEmpty(extendedProps); // Remove null/undefined props
-  const options = Util.extractUrlParams(Util.withSnakeCaseKeys(ops));
+  const options = Util.withSnakeCaseKeys(ops);
   return Cloudinary.new(options);
 };
 
 const getTag = (props, tagType) => {
   const { publicId, ...ops} = props; // Remove null/undefined props
-  const cld = getConfiguredCloudinary(props);
-  return cld[`${tagType}Tag`](publicId, ops);
+  const cld = getConfiguredCloudinary(ops);
+  return cld[`${tagType}Tag`](publicId, Util.withSnakeCaseKeys(ops));
 };
 
 /**
@@ -40,15 +40,16 @@ const getVideoTag = (props) => getTag(props, "video");
  * @param {HTMLImageElement} img
  * @param {object} options
  */
-const responsive = (img, options) =>{
-  const cld = Cloudinary.new(options); // Initialize cloudinary with new props
-  cld.cloudinary_update(img, options);
-  cld.responsive(options, false);
+const makeElementResponsive = (img, options) =>{
+  const snakeCaseOptions = Util.withSnakeCaseKeys(options);
+  const cld = getConfiguredCloudinary(snakeCaseOptions); // Initialize cloudinary with new props
+  cld.cloudinary_update(img, snakeCaseOptions);
+  cld.responsive(snakeCaseOptions, false);
 };
 
 export {
   nonEmpty,
   getImageTag,
   getVideoTag,
-  responsive
+  makeElementResponsive
 };
