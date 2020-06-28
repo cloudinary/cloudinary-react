@@ -43,23 +43,14 @@ function only(source, keys = []) {
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.getContext = this.getContext.bind(this);
-    this.onIntersect = this.onIntersect.bind(this);
   }
 
   render() {
     return null;
   }
 
-  getContext() {
+  getContext = () => {
     return this.context || {};
-  }
-
-  /**
-   * React function: Called when this element is in view
-   */
-  onIntersect() {
-    this.setState({isInView: true})
   }
 
   getChildTransformations(children) {
