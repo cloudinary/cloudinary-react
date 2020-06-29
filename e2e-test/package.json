@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "cloudinary-react": "file:cloudinary-react.tgz",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
@@ -14,7 +15,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "cypress": "./node_modules/.bin/cypress run",
-    "test": "yarn install && start-server-and-test start http://localhost:3000 cypress",
+    "pretest": "npm install",
+    "test": "start-server-and-test start http://localhost:3000 cypress",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

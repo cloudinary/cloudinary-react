@@ -8,7 +8,7 @@
     "test:all": "run-s build test test-dist test-lib test:e2e",
     "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "pretest:e2e": "npm run build && npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz && cd ./e2e-test && npm i cloudinary-react.tgz",
+    "pretest:e2e": "npm run build && npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz",
     "test:e2e": "cd ./e2e-test && npm run test",
     "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
     "build": "node_modules/.bin/webpack && npm run bundlewatch",
