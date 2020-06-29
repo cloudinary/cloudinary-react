@@ -8,7 +8,6 @@ import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../
 class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    this.state = {attributes: {}, imgElement: null};
     this.imgElement = createRef();
   }
 
@@ -36,9 +35,7 @@ class Image extends CloudinaryComponent {
     const options = this.getOptions();
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
     const attributes = getImageTag(options).attributes();
-    const {breakpoints, ...result} = {...attributes, ...nonCloudinaryProps};
-
-    return result;
+    return {...attributes, ...nonCloudinaryProps};
   }
 
   /**

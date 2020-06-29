@@ -28,7 +28,6 @@ describe('Image', () => {
                              defaultImage="foobar" responsive responsiveUseBreakpoints/>);
 
     expect(tag.type()).to.equal("img");
-    expect(tag.state("url")).to.equal(undefined);
     expect(tag.props()).to.have.property('data-src');
 
     // We are checking for both snake_case and camelCase keys
