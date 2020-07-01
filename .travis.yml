@@ -1,8 +1,10 @@
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 language: node_js
 node_js:
-  - "node"
-  - "lts/*"
+  - "14"
+  - "12"
+  - "10"
+  - "8"
 before_script:
   - npm run build
 jobs:
