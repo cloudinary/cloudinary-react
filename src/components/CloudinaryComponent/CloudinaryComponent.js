@@ -1,9 +1,21 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Transformation, Util} from 'cloudinary-core';
+import {Transformation, Util} from 'cloudinary-core';
 import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
 
-const camelCase = Util.camelCase;
+const {camelCase} = Util;
+
+/**
+ * Check if given component is a Cloudinary Component with given displayName
+ * @param component the component to check
+ * @param displayName of wanted component
+ * @return {boolean}
+ */
+const isCloudinaryComponent = (component, displayName) => {
+  return !!(React.isValidElement(component)
+    && component.type
+    && component.type.displayName === displayName);
+};
 
 /**
  * Return a new object containing keys and values where keys are in the keys list
@@ -12,7 +24,7 @@ const camelCase = Util.camelCase;
  * @returns {object} an object with copied values
  */
 function only(source, keys = []) {
-  if(!source){
+  if (!source) {
     return source;
   }
 
@@ -31,37 +43,29 @@ function only(source, keys = []) {
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.getContext = this.getContext.bind(this);
   }
 
   render() {
     return null;
   }
 
-  getContext(){
+  getContext = () => {
     return this.context || {};
   }
 
   getChildTransformations(children) {
-    if(children === undefined || children === null) return null;
-    let mapped = React.Children.map(children, child =>{
-      if (!React.isValidElement(child)) {
-        // child is not an element (e.g. simple text)
-        return;
-      }
-      let options = {};
-      if (child.type && child.type.exposesProps){
-        options = CloudinaryComponent.normalizeOptions(child.props, child.context);
-      }
-      let childOptions = this.getChildTransformations(child.props.children);
-      if(childOptions !== undefined && childOptions !== null){
-        options.transformation = childOptions;
-      }
-      return options;
-    });
-    if(mapped != null){
-      return mapped.filter(o=>!Util.isEmpty(o));
-    } else return null;
+    let result = children ? React.Children.toArray(children)
+      .filter(child => isCloudinaryComponent(child, "CloudinaryTransformation"))
+      .map(child => {
+        const options = CloudinaryComponent.normalizeOptions(child.props, child.context);
+        const childOptions = this.getChildTransformations(child.props.children);
+        if (childOptions) {
+          options.transformation = childOptions;
+        }
+        return options;
+      }) : [];
+
+    return result.length ? result : null;
   }
 
   /**
@@ -78,6 +82,7 @@ class CloudinaryComponent extends PureComponent {
     if (!Util.isEmpty(childrenOptions)) {
       ownTransformation.transformation = childrenOptions;
     }
+
     return ownTransformation;
   }
 
@@ -89,13 +94,13 @@ class CloudinaryComponent extends PureComponent {
    * @param options one or more options objects
    */
   static normalizeOptions(...options) {
-    return options.reduce((left, right)=> {
-        for (let key in right) {
+    return options.reduce((left, right) => {
+        Object.keys(right || {}).forEach(key => {
           let value = right[key];
           if (value !== null && value !== undefined) {
             left[key] = value;
           }
-        }
+        });
         return left;
       }
       , {});
@@ -108,11 +113,21 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getUrl(extendedProps) {
-    let transformation = this.getTransformation(extendedProps);
-    let options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
-    let cl = Cloudinary.new(options);
-    return cl.url(extendedProps.publicId, transformation);
+
+    const {publicId} = extendedProps;
+    const cl = getConfiguredCloudinary(extendedProps);
+    return cl.url(publicId, this.getTransformation(extendedProps));
   }
+
+  /**
+   * Merges context & props
+   * @param props of this component
+   * @param context of this component
+   * @return {Object}
+   */
+  getExtendedProps = (props = this.props, context = this.getContext()) => {
+    return CloudinaryComponent.normalizeOptions(context, props);
+  };
 
   static contextType = CloudinaryContextType;
 }
@@ -120,6 +135,7 @@ class CloudinaryComponent extends PureComponent {
 CloudinaryComponent.propTypes = typesFrom(Transformation.PARAM_NAMES.map(camelCase));
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
 CloudinaryComponent.propTypes.responsive = PropTypes.bool;
+CloudinaryComponent.propTypes.loading = PropTypes.string;
 
 /**
  * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].
@@ -130,7 +146,7 @@ CloudinaryComponent.propTypes.responsive = PropTypes.bool;
 function typesFrom(configParams) {
   configParams = configParams || [];
   const types = {};
-  for (let i =0; i < configParams.length; i++) {
+  for (let i = 0; i < configParams.length; i++) {
     const key = configParams[i];
     types[camelCase(key)] = PropTypes.any;
   }

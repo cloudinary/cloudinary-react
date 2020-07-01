@@ -17,5 +17,6 @@ class Transformation extends CloudinaryComponent {
 Transformation.propTypes = CloudinaryComponent.propTypes;
 Transformation.defaultProps = {};
 Transformation.exposesProps = true;
+Transformation.displayName = "CloudinaryTransformation";
 
 export default Transformation;

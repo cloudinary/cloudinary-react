@@ -5,11 +5,13 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "test:all": "run-s build test test-dist test-lib",
+    "test:all": "run-s build test test-dist test-lib test:e2e",
     "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
     "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
+    "pretest:e2e": "npm run build && npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz",
+    "test:e2e": "cd ./e2e-test && npm run test",
     "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
-    "build": "node_modules/.bin/webpack && npm run build-storybook && npm run bundlewatch",
+    "build": "node_modules/.bin/webpack && npm run bundlewatch",
     "bundlewatch": "bundlewatch --config ./bundlewatch.config.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs"
@@ -43,6 +45,7 @@
     "bundlewatch": "^0.2.6",
     "chai": "^4.1.2",
     "chai-string": "^1.4.0",
+    "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
@@ -59,5 +62,10 @@
   },
   "peerDependencies": {
     "react": "^16.3.3"
-  }
+  },
+  "files": [
+    "src",
+    "lib",
+    "dist"
+  ]
 }
