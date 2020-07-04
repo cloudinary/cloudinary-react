@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Transformation, Util} from 'cloudinary-core';
+import {Transformation, Util} from 'cloudinary-core';
 import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
 
 const {camelCase} = Util;
@@ -24,7 +24,7 @@ const isCloudinaryComponent = (component, displayName) => {
  * @returns {object} an object with copied values
  */
 function only(source, keys = []) {
-  if(!source){
+  if (!source) {
     return source;
   }
 
@@ -56,7 +56,7 @@ class CloudinaryComponent extends PureComponent {
   /**
    * React function: Called when this element is in view
    */
-  onIntersect(){
+  onIntersect = () =>{
     this.setState({isInView: true})
   }
 
@@ -144,22 +144,19 @@ class CloudinaryComponent extends PureComponent {
    */
   getUrl(extendedProps) {
     const {publicId} = extendedProps;
-    const cl = this.getConfiguredCloudinary(extendedProps);
+    const cl = getConfiguredCloudinary(extendedProps);
     return cl.url(publicId, this.getTransformation(extendedProps));
   }
 
   /**
-   * Generate a Cloudinary placeholder URL based on the options provided and child Transformation elements
-   * @param extendedProps React props combined with custom Cloudinary configuration options
-   * @param {string} placeholderType type of placeholder
-   * @returns {string} a cloudinary URL
-   * @protected
+   * Merges context & props
+   * @param props of this component
+   * @param context of this component
+   * @return {Object}
    */
-  getPlaceholderUrl(extendedProps, placeholderType) {
-    const {publicId} = extendedProps;
-    const cl = this.getConfiguredCloudinary(extendedProps);
-    return cl.url(publicId, this.getTransformation({...extendedProps, placeholder: placeholderType}));
-  }
+  getExtendedProps = (props = this.props, context = this.getContext()) => {
+    return CloudinaryComponent.normalizeOptions(context, props);
+  };
 
   static contextType = CloudinaryContextType;
 }

@@ -1,6 +1,7 @@
-import React, {createRef} from 'react';
+import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfiguredCloudinary} from "../../Util";
+import {Util} from "cloudinary-core";
 
 /**
  * A component representing a Cloudinary served image
@@ -9,6 +10,8 @@ class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.imgElement = createRef();
+    this.state = {isLoaded: false}
+    this.listenerRemovers = [];
   }
 
   /**
@@ -31,11 +34,29 @@ class Image extends CloudinaryComponent {
   /**
    * @return attributes for the underlying <img> element.
    */
-  getAttributes = () => {
-    const options = this.getOptions();
+  getAttributes = (additionalOptions={}) => {
+    const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
-    const attributes = getImageTag(options).attributes();
-    return {...attributes, ...nonCloudinaryProps};
+    let attributes = getImageTag(options).attributes();
+    attributes = {...attributes, ...nonCloudinaryProps};
+    attributes.src = getConfiguredCloudinary(options).url(options.publicId, options);
+
+    const {isInView} = this.state;
+    const shouldRender = isInView || !this.shouldLazyLoad(this.getExtendedProps());
+    const srcAttributeName = shouldRender ? "src" : "data-src";
+    const url = attributes.src;
+    delete attributes.src;
+    attributes[srcAttributeName] = url;
+
+    if (additionalOptions.placeholder){
+      delete attributes.placeholder;
+    }
+
+    if (options.accessibility){
+      delete attributes.accessibility;
+    }
+
+    return attributes;
   }
 
   /**
@@ -43,7 +64,8 @@ class Image extends CloudinaryComponent {
    */
   update = () => {
     if (this.isResponsive()){
-      makeElementResponsive(this.imgElement.current, this.getOptions());
+      const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
+      this.listenerRemovers.push(removeListener);
     }
   }
 
@@ -64,11 +86,19 @@ class Image extends CloudinaryComponent {
     }
   };
 
+  shouldLazyLoad = ({loading}) => {
+    return loading === "lazy" || loading === "auto";
+  }
+
   /**
    * Invoked immediately after a component is mounted (inserted into the tree)
    */
   componentDidMount() {
     this.update();
+
+    if (this.shouldLazyLoad(this.getExtendedProps())) {
+      Util.detectIntersection(this.element, this.onIntersect);
+    }
   }
 
   /**
@@ -76,42 +106,50 @@ class Image extends CloudinaryComponent {
    */
   componentDidUpdate() {
     this.update();
+
+    if (this.shouldLazyLoad(this.getExtendedProps())) {
+      Util.detectIntersection(this.element, this.onIntersect);
+    }
   }
 
-  render() {
-    const {attachRef, getAttributes} = this;
-
-    return <img ref={attachRef} {...getAttributes()}/>
+  componentWillUnmount() {
+    this.listenerRemovers.forEach(removeListener=>{
+      removeListener();
+    });
   }
 
   render2() {
     const {attachRef, getAttributes} = this;
 
+    return <img ref={attachRef} {...getAttributes()}/>
+  }
 
-    const {placeholderUrl, isLoaded} = this.state;
-    const extendedProps = this.getExtendedProps();
-    const imageProps = this.getImageProps(extendedProps);
+  render() {
+    const {attachRef, getAttributes} = this;
+    const {children} = this.getExtendedProps();
+    const placeholder = this.getChildPlaceholder(children);
+    const {isLoaded} = this.state;
+
+    const attributes = getAttributes();
 
     //If image wasn't loaded and there's a placeholder then we render it alongside the image.
-    if (!isLoaded && placeholderUrl) {
-      const placeHolderProps = this.getPlaceholderProps(imageProps);
+    if (!isLoaded && placeholder) {
       const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
-      let imageStyle = imageProps.style || {};
-      imageStyle = {...imageStyle, opacity: 0, position: 'absolute'}
-      imageProps.onLoad = this.handleImageLoaded;
-      imageProps.style = imageStyle;
+      attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
+      attributes.onLoad = this.handleImageLoaded;
+      const placeholderAttributes = getAttributes({placeholder: placeholder.props.type});
 
       return (
         <Fragment>
-          <img {...imageProps} />
+          <img {...attributes} />
           <div style={placeholderStyle}>
-            <img {...placeHolderProps}/>
+            <img {...placeholderAttributes}/>
           </div>
         </Fragment>
       );
     }
 
-    return <img ref={attachRef} {...getAttributes()}/>
+    return <img ref={attachRef} {...attributes}/>
   }
 }
 
