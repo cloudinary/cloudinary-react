@@ -43,15 +43,13 @@ function only(source, keys = []) {
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
-    this.getContext = this.getContext.bind(this);
-    this.onIntersect = this.onIntersect.bind(this);
   }
 
   render() {
     return null;
   }
 
-  getContext(){
+  getContext = () => {
     return this.context || {};
   }
 
@@ -116,13 +114,13 @@ class CloudinaryComponent extends PureComponent {
    * @param options one or more options objects
    */
   static normalizeOptions(...options) {
-    return options.reduce((left, right)=> {
-        for (let key in right) {
+    return options.reduce((left, right) => {
+        Object.keys(right || {}).forEach(key => {
           let value = right[key];
           if (value !== null && value !== undefined) {
             left[key] = value;
           }
-        }
+        });
         return left;
       }
       , {});
@@ -180,7 +178,7 @@ CloudinaryComponent.propTypes.loading = PropTypes.string;
 function typesFrom(configParams) {
   configParams = configParams || [];
   const types = {};
-  for (let i =0; i < configParams.length; i++) {
+  for (let i = 0; i < configParams.length; i++) {
     const key = configParams[i];
     types[camelCase(key)] = PropTypes.any;
   }

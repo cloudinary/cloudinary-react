@@ -1,9 +1,8 @@
 import React from 'react';
 import chai, {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
-import Video from '../src/components/Video';
-import Transformation from '../src/components/Transformation';
-
+import cloudinary from './cloudinary-proxy';
+const {Video, Transformation} = cloudinary;
 chai.use(require('chai-string'));
 
 describe('Video', () => {

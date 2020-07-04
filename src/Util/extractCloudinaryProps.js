@@ -3,7 +3,7 @@ import {Transformation, Util} from 'cloudinary-core';
 const CLOUDINARY_REACT_PROPS = {includeOwnBody: true};
 
 // Map Cloudinary props from array to object for efficient lookup
-const CLOUDINARY_PROPS = Transformation.PARAM_NAMES.map(Util.camelCase).reduce(
+const CLOUDINARY_PROPS = Transformation.PARAM_NAMES.map(Util.camelCase).concat(['publicId', 'breakpoints']).reduce(
   (accumulator, cloudinaryPropName) => {
     accumulator[cloudinaryPropName] = true;
     return accumulator;
