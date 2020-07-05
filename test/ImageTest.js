@@ -2,9 +2,8 @@ import React from 'react';
 import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import cloudinary from './cloudinary-proxy';
-import Placeholder from "../src/components/Placeholder";
 
-const {Image, Transformation} = cloudinary;
+const {Image, Transformation, Placeholder} = cloudinary;
 
 describe('Image', () => {
   beforeEach(() => {
@@ -137,15 +136,15 @@ describe('Image', () => {
     });
     it('should have opacity and position when placeholder exists', () => {
       const tag = shallow(
-        <Image publicId="sample" cloudName="demo" loading="lazy">
+        <Image publicId="sample" cloudName="demo">
           <Placeholder/>
         </Image>
       );
       //expect(tag.find('img').first().props().style).to.eql({opacity: 0, position: 'absolute'});
       expect(tag.html()).to.equal([
-        `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/sample" style="opacity:0;position:absolute"/>`,
+        `<img src="http://res.cloudinary.com/demo/image/upload/sample" style="opacity:0;position:absolute"/>`,
         `<div style="display:inline">`,
-        `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
+        `<img src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
         `</div>`
       ].join(''));
     });

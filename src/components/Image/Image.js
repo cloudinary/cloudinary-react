@@ -32,12 +32,12 @@ class Image extends CloudinaryComponent {
   }
 
   /**
+   * @param additionalOptions - extra options to pass to cloudinary.url(), for example: placeholder
    * @return attributes for the underlying <img> element.
    */
   getAttributes = (additionalOptions = {}) => {
     const {isInView} = this.state;
     const {placeholder} = additionalOptions;
-    const shouldLazyLoad = this.shouldLazyLoad(this.getExtendedProps());
     const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
 
@@ -54,7 +54,7 @@ class Image extends CloudinaryComponent {
     });
 
     // Set src or data-src attribute
-    const srcAttrName = isInView || !shouldLazyLoad ? "src" : "data-src";
+    const srcAttrName = isInView || !this.shouldLazyLoad(options) ? "src" : "data-src";
     attributes[srcAttrName] = getConfiguredCloudinary(options).url(options.publicId, options);
 
     return attributes;
