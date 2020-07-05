@@ -34,27 +34,28 @@ class Image extends CloudinaryComponent {
   /**
    * @return attributes for the underlying <img> element.
    */
-  getAttributes = (additionalOptions={}) => {
+  getAttributes = (additionalOptions = {}) => {
+    const {isInView} = this.state;
+    const {placeholder} = additionalOptions;
+    const shouldLazyLoad = this.shouldLazyLoad(this.getExtendedProps());
     const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
-    let attributes = getImageTag(options).attributes();
-    attributes = {...attributes, ...nonCloudinaryProps};
-    attributes.src = getConfiguredCloudinary(options).url(options.publicId, options);
 
-    const {isInView} = this.state;
-    const shouldRender = isInView || !this.shouldLazyLoad(this.getExtendedProps());
-    const srcAttributeName = shouldRender ? "src" : "data-src";
-    const url = attributes.src;
-    delete attributes.src;
-    attributes[srcAttributeName] = url;
+    let attributes = {...getImageTag(options).attributes(), ...nonCloudinaryProps};
 
-    if (additionalOptions.placeholder){
-      delete attributes.placeholder;
+    // Set placeholder Id
+    if (placeholder && attributes.id) {
+      attributes.id = attributes.id + '-cld-placeholder';
     }
 
-    if (options.accessibility){
-      delete attributes.accessibility;
-    }
+    // Remove unneeded attributes,
+    ["src", "accessibility", "placeholder"].forEach(attr => {
+      delete attributes[attr];
+    });
+
+    // Set src or data-src attribute
+    const srcAttrName = isInView || !shouldLazyLoad ? "src" : "data-src";
+    attributes[srcAttrName] = getConfiguredCloudinary(options).url(options.publicId, options);
 
     return attributes;
   }
@@ -63,9 +64,13 @@ class Image extends CloudinaryComponent {
    * Update this image using cloudinary-core
    */
   update = () => {
-    if (this.isResponsive()){
+    if (this.isResponsive()) {
       const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
       this.listenerRemovers.push(removeListener);
+    }
+
+    if (this.shouldLazyLoad(this.getExtendedProps())) {
+      Util.detectIntersection(this.imgElement.current, this.onIntersect);
     }
   }
 
@@ -95,10 +100,6 @@ class Image extends CloudinaryComponent {
    */
   componentDidMount() {
     this.update();
-
-    if (this.shouldLazyLoad(this.getExtendedProps())) {
-      Util.detectIntersection(this.element, this.onIntersect);
-    }
   }
 
   /**
@@ -106,26 +107,29 @@ class Image extends CloudinaryComponent {
    */
   componentDidUpdate() {
     this.update();
-
-    if (this.shouldLazyLoad(this.getExtendedProps())) {
-      Util.detectIntersection(this.element, this.onIntersect);
-    }
   }
 
   componentWillUnmount() {
-    this.listenerRemovers.forEach(removeListener=>{
+    this.listenerRemovers.forEach(removeListener => {
       removeListener();
     });
   }
 
-  render2() {
-    const {attachRef, getAttributes} = this;
-
-    return <img ref={attachRef} {...getAttributes()}/>
-  }
+  /**
+   * Updates this Image's isLoaded state,
+   * And fires props.onLoad if exists.
+   */
+  handleImageLoaded = () => {
+    const {onLoad} = this.props;
+    this.setState({isLoaded: true}, () => {
+      if (onLoad) {
+        onLoad();
+      }
+    });
+  };
 
   render() {
-    const {attachRef, getAttributes} = this;
+    const {attachRef, getAttributes, handleImageLoaded} = this;
     const {children} = this.getExtendedProps();
     const placeholder = this.getChildPlaceholder(children);
     const {isLoaded} = this.state;
@@ -136,12 +140,12 @@ class Image extends CloudinaryComponent {
     if (!isLoaded && placeholder) {
       const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
       attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
-      attributes.onLoad = this.handleImageLoaded;
+      attributes.onLoad = handleImageLoaded;
       const placeholderAttributes = getAttributes({placeholder: placeholder.props.type});
 
       return (
         <Fragment>
-          <img {...attributes} />
+          <img ref={attachRef} {...attributes} />
           <div style={placeholderStyle}>
             <img {...placeholderAttributes}/>
           </div>

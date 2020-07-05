@@ -3,6 +3,7 @@ import {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import cloudinary from './cloudinary-proxy';
 import Placeholder from "../src/components/Placeholder";
+
 const {Image, Transformation} = cloudinary;
 
 describe('Image', () => {
@@ -182,17 +183,6 @@ describe('Image', () => {
           `</div>`
         ].join(''));
       });
-
-      // TODO: move to e2e tests
-      /*
-      it('should not have a placeholder after image loaded', function () {
-        // Mock an image load event
-        tag.find('img').first().simulate('load');
-        expect(tag.html()).to.equal(
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/sample"/>`
-        );
-      });
-       */
     });
     describe('Responsive Placeholder With Lazy Loading', () => {
       let tag = shallow(
@@ -208,39 +198,6 @@ describe('Image', () => {
           `</div>`
         ].join(''));
       });
-
-      // TODO: move to e2e tests
-      /*
-      it('should have src for placeholder and image when in view', function () {
-        tag.instance().componentDidMount();
-        expect(tag.state().isInView).to.equal(undefined);
-
-        // Mock an intersection call, as if the component is now in view
-        simulateIntersection([{
-          target: tag.element,
-          isIntersecting: true
-        }]);
-
-        expect(tag.state().isInView).to.equal(true);
-        expect(tag.html()).to.equal([
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample" style="opacity:0;position:absolute"/>`,
-          `<div style="display:inline">`,
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/c_scale,w_200/e_blur:2000,f_auto,q_1/sample"/>`,
-          `</div>`
-        ].join(''));
-      });
-       */
-
-      // TODO: move to e2e tests
-      /*
-      it('should not have a placeholder after image loaded', function () {
-        // Mock an image load event
-        tag.find('img').first().simulate('load');
-        expect(tag.html()).to.equal(
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/c_scale,w_200/sample"/>`
-        );
-      });
-       */
     });
   });
   describe('Lazy Loading', () => {
@@ -298,16 +255,6 @@ describe('Image', () => {
         `<img src="http://res.cloudinary.com/demo/image/upload/e_grayscale/e_blur:2000,f_auto,q_1/sample"/>`,
         `</div>`
       ].join(''));
-
-      // TODO: move to e2e tests
-      /*
-      tag.find('img').first().simulate('load');
-
-      expect(tag.html()).to.equal(
-        `<img src="http://res.cloudinary.com/demo/image/upload/e_grayscale/sample"/>`
-      );
-       */
     });
   });
 });
-
