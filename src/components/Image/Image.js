@@ -2,6 +2,7 @@ import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
 import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfiguredCloudinary} from "../../Util";
 import {Util} from "cloudinary-core";
+import PropTypes from "prop-types";
 
 /**
  * A component representing a Cloudinary served image
@@ -159,5 +160,8 @@ class Image extends CloudinaryComponent {
 
 Image.defaultProps = {};
 Image.propTypes = CloudinaryComponent.propTypes;
+Image.propTypes.responsive = PropTypes.bool;
+Image.propTypes.loading = PropTypes.string;
+Image.propTypes.accessibility = PropTypes.string;
 
 export default Image;
