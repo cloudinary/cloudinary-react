@@ -15,7 +15,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "cypress": "./node_modules/.bin/cypress run",
-    "pretest": "npm install",
+    "pretest": "npm uninstall cloudinary-react && npm install cloudinary-react.tgz && npm install",
     "test": "start-server-and-test start http://localhost:3000 cypress",
     "eject": "react-scripts eject"
   },

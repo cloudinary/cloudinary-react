@@ -39,17 +39,19 @@ const getVideoTag = (props) => getTag(props, "video");
  * Cloudinary underlying JS library will handle responsive behavior
  * @param {HTMLImageElement} img
  * @param {object} options
+ * @Return callback that when called, will remove the listener created by Cloudinary.responsive
  */
 const makeElementResponsive = (img, options) =>{
   const snakeCaseOptions = Util.withSnakeCaseKeys(options);
   const cld = getConfiguredCloudinary(snakeCaseOptions); // Initialize cloudinary with new props
   cld.cloudinary_update(img, snakeCaseOptions);
-  cld.responsive(snakeCaseOptions, false);
+  return cld.responsive(snakeCaseOptions, false);
 };
 
 export {
   nonEmpty,
   getImageTag,
   getVideoTag,
-  makeElementResponsive
+  makeElementResponsive,
+  getConfiguredCloudinary
 };

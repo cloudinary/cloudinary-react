@@ -53,6 +53,20 @@ class CloudinaryComponent extends PureComponent {
     return this.context || {};
   }
 
+  /**
+   * React function: Called when this element is in view
+   */
+  onIntersect = () =>{
+    this.setState({isInView: true})
+  }
+
+  getChildPlaceholder(children){
+    if (children) {
+      return React.Children.toArray(children)
+        .find(child => isCloudinaryComponent(child, "CloudinaryPlaceholder"));
+    }
+  }
+
   getChildTransformations(children) {
     let result = children ? React.Children.toArray(children)
       .filter(child => isCloudinaryComponent(child, "CloudinaryTransformation"))
@@ -76,12 +90,18 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getTransformation(extendedProps) {
-    let {children, ...rest} = extendedProps;
+    let {children, accessibility, placeholder, ...rest} = extendedProps;
     let ownTransformation = only(Util.withCamelCaseKeys(rest), Transformation.methods) || {};
     let childrenOptions = this.getChildTransformations(children);
     if (!Util.isEmpty(childrenOptions)) {
       ownTransformation.transformation = childrenOptions;
     }
+
+    //Append placeholder and accessibility if exists
+    const advancedTransformations = {accessibility, placeholder};
+    Object.keys(advancedTransformations).filter(k=>advancedTransformations[k]).map(k=>{
+      ownTransformation[k] = advancedTransformations[k];
+    });
 
     return ownTransformation;
   }
@@ -107,13 +127,22 @@ class CloudinaryComponent extends PureComponent {
   }
 
   /**
+   * Generated a configured Cloudinary object.
+   * @param extendedProps React props combined with custom Cloudinary configuration options
+   * @return {Cloudinary} configured using extendedProps
+   */
+  getConfiguredCloudinary(extendedProps){
+    const options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
+    return Cloudinary.new(options);
+  }
+
+  /**
    * Generate a Cloudinary resource URL based on the options provided and child Transformation elements
    * @param extendedProps React props combined with custom Cloudinary configuration options
    * @returns {string} a cloudinary URL
    * @protected
    */
   getUrl(extendedProps) {
-
     const {publicId} = extendedProps;
     const cl = getConfiguredCloudinary(extendedProps);
     return cl.url(publicId, this.getTransformation(extendedProps));

@@ -1,6 +1,7 @@
-import React, {createRef} from 'react';
+import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfiguredCloudinary} from "../../Util";
+import {Util} from "cloudinary-core";
 
 /**
  * A component representing a Cloudinary served image
@@ -9,6 +10,8 @@ class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.imgElement = createRef();
+    this.state = {isLoaded: false}
+    this.listenerRemovers = [];
   }
 
   /**
@@ -29,21 +32,45 @@ class Image extends CloudinaryComponent {
   }
 
   /**
+   * @param additionalOptions - extra options to pass to cloudinary.url(), for example: placeholder
    * @return attributes for the underlying <img> element.
    */
-  getAttributes = () => {
-    const options = this.getOptions();
+  getAttributes = (additionalOptions = {}) => {
+    const {isInView} = this.state;
+    const {placeholder} = additionalOptions;
+    const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
-    const attributes = getImageTag(options).attributes();
-    return {...attributes, ...nonCloudinaryProps};
+
+    let attributes = {...getImageTag(options).attributes(), ...nonCloudinaryProps};
+
+    // Set placeholder Id
+    if (placeholder && attributes.id) {
+      attributes.id = attributes.id + '-cld-placeholder';
+    }
+
+    // Remove unneeded attributes,
+    ["src", "accessibility", "placeholder"].forEach(attr => {
+      delete attributes[attr];
+    });
+
+    // Set src or data-src attribute
+    const srcAttrName = isInView || !this.shouldLazyLoad(options) ? "src" : "data-src";
+    attributes[srcAttrName] = getConfiguredCloudinary(options).url(options.publicId, options);
+
+    return attributes;
   }
 
   /**
    * Update this image using cloudinary-core
    */
   update = () => {
-    if (this.isResponsive()){
-      makeElementResponsive(this.imgElement.current, this.getOptions());
+    if (this.isResponsive()) {
+      const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
+      this.listenerRemovers.push(removeListener);
+    }
+
+    if (this.shouldLazyLoad(this.getExtendedProps())) {
+      Util.detectIntersection(this.imgElement.current, this.onIntersect);
     }
   }
 
@@ -64,6 +91,10 @@ class Image extends CloudinaryComponent {
     }
   };
 
+  shouldLazyLoad = ({loading}) => {
+    return loading === "lazy" || loading === "auto";
+  }
+
   /**
    * Invoked immediately after a component is mounted (inserted into the tree)
    */
@@ -78,10 +109,51 @@ class Image extends CloudinaryComponent {
     this.update();
   }
 
-  render() {
-    const {attachRef, getAttributes} = this;
+  componentWillUnmount() {
+    this.listenerRemovers.forEach(removeListener => {
+      removeListener();
+    });
+  }
 
-    return <img ref={attachRef} {...getAttributes()}/>
+  /**
+   * Updates this Image's isLoaded state,
+   * And fires props.onLoad if exists.
+   */
+  handleImageLoaded = () => {
+    const {onLoad} = this.props;
+    this.setState({isLoaded: true}, () => {
+      if (onLoad) {
+        onLoad();
+      }
+    });
+  };
+
+  render() {
+    const {attachRef, getAttributes, handleImageLoaded} = this;
+    const {children} = this.getExtendedProps();
+    const placeholder = this.getChildPlaceholder(children);
+    const {isLoaded} = this.state;
+
+    const attributes = getAttributes();
+
+    //If image wasn't loaded and there's a placeholder then we render it alongside the image.
+    if (!isLoaded && placeholder) {
+      const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
+      attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
+      attributes.onLoad = handleImageLoaded;
+      const placeholderAttributes = getAttributes({placeholder: placeholder.props.type});
+
+      return (
+        <Fragment>
+          <img ref={attachRef} {...attributes} />
+          <div style={placeholderStyle}>
+            <img {...placeholderAttributes}/>
+          </div>
+        </Fragment>
+      );
+    }
+
+    return <img ref={attachRef} {...attributes}/>
   }
 }
 
