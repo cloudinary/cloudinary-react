@@ -1,3 +1,17 @@
+1.6.0 / 2020-07-06
+==================
+
+New functionality and features
+------------------------------
+* Add support for lazy loading images, placeholder and accessibility (#162)
+
+Other Changes
+-------------
+* Update cloudinary-core dependency to version 2.10.1
+* Refactor Image component (#167)
+* Update tests to fail when component is not exported
+* Add test for variable names (#164)
+
 1.5.1 / 2020-06-21
 ==================
 
