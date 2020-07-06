@@ -163,8 +163,6 @@ class CloudinaryComponent extends PureComponent {
 
 CloudinaryComponent.propTypes = typesFrom(Transformation.PARAM_NAMES.map(camelCase));
 CloudinaryComponent.propTypes.publicId = PropTypes.string;
-CloudinaryComponent.propTypes.responsive = PropTypes.bool;
-CloudinaryComponent.propTypes.loading = PropTypes.string;
 
 /**
  * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].
