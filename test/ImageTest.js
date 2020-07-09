@@ -99,6 +99,14 @@ describe('Image', () => {
     tag.setProps({responsive: true});
     expect(tag.find('img').prop('data-src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
   });
+  it('should update on prop change', () => {
+    let tag = mount(<Image publicId="sample" cloudName="demo"/>);
+    expect(tag.find('img').prop('src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
+    tag.setProps({effect: 'sepia:20'});
+    expect(tag.find('img').prop('src')).to.equal('http://res.cloudinary.com/demo/image/upload/e_sepia:20/sample');
+    tag.setProps({effect: 'sepia:30', secure:true});
+    expect(tag.find('img').prop('src')).to.equal('https://res.cloudinary.com/demo/image/upload/e_sepia:30/sample');
+  });
   it('Should support forwarding innerRef to underlying image element', function () {
     const expected = 'http://res.cloudinary.com/demo/image/upload/sample';
     let myRef = React.createRef();
