@@ -94,11 +94,6 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
   });
-  it('should support responsive prop', () => {
-    let tag = mount(<Image publicId="sample" cloudName="demo"/>);
-    tag.setProps({responsive: true});
-    expect(tag.find('img').prop('data-src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
-  });
   it('Should support forwarding innerRef to underlying image element', function () {
     const expected = 'http://res.cloudinary.com/demo/image/upload/sample';
     let myRef = React.createRef();
@@ -128,6 +123,17 @@ describe('Image', () => {
     );
 
     expect(tag.find('img').prop('src')).to.equal(expected);
+  });
+  describe('Responsive', () => {
+    it('should support responsive prop', () => {
+      let tag = mount(<Image publicId="sample" cloudName="demo"/>);
+      tag.setProps({responsive: true});
+      expect(tag.find('img').prop('data-src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
+    });
+    it('should set image width even when responsive prop is passed', () => {
+      let tag = mount(<Image publicId="sample" cloudName="demo" width={100} responsive/>);
+      expect(tag.find('img').prop('width')).to.equal(100);
+    });
   });
   describe('Placeholder', () => {
     it(`should not have opacity and position when placeholder doesn't exists`, () => {
@@ -185,7 +191,7 @@ describe('Image', () => {
     });
     describe('Responsive Placeholder With Lazy Loading', () => {
       let tag = shallow(
-        <Image publicId="sample" cloudName="demo" loading="lazy" responsive width="auto" crop="scale">
+        <Image publicId="sample" cloudName="demo" loading="lazy" width="auto" crop="scale" responsive>
           <Placeholder/>
         </Image>
       );

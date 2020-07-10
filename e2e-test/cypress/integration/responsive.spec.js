@@ -4,6 +4,12 @@ describe('Responsive Image', () => {
     cy.visit('/');
     cy.get('#responsiveBtn').click();          // Click on button
   });
+  it('Responsive Image Override', () => {
+    cy.get('#responsive-override')
+      .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
+    cy.get('#responsive-override')
+      .should('have.attr', 'src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
+  });
   it('Responsive Image', () => {
     cy.get('#responsive')
       .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
