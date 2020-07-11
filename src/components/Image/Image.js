@@ -1,8 +1,16 @@
 import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfiguredCloudinary} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
 import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
+
+const RESPONSIVE_OVERRIDE_WARNING = [
+  `Warning: passing a number value for width cancels the 'responsive' prop's effect on the image transformation.`,
+  `The 'responsive' prop affects the image transformation only when width === 'auto'.`,
+  `Passing 'width="auto" responsive' will affect the actual image width that is fetched from Cloudinary.`,
+  `The 'responsive' prop causes the Image component to request an image which width is equal to the width of it's container.`,
+  `When passing 'width="auto" responsive', you can set the <img> element width by passing a 'style' prop`
+].join('\n');
 
 /**
  * A component representing a Cloudinary served image
@@ -19,7 +27,12 @@ class Image extends CloudinaryComponent {
    * @return true when this image element should be made responsive, false otherwise.
    */
   isResponsive = () => {
-    return this.props.responsive && this.imgElement && this.imgElement.current;
+    const {responsive, width} = this.getExtendedProps();
+    if (responsive && width !== 'auto') {
+      console.warn(RESPONSIVE_OVERRIDE_WARNING);
+    }
+
+    return responsive && this.imgElement && this.imgElement.current;
   }
 
   /**
@@ -44,19 +57,30 @@ class Image extends CloudinaryComponent {
 
     let attributes = {...getImageTag(options).attributes(), ...nonCloudinaryProps};
 
+    //React requires camelCase instead of snake_case attributes
+    attributes = Util.withCamelCaseKeys(attributes);
+
     // Set placeholder Id
     if (placeholder && attributes.id) {
       attributes.id = attributes.id + '-cld-placeholder';
     }
 
+    // Set dataSrc if lazy loading and not in view
+    if (!isInView && this.shouldLazyLoad(options)) {
+      attributes.dataSrc = attributes.dataSrc || attributes.src;
+      delete attributes.src;
+    }
+
+    // The data-src attribute was turned into dataSrc by the camelCase function,
+    // But it's needed by cloudinary-core's responsive() function. Notice that it's not snake_case.
+    if (attributes.dataSrc) {
+      attributes['data-src'] = attributes.dataSrc;
+    }
+
     // Remove unneeded attributes,
-    ["src", "accessibility", "placeholder"].forEach(attr => {
+    ['dataSrc', 'accessibility', 'placeholder', 'breakpoints'].forEach(attr => {
       delete attributes[attr];
     });
-
-    // Set src or data-src attribute
-    const srcAttrName = isInView || !this.shouldLazyLoad(options) ? "src" : "data-src";
-    attributes[srcAttrName] = getConfiguredCloudinary(options).url(options.publicId, options);
 
     return attributes;
   }
@@ -65,12 +89,14 @@ class Image extends CloudinaryComponent {
    * Update this image using cloudinary-core
    */
   update = () => {
+    const {isInView} = this.state;
+
     if (this.isResponsive()) {
       const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
       this.listenerRemovers.push(removeListener);
     }
 
-    if (this.shouldLazyLoad(this.getExtendedProps())) {
+    if (!isInView && this.shouldLazyLoad(this.getExtendedProps())) {
       Util.detectIntersection(this.imgElement.current, this.onIntersect);
     }
   }
@@ -153,7 +179,6 @@ class Image extends CloudinaryComponent {
         </Fragment>
       );
     }
-
     return <img ref={attachRef} {...attributes}/>
   }
 }

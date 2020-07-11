@@ -29,6 +29,9 @@ function App() {
       <Fragment>
         <h1>Responsive Image</h1>
         <div style={{width: "330px"}}>
+          <Image id="responsive-override" publicId="sample" cloudName="demo" width={100} crop="scale" responsive/>
+        </div>
+        <div style={{width: "330px"}}>
           <Image id="responsive" publicId="sample" cloudName="demo" width="auto" crop="scale" responsive/>
         </div>
         <div style={{width: "330px"}}>
