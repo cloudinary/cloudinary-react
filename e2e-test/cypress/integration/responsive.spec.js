@@ -12,6 +12,9 @@ describe('Responsive Image', () => {
     cy.visit('/');
     cy.get('#responsiveBtn').click();          // Click on button
   });
+  // Here responsive() is called, but since a specified width value was passed (100) alongside responsive,
+  // The responsive() function does not change the width param of the transformation, because the specified width
+  // "overrides" the responsiveness. in other words, specifying a width value is stronger then the 'responsive' prop.
   it('Should generate transformation with specified width value', () => {
     cy.get('#responsive-override')
       .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
