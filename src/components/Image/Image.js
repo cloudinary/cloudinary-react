@@ -5,7 +5,7 @@ import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
 
 const RESPONSIVE_OVERRIDE_WARNING = [
-  `Warning: passing a width of ${width} cancels the 'responsive' prop's effect on the image transformation.`,
+  `Warning: passing a number value for width cancels the 'responsive' prop's effect on the image transformation.`,
   `The 'responsive' prop affects the image transformation only when width === 'auto'.`,
   `Passing 'width="auto" responsive' will affect the actual image width that is fetched from Cloudinary.`,
   `The 'responsive' prop causes the Image component to request an image which width is equal to the width of it's container.`,
@@ -56,6 +56,8 @@ class Image extends CloudinaryComponent {
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
 
     let attributes = {...getImageTag(options).attributes(), ...nonCloudinaryProps};
+
+    //React requires camelCase instead of snake_case attributes
     attributes = Util.withCamelCaseKeys(attributes);
 
     // Set placeholder Id
@@ -65,10 +67,12 @@ class Image extends CloudinaryComponent {
 
     // Set dataSrc if lazy loading and not in view
     if (!isInView && this.shouldLazyLoad(options)) {
-      attributes.dataSrc = getConfiguredCloudinary(options).url(options.publicId, options);
+      attributes.dataSrc = attributes.dataSrc || attributes.src;
       delete attributes.src;
     }
 
+    // The data-src attribute was turned into dataSrc by the camelCase function,
+    // But it's needed by cloudinary-core's responsive() function. Notice that it's not snake_case.
     if (attributes.dataSrc) {
       attributes['data-src'] = attributes.dataSrc;
     }
