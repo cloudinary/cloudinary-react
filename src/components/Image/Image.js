@@ -4,6 +4,14 @@ import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfigure
 import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
 
+const RESPONSIVE_OVERRIDE_WARNING = [
+  `Warning: passing a width of ${width} cancels the 'responsive' prop's effect on the image transformation.`,
+  `The 'responsive' prop affects the image transformation only when width === 'auto'.`,
+  `Passing 'width="auto" responsive' will affect the actual image width that is fetched from Cloudinary.`,
+  `The 'responsive' prop causes the Image component to request an image which width is equal to the width of it's container.`,
+  `When passing 'width="auto" responsive', you can set the <img> element width by passing a 'style' prop`
+].join('\n');
+
 /**
  * A component representing a Cloudinary served image
  */
@@ -19,20 +27,12 @@ class Image extends CloudinaryComponent {
    * @return true when this image element should be made responsive, false otherwise.
    */
   isResponsive = () => {
-    const {imgElement} = this;
     const {responsive, width} = this.getExtendedProps();
-    const isElement = imgElement && imgElement.current;
-
     if (responsive && width !== 'auto') {
-      console.warn(
-        `Warning: 'responsive' prop does not affect the image transformation when width !== 'auto'.`, '\n',
-        `When passing 'width="auto" responsive', you can set the <img> element width by passing a 'style' prop`, '\n',
-        `Passing 'width="auto" responsive' will affect the actual image width that is fetched from Cloudinary.`, '\n',
-        `The 'responsive' prop causes the Image component to request an image which width is equal to the width of it's container.`
-      );
+      console.warn(RESPONSIVE_OVERRIDE_WARNING);
     }
 
-    return responsive && isElement
+    return responsive && this.imgElement && this.imgElement.current;
   }
 
   /**
