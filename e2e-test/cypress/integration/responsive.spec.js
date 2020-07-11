@@ -20,7 +20,6 @@ describe('Responsive Image', () => {
       .should('have.attr', 'data-src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
     cy.get('#responsive-override')
       .should('have.attr', 'src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
-    // TODO: after this bug is fixed in core, should update core version, and then this test should pass.
     cy.get('#responsive-override')
       .should('have.attr', 'width').should('equal', '100')
   });
