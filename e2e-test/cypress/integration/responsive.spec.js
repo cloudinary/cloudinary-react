@@ -17,26 +17,29 @@ describe('Responsive Image', () => {
   // "overrides" the responsiveness. in other words, specifying a width value is stronger then the 'responsive' prop.
   it('Should generate transformation with specified width value', () => {
     cy.get('#responsive-override')
-      .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
+      .should('have.attr', 'data-src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
     cy.get('#responsive-override')
-      .should('have.attr', 'src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
+      .should('have.attr', 'src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_100/sample')
+    // TODO: after this bug is fixed in core, should update core version, and then this test should pass.
+    cy.get('#responsive-override')
+      .should('have.attr', 'width').should('equal', '100')
   });
   it('Responsive Image', () => {
     cy.get('#responsive')
-      .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
+      .should('have.attr', 'data-src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
     cy.get('#responsive')
-      .should('have.attr', 'src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_400/sample')
+      .should('have.attr', 'src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_400/sample')
   });
   it('Disabled Breakpoints', () => {
     cy.get('#responsive')
-      .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
+      .should('have.attr', 'data-src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
     cy.get('#disable-breakpoints')
-      .should('have.attr', 'src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_330/sample')
+      .should('have.attr', 'src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_330/sample')
   });
   it('Enabled Breakpoints', () => {
     cy.get('#responsive')
-      .should('have.attr', 'data-src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
+      .should('have.attr', 'data-src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample')
     cy.get('#breakpoints')
-      .should('have.attr', 'src').should('equal','http://res.cloudinary.com/demo/image/upload/c_scale,w_450/sample')
+      .should('have.attr', 'src').should('equal', 'http://res.cloudinary.com/demo/image/upload/c_scale,w_450/sample')
   });
 });

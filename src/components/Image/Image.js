@@ -1,6 +1,6 @@
 import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive, getConfiguredCloudinary} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
 import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
 
