@@ -1,3 +1,10 @@
+1.6.1 / 2020-07-11
+==================
+
+* Fix bug where image width was set to 'null' for responsive images
+* Add a warning when 'responsive' prop is not affecting the transformation (#176)
+* Update cloudinary-core dependency to version 2.10.3
+
 1.6.0 / 2020-07-06
 ==================
 
