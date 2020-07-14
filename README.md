@@ -60,12 +60,17 @@ Optional:
 
 ## Usage
 
-The library includes 4 Elements:
+The library includes 6 Components:
 
 * CloudinaryContext
 * Image
+* Audio
 * Video
 * Transformation
+* Placeholder - can only be used as child of an Image component
+
+## Components Demo
+Storybook for the components is available [here](https://cloudinary.github.io/cloudinary-react/)
 
 ### CloudinaryContext
 CloudinaryContext allows you to define shared parameters that are applied to all children elements.
@@ -114,6 +119,13 @@ Stay tuned for updates, tips and tutorials: [Blog](http://cloudinary.com/blog), 
 ## Join the Community ##########################################################
 
 Impact the product, hear updates, test drive new features and more! Join [here](https://www.facebook.com/groups/CloudinaryCommunity).
+
+## Updating github pages
+The github pages source is the "gh-pages" branch. To generate updated storybook:
+1. Switch to "gh-pages" branch
+2. pull from master
+3. rebuild storybook by running "npm run build-storybook"
+4. commit and push
 
 ## License
 
