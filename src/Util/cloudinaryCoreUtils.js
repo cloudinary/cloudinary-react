@@ -89,5 +89,6 @@ export {
   getVideoTag,
   makeElementResponsive,
   getConfiguredCloudinary,
-  toCamelCaseKeys
+  toCamelCaseKeys,
+  toSnakeCaseKeys
 };

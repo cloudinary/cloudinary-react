@@ -190,4 +190,12 @@ describe('Video', () => {
     expect(video.prop('plays_inline')).to.equal(undefined);
     expect(video.prop('auto_play')).to.equal(undefined);
   });
+  it('should not change kebab-case param names', () => {
+    let tag = mount(
+      <Video publicId="dog" cloudName="demo" data-testid="testing"/>
+    );
+
+    const video = tag.find('video');
+    expect(video.prop('data-testid')).to.equal("testing");
+  });
 });

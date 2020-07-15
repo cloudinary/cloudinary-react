@@ -94,7 +94,7 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
   });
-  it('should not change non snake_case param names', () => {
+  it('should not change kebab-case param names', () => {
     let tag = mount(
       <Image publicId="sample" cloudName="demo" data-testid="testing"/>
     );
