@@ -7,20 +7,55 @@ import {Cloudinary, Util} from "cloudinary-core";
 const nonEmpty = (obj) => Object.entries(obj).reduce((a, [k, v]) => (v == null ? a : { ...a, [k]: v }), {});
 
 /**
+ * Check if given key is in kebab-case
+ * @param key
+ * @return {boolean} true if kebab-case, false otherwise
+ */
+const isKebabCase = (key) => (!!(key && key.indexOf('-') > 0));
+
+/**
+ * Convert to snake_case if given key isn't kebab-case
+ * @param key
+ * @return {*}
+ */
+const snakeCaseConverter = (key) => (isKebabCase(key) ? key : Util.snakeCase(key));
+
+/**
+ * Convert to camelCase if given key isn't kebab-case
+ * @param key
+ * @return {*}
+ */
+const camelCaseConverter = (key) => (isKebabCase(key) ? key : Util.camelCase(key));
+
+/**
+ * Convert all keys which are not kebab-case to snake_case
+ * @param obj
+ * @return {Object}
+ */
+const toSnakeCaseKeys = (obj) => (Util.convertKeys(obj, snakeCaseConverter));
+
+/**
+ * Convert all keys which are not kebab-case to camelCase
+ * @param obj
+ * @return {Object}
+ */
+const toCamelCaseKeys = (obj) => (Util.convertKeys(obj, camelCaseConverter));
+
+/**
  * Generated a configured Cloudinary object.
  * @param extendedProps React props combined with custom Cloudinary configuration options
  * @return {Cloudinary} configured using extendedProps
  */
 const getConfiguredCloudinary = (extendedProps) => {
   const { public_id, ...ops } = nonEmpty(extendedProps); // Remove null/undefined props
-  const options = Util.withSnakeCaseKeys(ops);
+  const options = toSnakeCaseKeys(ops);
   return Cloudinary.new(options);
 };
 
 const getTag = (props, tagType) => {
   const { publicId, ...ops} = props; // Remove null/undefined props
   const cld = getConfiguredCloudinary(ops);
-  return cld[`${tagType}Tag`](publicId, Util.withSnakeCaseKeys(ops));
+  return cld[`${tagType}Tag`](publicId, toSnakeCaseKeys(ops));
 };
 
 /**
@@ -53,5 +88,6 @@ export {
   getImageTag,
   getVideoTag,
   makeElementResponsive,
-  getConfiguredCloudinary
+  getConfiguredCloudinary,
+  toCamelCaseKeys
 };

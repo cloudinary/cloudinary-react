@@ -94,6 +94,13 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
   });
+  it('should not change non snake_case param names', () => {
+    let tag = mount(
+      <Image publicId="sample" cloudName="demo" data-testid="testing"/>
+    );
+
+    expect(tag.html()).to.equal(`<img data-testid="testing" src="http://res.cloudinary.com/demo/image/upload/sample">`);
+  });
   it('should update on prop change', () => {
     let tag = mount(<Image publicId="sample" cloudName="demo"/>);
     expect(tag.find('img').prop('src')).to.equal('http://res.cloudinary.com/demo/image/upload/sample');
