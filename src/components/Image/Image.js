@@ -1,6 +1,6 @@
 import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive, toCamelCaseKeys} from "../../Util";
+import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
 import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
 
@@ -55,8 +55,14 @@ class Image extends CloudinaryComponent {
     const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
 
-    //React requires camelCase instead of snake_case attributes
-    const attributes = toCamelCaseKeys({...getImageTag(options).attributes(), ...nonCloudinaryProps});
+    // React requires camelCase instead of snake_case attributes
+    const attributes = ({...Util.withCamelCaseKeys(getImageTag(options).attributes()), ...nonCloudinaryProps});
+
+    // We want to keep 'data-src' if it exists
+    if (attributes.dataSrc) {
+      attributes['data-src'] = attributes.dataSrc;
+      delete attributes.dataSrc;
+    }
 
     // Set placeholder Id
     if (placeholder && attributes.id) {

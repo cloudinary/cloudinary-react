@@ -99,7 +99,8 @@ describe('Image', () => {
       <Image publicId="sample" cloudName="demo" data-testid="testing"/>
     );
 
-    expect(tag.html()).to.equal(`<img data-testid="testing" src="http://res.cloudinary.com/demo/image/upload/sample">`);
+    expect(tag.find('img').prop('data-testid')).to.equal('testing');
+    expect(tag.find('img').prop('datatestid')).to.equal(undefined);
   });
   it('should update on prop change', () => {
     let tag = mount(<Image publicId="sample" cloudName="demo"/>);

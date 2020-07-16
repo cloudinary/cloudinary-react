@@ -197,5 +197,6 @@ describe('Video', () => {
 
     const video = tag.find('video');
     expect(video.prop('data-testid')).to.equal("testing");
+    expect(video.prop('datatestid')).to.equal(undefined);
   });
 });
