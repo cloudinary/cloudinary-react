@@ -20,7 +20,6 @@ const getConfiguredCloudinary = (extendedProps) => {
 const getTag = (props, tagType) => {
   const { publicId, ...ops} = props; // Remove null/undefined props
   const cld = getConfiguredCloudinary(ops);
-  //return cld[`${tagType}Tag`](publicId, toSnakeCaseKeys(ops));
   return cld[`${tagType}Tag`](publicId, Util.withSnakeCaseKeys(ops));
 };
 

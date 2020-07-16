@@ -61,7 +61,6 @@ class Image extends CloudinaryComponent {
     // We want to keep 'data-src' if it exists
     if (attributes.dataSrc) {
       attributes['data-src'] = attributes.dataSrc;
-      delete attributes.dataSrc;
     }
 
     // Set placeholder Id
@@ -69,14 +68,14 @@ class Image extends CloudinaryComponent {
       attributes.id = attributes.id + '-cld-placeholder';
     }
 
-    // Set dataSrc if lazy loading and not in view
+    // Set data-src if lazy loading and not in view
     if (!isInView && this.shouldLazyLoad(options)) {
-      attributes['data-src'] = attributes['data-src'] || attributes.src;
+      attributes['data-src'] = attributes.dataSrc || attributes.src;
       delete attributes.src;
     }
 
     // Remove unneeded attributes,
-    ['accessibility', 'placeholder', 'breakpoints'].forEach(attr => {
+    ['dataSrc', 'accessibility', 'placeholder', 'breakpoints'].forEach(attr => {
       delete attributes[attr];
     });
 
