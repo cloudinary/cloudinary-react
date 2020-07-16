@@ -1,3 +1,10 @@
+1.6.2 / 2020-07-16
+==================
+
+* Fix bug where non Cloudinary attribute names were changed (#181)
+* Add test for image update on prop change (#174)
+* Update readme: Audio, Placeholder & storybook
+
 1.6.1 / 2020-07-11
 ==================
 
