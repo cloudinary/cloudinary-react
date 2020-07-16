@@ -71,21 +71,16 @@ class Video extends CloudinaryComponent {
     } = this.getMergedProps();
 
     options = CloudinaryComponent.normalizeOptions(options, {});
-    const ops = extractCloudinaryProps(options);
-    options = {...ops.cloudinaryProps, ...ops.cloudinaryReactProps};
-    /*
-    Object.keys(options).forEach(k=>{
-      if (Transformation.meth)
-    });
-    */
+    const {cloudinaryProps, cloudinaryReactProps, nonCloudinaryProps} = extractCloudinaryProps(options);
+    options = {...cloudinaryProps, ...cloudinaryReactProps};
 
     //const snakeCaseOptions = toSnakeCaseKeys(options);
     const snakeCaseOptions = Util.withSnakeCaseKeys(options);
     const cld = Cloudinary.new(snakeCaseOptions);
 
-    // Let cloudinary-core generate this video tag attributes
-    //const tagAttributes = toCamelCaseKeys(cld.videoTag(publicId, options).attributes());
-    const tagAttributes = {...Util.withCamelCaseKeys(cld.videoTag(publicId, options).attributes()), ...ops.nonCloudinaryProps};
+    // Use cloudinary-core to generate this video tag's attributes
+    let tagAttributes = cld.videoTag(publicId, options).attributes();
+    tagAttributes = {...Util.withCamelCaseKeys(tagAttributes), ...nonCloudinaryProps};
 
     // Aggregate child transformations, used for generating <source> tags for this video element
     const childTransformations = this.getTransformation({...options, children});
