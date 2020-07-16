@@ -55,26 +55,23 @@ class Image extends CloudinaryComponent {
     const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
 
-    let attributes = {...getImageTag(options).attributes(), ...nonCloudinaryProps};
+    // React requires camelCase instead of snake_case attributes
+    const attributes = ({...Util.withCamelCaseKeys(getImageTag(options).attributes()), ...nonCloudinaryProps});
 
-    //React requires camelCase instead of snake_case attributes
-    attributes = Util.withCamelCaseKeys(attributes);
+    // We want to keep 'data-src' if it exists
+    if (attributes.dataSrc) {
+      attributes['data-src'] = attributes.dataSrc;
+    }
 
     // Set placeholder Id
     if (placeholder && attributes.id) {
       attributes.id = attributes.id + '-cld-placeholder';
     }
 
-    // Set dataSrc if lazy loading and not in view
+    // Set data-src if lazy loading and not in view
     if (!isInView && this.shouldLazyLoad(options)) {
-      attributes.dataSrc = attributes.dataSrc || attributes.src;
+      attributes['data-src'] = attributes.dataSrc || attributes.src;
       delete attributes.src;
-    }
-
-    // The data-src attribute was turned into dataSrc by the camelCase function,
-    // But it's needed by cloudinary-core's responsive() function. Notice that it's not snake_case.
-    if (attributes.dataSrc) {
-      attributes['data-src'] = attributes.dataSrc;
     }
 
     // Remove unneeded attributes,
@@ -155,31 +152,38 @@ class Image extends CloudinaryComponent {
     });
   };
 
+  renderPlaceholder = (placeholder, attributes) => {
+    attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
+    attributes.onLoad = this.handleImageLoaded;
+    const placeholderWrapperStyle = {display: 'inline'}
+    const placeholderAttributes = this.getAttributes({placeholder: placeholder.props.type});
+
+    return (
+      <Fragment>
+        {this.renderImage(attributes)}
+        <div style={placeholderWrapperStyle}>
+          <img {...placeholderAttributes}/>
+        </div>
+      </Fragment>
+    );
+  };
+
+  renderImage = (attributes) => {
+    return <img ref={this.attachRef} {...attributes}/>
+  }
+
   render() {
-    const {attachRef, getAttributes, handleImageLoaded} = this;
+    const {isLoaded} = this.state;
     const {children} = this.getExtendedProps();
     const placeholder = this.getChildPlaceholder(children);
-    const {isLoaded} = this.state;
+    const attributes = this.getAttributes();
 
-    const attributes = getAttributes();
-
-    //If image wasn't loaded and there's a placeholder then we render it alongside the image.
+    //If image wasn't loaded and there's a child placeholder then we render it.
     if (!isLoaded && placeholder) {
-      const placeholderStyle = {display: isLoaded ? 'none' : 'inline'}
-      attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
-      attributes.onLoad = handleImageLoaded;
-      const placeholderAttributes = getAttributes({placeholder: placeholder.props.type});
-
-      return (
-        <Fragment>
-          <img ref={attachRef} {...attributes} />
-          <div style={placeholderStyle}>
-            <img {...placeholderAttributes}/>
-          </div>
-        </Fragment>
-      );
+      return this.renderPlaceholder(placeholder, attributes);
     }
-    return <img ref={attachRef} {...attributes}/>
+
+    return this.renderImage(attributes);
   }
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Cloudinary, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
+import extractCloudinaryProps from "../../Util/extractCloudinaryProps";
 
 /**
  * A component representing a Cloudinary served video
@@ -70,11 +71,16 @@ class Video extends CloudinaryComponent {
     } = this.getMergedProps();
 
     options = CloudinaryComponent.normalizeOptions(options, {});
+    const {cloudinaryProps, cloudinaryReactProps, nonCloudinaryProps} = extractCloudinaryProps(options);
+    options = {...cloudinaryProps, ...cloudinaryReactProps};
+
+    //const snakeCaseOptions = toSnakeCaseKeys(options);
     const snakeCaseOptions = Util.withSnakeCaseKeys(options);
     const cld = Cloudinary.new(snakeCaseOptions);
 
-    // Let cloudinary-core generate this video tag attributes
-    const tagAttributes = Util.withCamelCaseKeys(cld.videoTag(publicId, options).attributes());
+    // Use cloudinary-core to generate this video tag's attributes
+    let tagAttributes = cld.videoTag(publicId, options).attributes();
+    tagAttributes = {...Util.withCamelCaseKeys(tagAttributes), ...nonCloudinaryProps};
 
     // Aggregate child transformations, used for generating <source> tags for this video element
     const childTransformations = this.getTransformation({...options, children});
