@@ -87,14 +87,18 @@ class Image extends CloudinaryComponent {
    */
   update = () => {
     const {isInView} = this.state;
+    const shouldLazyLoad = !isInView && this.shouldLazyLoad(this.getExtendedProps());
 
-    if (this.isResponsive()) {
-      const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
-      this.listenerRemovers.push(removeListener);
-    }
-
-    if (!isInView && this.shouldLazyLoad(this.getExtendedProps())) {
+    // Handle lazy loading
+    if (shouldLazyLoad) {
+      // Will set this.state.isInView = true when in view
       Util.detectIntersection(this.imgElement.current, this.onIntersect);
+    } else {
+      // Handle responsive only if lazy loading wasn't requested or already handled
+      if (this.isResponsive()) {
+        const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
+        this.listenerRemovers.push(removeListener);
+      }
     }
   }
 
