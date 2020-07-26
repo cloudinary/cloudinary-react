@@ -1,3 +1,9 @@
+1.6.3 / 2020-07-26
+==================
+
+* Fix lazy loading of responsive images (#182)
+* Update cloudinary-core to version 2.11.0
+
 1.6.2 / 2020-07-16
 ==================
 
