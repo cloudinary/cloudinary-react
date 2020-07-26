@@ -1,3 +1,8 @@
+1.6.5 / 2020-07-26
+==================
+
+* Fix lazy loading of responsive images in Safari
+
 1.6.4 / 2020-07-26
 ==================
 
