@@ -42,6 +42,10 @@ class Image extends CloudinaryComponent {
     const extendedProps = this.getExtendedProps();
     const {children, innerRef, ...options} = {...extendedProps, ...this.getTransformation(extendedProps)};
 
+    if (!this.shouldLazyLoad()){
+      delete options.loading;
+    }
+
     return options;
   }
 
