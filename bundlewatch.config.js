@@ -2,7 +2,7 @@ const bundlewatchConfig = {
   files: [
     {
       path: './dist/cloudinary-react.js',
-      maxSize: '43kb'
+      maxSize: '44kb'
     }
   ],
   defaultCompression: 'gzip',
