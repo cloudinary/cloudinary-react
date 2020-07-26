@@ -198,9 +198,9 @@ describe('Image', () => {
 
         expect(tag.state().isInView).to.equal(true);
         expect(tag.html()).to.equal([
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/sample" style="opacity:0;position:absolute"/>`,
+          `<img src="http://res.cloudinary.com/demo/image/upload/sample" style="opacity:0;position:absolute"/>`,
           `<div style="display:inline">`,
-          `<img loading="lazy" src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
+          `<img src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
           `</div>`
         ].join(''));
       });
