@@ -50,7 +50,6 @@ class Image extends CloudinaryComponent {
    * @return attributes for the underlying <img> element.
    */
   getAttributes = (additionalOptions = {}) => {
-    const {isInView} = this.state;
     const {placeholder} = additionalOptions;
     const options = {...this.getOptions(), ...additionalOptions};
     const {nonCloudinaryProps} = extractCloudinaryProps(options);
@@ -69,7 +68,7 @@ class Image extends CloudinaryComponent {
     }
 
     // Set data-src if lazy loading and not in view
-    if (!isInView && this.shouldLazyLoad(options)) {
+    if (this.shouldLazyLoad()) {
       attributes['data-src'] = attributes.dataSrc || attributes.src;
       delete attributes.src;
     }
@@ -86,11 +85,8 @@ class Image extends CloudinaryComponent {
    * Update this image using cloudinary-core
    */
   update = () => {
-    const {isInView} = this.state;
-    const shouldLazyLoad = !isInView && this.shouldLazyLoad(this.getExtendedProps());
-
     // Handle lazy loading
-    if (shouldLazyLoad) {
+    if (this.shouldLazyLoad()) {
       // Will set this.state.isInView = true when in view
       Util.detectIntersection(this.imgElement.current, this.onIntersect);
     } else {
@@ -119,8 +115,10 @@ class Image extends CloudinaryComponent {
     }
   };
 
-  shouldLazyLoad = ({loading}) => {
-    return loading === "lazy" || loading === "auto";
+  shouldLazyLoad = () => {
+    const {loading} = this.getExtendedProps();
+    const {isInView} = this.state;
+    return !isInView && (loading === "lazy" || loading === "auto");
   }
 
   /**
