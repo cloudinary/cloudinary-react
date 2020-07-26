@@ -6,7 +6,8 @@ const tests = [
   'responsive',
   'placeholder',
   'lazy',
-  'lazyPlaceholder'
+  'lazyPlaceholder',
+  'lazyResponsive'
 ];
 
 function App() {
@@ -67,6 +68,18 @@ function App() {
           <Image id="lazyPlaceholder" publicId="sample" cloudName="demo" width="300" crop="scale" loading="lazy">
             <Placeholder/>
           </Image>
+        </div>
+      </div>
+      }
+      {test === 'lazyResponsive' &&
+      <div>
+        <h1>Lazy Responsive</h1>
+        <div style={{marginTop: '3000px'}}>
+          <div style={{width: "330px"}}>
+            <Image id="lazyResponsive" publicId="sample" cloudName="demo" width="auto" crop="scale" loading="lazy"
+                   responsive>
+            </Image>
+          </div>
         </div>
       </div>
       }
