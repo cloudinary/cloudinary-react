@@ -192,11 +192,8 @@ class Image extends CloudinaryComponent {
   getPlaceholderType = () => {
     const {children} = this.getExtendedProps();
     const placeholder = this.getChildPlaceholder(children);
-    if (!placeholder) {
-      return null;
-    }
-
-    return placeholder.props.type;
+    
+    return placeholder ? placeholder.props.type : null;
   }
 
   render() {
