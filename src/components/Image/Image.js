@@ -186,7 +186,7 @@ class Image extends CloudinaryComponent {
   };
 
   renderImage = (attributes) => {
-    return <img key="cld-image" ref={this.attachRef} {...attributes}/>
+    return <img ref={this.attachRef} {...attributes}/>
   }
 
   getPlaceholderType = () => {
