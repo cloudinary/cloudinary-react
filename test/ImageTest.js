@@ -205,6 +205,21 @@ describe('Image', () => {
         ].join(''));
       });
     });
+    describe('Responsive Placeholder', () => {
+      let tag = shallow(
+        <Image publicId="sample" cloudName="demo" width="auto" crop="scale" responsive>
+          <Placeholder/>
+        </Image>
+      );
+      it('should have data-src for placeholder and image', function () {
+        expect(tag.html()).to.equal([
+          `<img data-src="http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample" style="opacity:0;position:absolute"/>`,
+          `<div style="display:inline">`,
+          `<img data-src="http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/e_blur:2000,f_auto,q_1/sample"/>`,
+          `</div>`
+        ].join(''));
+      });
+    });
     describe('Responsive Placeholder With Lazy Loading', () => {
       let tag = shallow(
         <Image publicId="sample" cloudName="demo" loading="lazy" width="auto" crop="scale" responsive>

@@ -4,10 +4,10 @@ describe('Placeholder Image', () => {
     cy.visit('/');
     cy.get('#placeholderBtn').click();
   });
-  
+
   /**
    * Cypress seems to be not fast enough to catch the placeholder render.
-   * So we test that the placeholder is rendered in out Unit Tests,
+   * So we test that the placeholder is rendered in our Unit Tests,
    * And here we make sure that eventually we render the original image.
    */
   it('Show original image', () => {
