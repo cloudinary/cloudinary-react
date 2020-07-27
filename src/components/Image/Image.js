@@ -202,11 +202,11 @@ class Image extends CloudinaryComponent {
   render() {
     const {isLoaded} = this.state;
     const attributes = this.getAttributes();
-    const placeholderType = this.getPlaceholderType();
+    const placeholder = this.getPlaceholderType();
 
     //If image wasn't loaded and there's a child placeholder then we render it.
-    if (!isLoaded && placeholderType) {
-      return this.renderPlaceholder(placeholderType, attributes);
+    if (!isLoaded && placeholder) {
+      return this.renderPlaceholder(placeholder, attributes);
     }
 
     return this.renderImage(attributes);
