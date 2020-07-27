@@ -7,7 +7,8 @@ const tests = [
   'placeholder',
   'lazy',
   'lazyPlaceholder',
-  'lazyResponsive'
+  'lazyResponsive',
+  'responsivePlaceholder'
 ];
 
 function App() {
@@ -80,6 +81,17 @@ function App() {
                    responsive>
             </Image>
           </div>
+        </div>
+      </div>
+      }
+      }
+      {test === 'responsivePlaceholder' &&
+      <div>
+        <h1>Responsive Placeholder</h1>
+        <div style={{width: "330px"}}>
+          <Image id="responsivePlaceholder" publicId="sample" cloudName="demo" width="auto" crop="scale" responsive>
+            <Placeholder/>
+          </Image>
         </div>
       </div>
       }

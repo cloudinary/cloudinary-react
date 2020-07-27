@@ -19,6 +19,7 @@ class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
     this.imgElement = createRef();
+    this.placeholderElement = createRef();
     this.state = {isLoaded: false}
     this.listenerRemovers = [];
   }
@@ -96,8 +97,18 @@ class Image extends CloudinaryComponent {
     } else {
       // Handle responsive only if lazy loading wasn't requested or already handled
       if (this.isResponsive()) {
-        const removeListener = makeElementResponsive(this.imgElement.current, this.getOptions());
-        this.listenerRemovers.push(removeListener);
+        const options = this.getOptions();
+        const placeholder = this.getPlaceholderType();
+
+        // Make placeholder responsive
+        if (placeholder) {
+          const removePlaceholderListener = makeElementResponsive(this.placeholderElement.current, {...options, placeholder});
+          this.listenerRemovers.push(removePlaceholderListener);
+        }
+
+        // Make original image responsive
+        const removeImgListener = makeElementResponsive(this.imgElement.current, options);
+        this.listenerRemovers.push(removeImgListener);
       }
     }
   }
@@ -158,17 +169,18 @@ class Image extends CloudinaryComponent {
     });
   };
 
+
   renderPlaceholder = (placeholder, attributes) => {
     attributes.style = {...(attributes.style || {}), opacity: 0, position: 'absolute'}
     attributes.onLoad = this.handleImageLoaded;
     const placeholderWrapperStyle = {display: 'inline'}
-    const placeholderAttributes = this.getAttributes({placeholder: placeholder.props.type});
+    const placeholderAttributes = this.getAttributes({placeholder});
 
     return (
       <Fragment>
         {this.renderImage(attributes)}
         <div style={placeholderWrapperStyle}>
-          <img {...placeholderAttributes}/>
+          <img ref={this.placeholderElement} {...placeholderAttributes}/>
         </div>
       </Fragment>
     );
@@ -178,11 +190,17 @@ class Image extends CloudinaryComponent {
     return <img ref={this.attachRef} {...attributes}/>
   }
 
-  render() {
-    const {isLoaded} = this.state;
+  getPlaceholderType = () => {
     const {children} = this.getExtendedProps();
     const placeholder = this.getChildPlaceholder(children);
+
+    return placeholder ? placeholder.props.type : null;
+  }
+
+  render() {
+    const {isLoaded} = this.state;
     const attributes = this.getAttributes();
+    const placeholder = this.getPlaceholderType();
 
     //If image wasn't loaded and there's a child placeholder then we render it.
     if (!isLoaded && placeholder) {
