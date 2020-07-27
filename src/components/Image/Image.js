@@ -43,7 +43,7 @@ class Image extends CloudinaryComponent {
     const extendedProps = this.getExtendedProps();
     const {children, innerRef, ...options} = {...extendedProps, ...this.getTransformation(extendedProps)};
 
-    if (!this.shouldLazyLoad()) {
+    if (!this.shouldLazyLoad()){
       delete options.loading;
     }
 
@@ -81,7 +81,7 @@ class Image extends CloudinaryComponent {
     // Remove unneeded attributes,
     ['dataSrc', 'accessibility', 'placeholder', 'breakpoints'].forEach(attr => {
       delete attributes[attr];
-    })
+    });
 
     return attributes;
   }
@@ -100,12 +100,13 @@ class Image extends CloudinaryComponent {
         const options = this.getOptions();
         const placeholder = this.getPlaceholderType();
 
+        // Make placeholder responsive
         if (placeholder) {
-          const placeholderOptions = {...options, placeholder};
-          const removePlaceholderListener = makeElementResponsive(this.placeholderElement.current, placeholderOptions);
+          const removePlaceholderListener = makeElementResponsive(this.placeholderElement.current, {...options, placeholder});
           this.listenerRemovers.push(removePlaceholderListener);
         }
 
+        // Make original image responsive
         const removeImgListener = makeElementResponsive(this.imgElement.current, options);
         this.listenerRemovers.push(removeImgListener);
       }
@@ -192,7 +193,7 @@ class Image extends CloudinaryComponent {
   getPlaceholderType = () => {
     const {children} = this.getExtendedProps();
     const placeholder = this.getChildPlaceholder(children);
-    
+
     return placeholder ? placeholder.props.type : null;
   }
 
