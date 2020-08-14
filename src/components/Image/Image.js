@@ -72,8 +72,8 @@ class Image extends CloudinaryComponent {
       attributes.id = attributes.id + '-cld-placeholder';
     }
 
-    // Set data-src if lazy loading and not in view
-    if (this.shouldLazyLoad()) {
+    // Set data-src if lazy loading, not in view, and not a placeholder
+    if (!placeholder && this.shouldLazyLoad()) {
       attributes['data-src'] = attributes.dataSrc || attributes.src;
       delete attributes.src;
     }
