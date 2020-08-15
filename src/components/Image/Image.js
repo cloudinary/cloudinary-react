@@ -134,8 +134,6 @@ class Image extends CloudinaryComponent {
     }
   };
 
-
-
   shouldLazyLoad = () => {
     const {loading} = this.getExtendedProps();
     const isLoadingDesired = (loading === "lazy" || loading === "auto")
