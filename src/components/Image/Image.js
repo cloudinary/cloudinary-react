@@ -43,7 +43,7 @@ class Image extends CloudinaryComponent {
     const extendedProps = this.getExtendedProps();
     const {children, innerRef, ...options} = {...extendedProps, ...this.getTransformation(extendedProps)};
 
-    if (!this.shouldLazyLoad()){
+    if (!this.shouldLazyLoad() && !Util.isNativeLazyLoadSupported()){
       delete options.loading;
     }
 
@@ -62,6 +62,10 @@ class Image extends CloudinaryComponent {
     // React requires camelCase instead of snake_case attributes
     const attributes = ({...Util.withCamelCaseKeys(getImageTag(options).attributes()), ...nonCloudinaryProps});
 
+    if (placeholder) {
+      delete attributes.loading
+    }
+
     // We want to keep 'data-src' if it exists
     if (attributes.dataSrc) {
       attributes['data-src'] = attributes.dataSrc;
@@ -72,8 +76,8 @@ class Image extends CloudinaryComponent {
       attributes.id = attributes.id + '-cld-placeholder';
     }
 
-    // Set data-src if lazy loading, not in view, and not a placeholder
-    if (!placeholder && this.shouldLazyLoad()) {
+    // Set data-src if lazy loading and not in view
+    if (this.shouldLazyLoad()) {
       attributes['data-src'] = attributes.dataSrc || attributes.src;
       delete attributes.src;
     }
@@ -130,10 +134,13 @@ class Image extends CloudinaryComponent {
     }
   };
 
+
+
   shouldLazyLoad = () => {
     const {loading} = this.getExtendedProps();
+    const isLoadingDesired = (loading === "lazy" || loading === "auto")
     const {isInView} = this.state;
-    return !isInView && (loading === "lazy" || loading === "auto");
+    return !isInView && isLoadingDesired;
   }
 
   /**

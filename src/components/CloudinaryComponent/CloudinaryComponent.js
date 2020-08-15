@@ -56,7 +56,7 @@ class CloudinaryComponent extends PureComponent {
   /**
    * React function: Called when this element is in view
    */
-  onIntersect = () =>{
+  onIntersect = () => {
     this.setState({isInView: true})
   }
 

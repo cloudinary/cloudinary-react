@@ -177,11 +177,11 @@ describe('Image', () => {
         </Image>
       );
 
-      it('should have data-src for placeholder and image', function () {
+      it('should have data-src for placeholder and image, with lazy for image only', function () {
         expect(tag.html()).to.equal([
           `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/sample" style="opacity:0;position:absolute"/>`,
           `<div style="display:inline">`,
-          `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
+          `<img data-src="http://res.cloudinary.com/demo/image/upload/e_blur:2000,f_auto,q_1/sample"/>`,
           `</div>`
         ].join(''));
       });
@@ -226,11 +226,11 @@ describe('Image', () => {
           <Placeholder/>
         </Image>
       );
-      it('should have data-src for placeholder and image', function () {
+      it('should have data-src for image and placeholder, with lazy for image only', function () {
         expect(tag.html()).to.equal([
           `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/sample" style="opacity:0;position:absolute"/>`,
           `<div style="display:inline">`,
-          `<img loading="lazy" data-src="http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/e_blur:2000,f_auto,q_1/sample"/>`,
+          `<img data-src="http://res.cloudinary.com/demo/image/upload/c_scale,w_auto/e_blur:2000,f_auto,q_1/sample"/>`,
           `</div>`
         ].join(''));
       });
