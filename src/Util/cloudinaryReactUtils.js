@@ -1,5 +1,5 @@
 import {Transformation, Util} from "cloudinary-core";
-// props passed to core functions but not rendered as dom attributes
+// props passed to cloudinary-core but should not be rendered as dom attributes
 const CLOUDINARY_REACT_PROPS = ['accessibility', 'breakpoints', 'dataSrc', 'placeholder', 'publicId', 'signature'];
 
 // props passed to cloudinary-core for dom elements attributes generation
