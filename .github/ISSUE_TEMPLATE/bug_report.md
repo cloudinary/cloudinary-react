@@ -13,6 +13,12 @@ Before proceeding, please update to latest version and test if the issue persist
 ## Describe the bug in a sentence or two.
 …
 
+## Describe the desired/expected behavior.
+…
+
+## Link to reproduction of the issue on codepen/jsfiddle/etc.
+…
+
 ## Issue Type (Can be multiple)
 [ ] Build - Can’t install or import the SDK
 [ ] Babel - Babel errors or cross browser issues
