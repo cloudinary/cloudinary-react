@@ -94,13 +94,19 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).to.match(/fn_wasm:blur.wasm\/sample/);
   });
-  it('should not change kebab-case param names', () => {
+  describe('prop names', () => {
     let tag = mount(
-      <Image publicId="sample" cloudName="demo" data-testid="testing"/>
+      <Image publicId="sample" cloudName="demo" data-testid="testing" aria-describedby="testValue"/>
     );
-
-    expect(tag.find('img').prop('data-testid')).to.equal('testing');
-    expect(tag.find('img').prop('datatestid')).to.equal(undefined);
+    it('should not change kebab-case prop names', () => {
+      expect(tag.find('img').prop('data-testid')).to.equal('testing');
+      expect(tag.find('img').prop('aria-describedby')).to.equal('testValue');
+    });
+    it('should not duplicate attributes for kebab-case props', () => {
+      expect(tag.find('img').prop('datatestid')).to.not.exist;
+      expect(tag.find('img').prop('ariadescribedby')).to.not.exist;
+      expect(tag.html()).to.equal('<img src="http://res.cloudinary.com/demo/image/upload/sample" data-testid="testing" aria-describedby="testValue">');
+    });
   });
   it('should update on prop change', () => {
     let tag = mount(<Image publicId="sample" cloudName="demo"/>);

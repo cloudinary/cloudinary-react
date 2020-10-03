@@ -1,19 +1,13 @@
-import {Transformation, Util} from 'cloudinary-core';
+import {Transformation, Util} from "cloudinary-core";
+// props passed to core functions but not rendered as dom attributes
+const CLOUDINARY_REACT_PROPS = ['accessibility', 'breakpoints', 'dataSrc', 'placeholder', 'publicId', 'signature'];
 
-const CLOUDINARY_REACT_PROPS = {includeOwnBody: true};
-
+// props passed to cloudinary-core for dom elements attributes generation
 // Map Cloudinary props from array to object for efficient lookup
-const CLOUDINARY_PROPS = Transformation.PARAM_NAMES.map(Util.camelCase).concat(['publicId', 'breakpoints']).reduce(
-  (accumulator, cloudinaryPropName) => {
-    accumulator[cloudinaryPropName] = true;
-    return accumulator;
-  },
-  {}
+const CLOUDINARY_PROPS = Object.fromEntries(
+  [...Transformation.PARAM_NAMES, ...CLOUDINARY_REACT_PROPS]
+    .map(p => [Util.camelCase(p), true])
 );
-
-const isDefined = (props, key) => {
-  return (props[key] !== undefined && props[key] !== null);
-};
 
 /**
  * Extracts cloudinaryProps and nonCloudinaryProps from given props
@@ -21,7 +15,7 @@ const isDefined = (props, key) => {
  * @param props
  * @returns {{children: *, cloudinaryReactProps: {}, cloudinaryProps: {}, nonCloudinaryProps: {}}}
  */
-export default ({children, ...props}) => {
+const extractCloudinaryProps = ({children, ...props}) => {
   let result = {
     children,
     cloudinaryProps: {},
@@ -35,10 +29,10 @@ export default ({children, ...props}) => {
 
     //if valid and defined add to cloudinaryProps
     if (CLOUDINARY_PROPS[camelKey]) {
-      if (isDefined(props, key)) {
+      if (props[key] !== undefined && props[key] !== null) {
         result.cloudinaryProps[camelKey] = value;
       }
-    } else if (CLOUDINARY_REACT_PROPS[camelKey]) { //cloudinary-react spesific prop
+    } else if (camelKey === 'includeOwnBody') { //cloudinary-react specific prop
       result.cloudinaryReactProps[camelKey] = value;
     } else { //not valid so add to nonCloudinaryProps
       result.nonCloudinaryProps[key] = value;
@@ -46,4 +40,9 @@ export default ({children, ...props}) => {
   });
 
   return result;
+};
+
+export {
+  CLOUDINARY_REACT_PROPS,
+  extractCloudinaryProps
 };
