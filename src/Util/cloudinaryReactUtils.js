@@ -4,9 +4,12 @@ const CLOUDINARY_REACT_PROPS = ['accessibility', 'breakpoints', 'dataSrc', 'plac
 
 // props passed to cloudinary-core for dom elements attributes generation
 // Map Cloudinary props from array to object for efficient lookup
-const CLOUDINARY_PROPS = Object.fromEntries(
-  [...Transformation.PARAM_NAMES, ...CLOUDINARY_REACT_PROPS]
-    .map(p => [Util.camelCase(p), true])
+const CLOUDINARY_PROPS = [...Transformation.PARAM_NAMES, ...CLOUDINARY_REACT_PROPS].map(Util.camelCase).reduce(
+  (accumulator, cloudinaryPropName) => {
+    accumulator[cloudinaryPropName] = true;
+    return accumulator;
+  },
+  {}
 );
 
 /**
