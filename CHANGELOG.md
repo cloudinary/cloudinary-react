@@ -1,3 +1,9 @@
+1.6.7 / 2020-10-04
+==================
+
+* Fix duplicate attributes for kebab-case props (#196)
+* Update cloudinary-core version to 2.11.3
+
 1.6.6 / 2020-07-27
 ==================
 
