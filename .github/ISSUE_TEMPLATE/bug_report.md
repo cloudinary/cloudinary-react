@@ -43,7 +43,8 @@ Before proceeding, please update to latest version and test if the issue persist
 
 
 ## Versions and Libraries (fill in the version numbers)
-React Cloudinary SDK - 0.0.0
+Cloudinary-core - 0.0.0
+Cloudinary-react - 0.0.0
 React - 0.0.0
 Create-React-App - 0.0.0 / N/A
 Babel - 0.0.0
