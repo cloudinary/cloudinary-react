@@ -1,6 +1,6 @@
 import React, {createRef, Fragment} from 'react';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
+import {CLOUDINARY_REACT_PROPS, extractCloudinaryProps, getImageTag, makeElementResponsive} from "../../Util";
 import {Util} from "cloudinary-core";
 import PropTypes from "prop-types";
 
@@ -56,11 +56,13 @@ class Image extends CloudinaryComponent {
    */
   getAttributes = (additionalOptions = {}) => {
     const {placeholder} = additionalOptions;
-    const options = {...this.getOptions(), ...additionalOptions};
-    const {nonCloudinaryProps} = extractCloudinaryProps(options);
+    const options = extractCloudinaryProps({...this.getOptions(), ...additionalOptions});
+    const {cloudinaryProps, nonCloudinaryProps, cloudinaryReactProps} = options;
+    const imageTag = getImageTag({...cloudinaryProps, ...cloudinaryReactProps});
+    const cloudinaryAttributes = Util.withCamelCaseKeys(imageTag.attributes());
 
     // React requires camelCase instead of snake_case attributes
-    const attributes = ({...Util.withCamelCaseKeys(getImageTag(options).attributes()), ...nonCloudinaryProps});
+    const attributes = ({...cloudinaryAttributes, ...nonCloudinaryProps});
 
     // We want to keep 'data-src' if it exists
     if (attributes.dataSrc) {
@@ -79,7 +81,7 @@ class Image extends CloudinaryComponent {
     }
 
     // Remove unneeded attributes,
-    ['dataSrc', 'accessibility', 'placeholder', 'breakpoints'].forEach(attr => {
+    CLOUDINARY_REACT_PROPS.forEach(attr => {
       delete attributes[attr];
     });
 

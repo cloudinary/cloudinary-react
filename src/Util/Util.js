@@ -1,2 +1,2 @@
-export extractCloudinaryProps from './extractCloudinaryProps';
 export * from './cloudinaryCoreUtils';
+export * from './cloudinaryReactUtils'

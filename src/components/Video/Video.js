@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Cloudinary, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import extractCloudinaryProps from "../../Util/extractCloudinaryProps";
+import {extractCloudinaryProps} from "../../Util";
 
 /**
  * A component representing a Cloudinary served video
