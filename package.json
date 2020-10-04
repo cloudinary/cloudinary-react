@@ -58,7 +58,7 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "cloudinary-core": "^2.11.2",
+    "cloudinary-core": "^2.11.3",
     "prop-types": "^15.6.2"
   },
   "peerDependencies": {
