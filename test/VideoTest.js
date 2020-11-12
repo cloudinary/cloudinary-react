@@ -1,7 +1,11 @@
 import React from 'react';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai'
 import chai, {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import cloudinary from './cloudinary-proxy';
+chai.use(sinonChai);
+
 const {Video, Transformation} = cloudinary;
 chai.use(require('chai-string'));
 
@@ -199,20 +203,17 @@ describe('Video', () => {
     expect(video.prop('data-testid')).to.equal("testing");
     expect(video.prop('datatestid')).to.equal(undefined);
   });
-  it('should have a unique key prop that ends with all source types', () => {
-    let tag = mount(
-      <Video publicId="dog" cloudName="demo"/>
+  it('reloads video on props change', () => {
+    const tag = shallow(
+      <Video cloudName='demo' publicId='dog'/>
     );
 
-    const video = tag.find('video');
-    expect(video.key()).to.equal('http://res.cloudinary.com/demo/video/upload/dog.webm,mp4,ogv');
-  });
-  it('should have a unique key prop that ends with no source type', () => {
-    let tag = mount(
-      <Video publicId="dog" cloudName="demo" sourceTypes={null}/>
-    );
+    //detect calls for reloadVideo()
+    sinon.spy(tag.instance(), 'reloadVideo');
 
-    const video = tag.find('video');
-    expect(video.key()).to.equal('http://res.cloudinary.com/demo/video/upload/dog');
-  });
+    expect(tag.instance().reloadVideo).to.not.have.been.called;
+
+    tag.setProps({publicId: "cat"});
+    expect(tag.instance().reloadVideo).to.have.been.called;
+  })
 });

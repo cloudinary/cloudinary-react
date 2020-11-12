@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, createRef} from 'react';
 import PropTypes from 'prop-types';
 import {Transformation, Util} from 'cloudinary-core';
 import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
@@ -43,6 +43,7 @@ function only(source, keys = []) {
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
     super(props, context);
+    this.element = createRef();
   }
 
   render() {
@@ -156,6 +157,23 @@ class CloudinaryComponent extends PureComponent {
    */
   getExtendedProps = (props = this.props, context = this.getContext()) => {
     return CloudinaryComponent.normalizeOptions(context, props);
+  };
+
+  /**
+   * Attach both this.element and props.innerRef as ref to the given element
+   * @param element - the element to attach a ref to
+   */
+  attachRef = (element) => {
+    const {innerRef} = this.props;
+    this.element.current = element;
+
+    if (innerRef) {
+      if (innerRef instanceof Function) {
+        innerRef(element);
+      } else {
+        innerRef.current = element;
+      }
+    }
   };
 
   static contextType = CloudinaryContextType;

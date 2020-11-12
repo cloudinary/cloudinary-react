@@ -86,35 +86,45 @@ class Video extends CloudinaryComponent {
     const childTransformations = this.getTransformation({...options, children});
 
     let sources = null;
-    const videoElementKey = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
 
     if (Util.isArray(sourceTypes)) {
       // We have multiple sourceTypes, so we generate <source> tags.
       sources = this.generateSources(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
     } else {
-      // We have a single source type so we use the already generated video url.
-      tagAttributes.src = videoElementKey;
+      // We have a single source type so we generate the src attribute of this video element.
+      tagAttributes.src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
     }
 
-    return {sources, tagAttributes, videoElementKey};
+    return {sources, tagAttributes};
   };
+
+  reloadVideo = () => {
+    if (this.element && this.element.current){
+      this.element.current.load();
+    }
+  }
+
+  componentDidUpdate() {
+    // Load video on props change
+    this.reloadVideo();
+  }
+
+
 
   /**
    * Render a video element
    */
   render() {
-    const {innerRef, fallback, children} = this.props;
+    const {fallback, children} = this.props;
 
     const {
-      videoElementKey,
       tagAttributes, // Attributes of this video element
       sources        // <source> tags of this video element
     } = this.getVideoTagProps();
 
     return (
       <video
-        key={videoElementKey}
-        ref={innerRef}
+        ref={this.attachRef}
         {...tagAttributes}>
         {sources}
         {fallback}
