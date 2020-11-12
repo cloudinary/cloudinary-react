@@ -18,7 +18,6 @@ const RESPONSIVE_OVERRIDE_WARNING = [
 class Image extends CloudinaryComponent {
   constructor(props, context) {
     super(props, context);
-    this.imgElement = createRef();
     this.placeholderElement = createRef();
     this.state = {isLoaded: false}
     this.listenerRemovers = [];
@@ -33,7 +32,7 @@ class Image extends CloudinaryComponent {
       console.warn(RESPONSIVE_OVERRIDE_WARNING);
     }
 
-    return responsive && this.imgElement && this.imgElement.current;
+    return responsive && this.element && this.element.current;
   }
 
   /**
@@ -95,7 +94,7 @@ class Image extends CloudinaryComponent {
     // Handle lazy loading
     if (this.shouldLazyLoad()) {
       // Will set this.state.isInView = true when in view
-      Util.detectIntersection(this.imgElement.current, this.onIntersect);
+      Util.detectIntersection(this.element.current, this.onIntersect);
     } else {
       // Handle responsive only if lazy loading wasn't requested or already handled
       if (this.isResponsive()) {
@@ -109,28 +108,11 @@ class Image extends CloudinaryComponent {
         }
 
         // Make original image responsive
-        const removeImgListener = makeElementResponsive(this.imgElement.current, options);
+        const removeImgListener = makeElementResponsive(this.element.current, options);
         this.listenerRemovers.push(removeImgListener);
       }
     }
   }
-
-  /**
-   * Attach both this.imgElement and props.innerRef as ref to the given element
-   * @param imgElement - the element to attach a ref to
-   */
-  attachRef = (imgElement) => {
-    const {innerRef} = this.props;
-    this.imgElement.current = imgElement;
-
-    if (innerRef) {
-      if (innerRef instanceof Function) {
-        innerRef(imgElement);
-      } else {
-        innerRef.current = imgElement;
-      }
-    }
-  };
 
   shouldLazyLoad = () => {
     const {loading} = this.getExtendedProps();

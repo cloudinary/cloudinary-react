@@ -1,7 +1,11 @@
 import React from 'react';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai'
 import chai, {expect} from 'chai';
 import {shallow, mount} from 'enzyme';
 import cloudinary from './cloudinary-proxy';
+chai.use(sinonChai);
+
 const {Video, Transformation} = cloudinary;
 chai.use(require('chai-string'));
 
@@ -199,4 +203,17 @@ describe('Video', () => {
     expect(video.prop('data-testid')).to.equal("testing");
     expect(video.prop('datatestid')).to.equal(undefined);
   });
+  it('reloads video on props change', () => {
+    const tag = shallow(
+      <Video cloudName='demo' publicId='dog'/>
+    );
+
+    //detect calls for reloadVideo()
+    sinon.spy(tag.instance(), 'reloadVideo');
+
+    expect(tag.instance().reloadVideo).to.not.have.been.called;
+
+    tag.setProps({publicId: "cat"});
+    expect(tag.instance().reloadVideo).to.have.been.called;
+  })
 });

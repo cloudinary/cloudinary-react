@@ -98,11 +98,24 @@ class Video extends CloudinaryComponent {
     return {sources, tagAttributes};
   };
 
+  reloadVideo = () => {
+    if (this.element && this.element.current){
+      this.element.current.load();
+    }
+  }
+
+  componentDidUpdate() {
+    // Load video on props change
+    this.reloadVideo();
+  }
+
+
+
   /**
    * Render a video element
    */
   render() {
-    const {innerRef, fallback, children} = this.props;
+    const {fallback, children} = this.props;
 
     const {
       tagAttributes, // Attributes of this video element
@@ -111,7 +124,7 @@ class Video extends CloudinaryComponent {
 
     return (
       <video
-        ref={innerRef}
+        ref={this.attachRef}
         {...tagAttributes}>
         {sources}
         {fallback}
