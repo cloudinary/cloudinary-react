@@ -86,16 +86,17 @@ class Video extends CloudinaryComponent {
     const childTransformations = this.getTransformation({...options, children});
 
     let sources = null;
+    let videoElementKey = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
 
     if (Util.isArray(sourceTypes)) {
       // We have multiple sourceTypes, so we generate <source> tags.
       sources = this.generateSources(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
     } else {
-      // We have a single source type so we generate the src attribute of this video element.
-      tagAttributes.src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
+      // We have a single source type so we use the already generated video url.
+      tagAttributes.src = videoElementKey;
     }
 
-    return {sources, tagAttributes};
+    return {sources, tagAttributes, videoElementKey};
   };
 
   /**
@@ -105,12 +106,14 @@ class Video extends CloudinaryComponent {
     const {innerRef, fallback, children} = this.props;
 
     const {
+      videoElementKey,
       tagAttributes, // Attributes of this video element
       sources        // <source> tags of this video element
     } = this.getVideoTagProps();
 
     return (
       <video
+        key={videoElementKey}
         ref={innerRef}
         {...tagAttributes}>
         {sources}

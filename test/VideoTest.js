@@ -199,4 +199,20 @@ describe('Video', () => {
     expect(video.prop('data-testid')).to.equal("testing");
     expect(video.prop('datatestid')).to.equal(undefined);
   });
+  it('should have a unique key prop that ends with all source types', () => {
+    let tag = mount(
+      <Video publicId="dog" cloudName="demo"/>
+    );
+
+    const video = tag.find('video');
+    expect(video.key()).to.equal('http://res.cloudinary.com/demo/video/upload/dog.webm,mp4,ogv');
+  });
+  it('should have a unique key prop that ends with no source type', () => {
+    let tag = mount(
+      <Video publicId="dog" cloudName="demo" sourceTypes={null}/>
+    );
+
+    const video = tag.find('video');
+    expect(video.key()).to.equal('http://res.cloudinary.com/demo/video/upload/dog');
+  });
 });
