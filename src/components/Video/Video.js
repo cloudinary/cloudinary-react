@@ -86,7 +86,7 @@ class Video extends CloudinaryComponent {
     const childTransformations = this.getTransformation({...options, children});
 
     let sources = null;
-    let videoElementKey = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
+    const videoElementKey = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
 
     if (Util.isArray(sourceTypes)) {
       // We have multiple sourceTypes, so we generate <source> tags.
