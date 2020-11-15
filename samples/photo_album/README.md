@@ -22,7 +22,7 @@ Run `yarn` to install the required dependencies for this module.
 
 ## Running ##
 
-Run `yarn serve` to start the server and automatically open a browser and navigate to the application's url.
+Run `yarn start` to build the app and serve it using a local server.
 
 The application is deployed at http://localhost:5000/
 

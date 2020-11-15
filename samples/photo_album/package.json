@@ -14,9 +14,8 @@
     "superagent": "^6.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "yarn run build && serve -s build",
     "build": "react-scripts build",
-    "serve": "yarn run build && serve -s build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
