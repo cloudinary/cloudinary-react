@@ -61,18 +61,23 @@ class PhotoList extends Component {
     }
 
     uploadImageWithCloudinary() {
-        const uploadOptions = { tags: 'myphotoalbum', ...this.context };
-        openUploadWidget(uploadOptions, (error, photos) => {
-            if (!error) {
-                this.props.onPhotosUploaded(photos);
-            } else {
-                console.log(error);
+        const uploadOptions = { tags: ['myphotoalbum'], ...this.context };
+        console.log(uploadOptions);
+
+        openUploadWidget(uploadOptions, (error, result) => {
+          if (!error) {
+            const {event, info} = result;
+            if (event === "success") {
+              this.props.onPhotosUploaded([info]);
             }
+          } else {
+            console.log(error);
+          }
         });
     }
-
-    static contextType = CloudinaryContext.contextType;
 }
+
+PhotoList.contextType = CloudinaryContext.contextType;
 
 PhotoList.propTypes = {
     photos: PropTypes.array,
@@ -85,7 +90,5 @@ const PhotoListContainer = connect(
         onPhotosUploaded: photosUploaded,
     }
 )(PhotoList);
-
-Object.assign(PhotoListContainer.contextTypes, PhotoList.contextTypes);
 
 export default PhotoListContainer;

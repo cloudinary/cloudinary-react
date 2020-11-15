@@ -12,8 +12,7 @@ export const url = (publicId, options) => {
 };
 
 export const openUploadWidget = (options, callback) => {
-    const scOptions = Util.withSnakeCaseKeys(options);
-    window.cloudinary.openUploadWidget(scOptions, callback);
+    window.cloudinary.openUploadWidget(options, callback);
 };
 
 export const fetchPhotos = cloudName => {
