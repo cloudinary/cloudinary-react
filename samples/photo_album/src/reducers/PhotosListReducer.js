@@ -9,10 +9,7 @@ const PhotosListReducer = (photos = [], action) => {
         case PHOTOS_FETCHED:
             return [...action.photos];
         case PHOTOS_UPLOADED: {
-          if (Array.isArray(action.photos)){
             return [...action.photos, ...photos];
-          }
-          return [...photos];
         }
         case DELETE_UPLOADED_PHOTO:
             return photos.filter(
