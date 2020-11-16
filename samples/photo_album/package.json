@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "cloudinary-react": "^1.6.7",
+    "cloudinary-react": "^1.6.8",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-dropzone": "^4.2.13",

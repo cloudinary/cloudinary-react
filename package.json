@@ -1,6 +1,6 @@
 {
   "name": "cloudinary-react",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "Present Cloudinary images and videos using React components",
   "main": "lib/index.js",
   "scripts": {
