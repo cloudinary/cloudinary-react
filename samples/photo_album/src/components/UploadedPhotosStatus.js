@@ -95,9 +95,4 @@ const UploadedPhotoStatusContainer = connect(
     }
 )(UploadedPhotoStatus);
 
-Object.assign(
-    UploadedPhotoStatusContainer.contextTypes,
-    UploadedPhotoStatus.contextTypes
-);
-
 export default UploadedPhotoStatusContainer;

@@ -18,16 +18,16 @@ There are 2 settings you need to change for this demo to work. Copy or rename `s
 
 ## Setup ##
 
-Run `npm install` to install the required dependencies for this module.
+Run `yarn` to install the required dependencies for this module.
 
 ## Running ##
 
-Run `npm start` to start the server and automatically open a browser and navigate to the application's url.
+Run `yarn start` to build the app and serve it using a local server.
 
-The application is deployed at http://localhost:3000/
+The application is deployed at http://localhost:5000/
 
 ## Internals ##
-This sample is using [Webpack](https://webpack.github.io) for bundling and serving the application.
+This sample was created using [CRA](https://github.com/facebook/create-react-app).
 
 ### Sample main components ###
 

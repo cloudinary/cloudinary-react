@@ -154,9 +154,4 @@ const PhotosUploaderContainer = connect(
     }
 )(PhotosUploader);
 
-Object.assign(
-    PhotosUploaderContainer.contextTypes,
-    PhotosUploader.contextTypes
-);
-
 export default PhotosUploaderContainer;
