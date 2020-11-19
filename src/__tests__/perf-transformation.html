@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Image with Transformation tag</h1>
+<div id="root"/>
+
+
+
+
+<script src="https://unpkg.com/react/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/cloudinary-core/cloudinary-core-shrinkwrap.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script src="../dist/cloudinary-react.js"></script>
+<script type="text/babel">
+  'use strict';
+  const e = React.createElement;
+    const Image = cloudinaryReact.Image;
+    const Transformation = cloudinaryReact.Transformation;
+
+  class Images extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+
+    render() {
+      let images = []
+      for(let i = 0; i< 100; i++) {
+        images.push(<Image key={i} cloudName="demo" publicId="sample" effect="sepia"><Transformation crop="scale" width="40"/></Image>)
+      }
+      return <div>{images}</div>
+    }
+  }
+  const domContainer = document.querySelector('#root');
+  ReactDOM.render(e(Images), domContainer);
+
+</script>
+
+</body>
+</html>

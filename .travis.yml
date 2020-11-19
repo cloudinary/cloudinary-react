@@ -7,9 +7,5 @@ before_script:
 jobs:
   - name: "src"
     env: TEST_SUBJECT=src
-  - name: "lib"
-    env: TEST_SUBJECT=lib
-  - name: "dist"
-    env: TEST_SUBJECT=dist
   - name: "e2e"
     script: yarn run test:e2e

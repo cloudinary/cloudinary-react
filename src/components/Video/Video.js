@@ -1,22 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Cloudinary, Util} from 'cloudinary-core';
-import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps} from "../../Util";
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
+import PropTypes from 'prop-types'
+import { Cloudinary, Util } from 'cloudinary-core'
+import CloudinaryComponent from '../CloudinaryComponent'
+import { extractCloudinaryProps } from '../../Util'
 
 /**
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
-  mimeType = 'video';
+  mimeType = 'video'
 
   /**
    * Merge context with props
    * @return {*}
    */
   getMergedProps = () => {
-    return {...this.getContext(), ...this.props};
-  };
+    return { ...this.getContext(), ...this.props }
+  }
 
   /**
    * Generate a video source url
@@ -27,15 +29,26 @@ class Video extends CloudinaryComponent {
    * @param sourceType - format of the video url
    * @return {*}
    */
-  generateVideoUrl = (cld, publicId, childTransformations, sourceTransformations, sourceType) => {
-    const sourceTransformation = sourceTransformations[sourceType] || {};
-    const urlOptions = Util.defaults({}, sourceTransformation, childTransformations, {
-      resource_type: 'video',
-      format: sourceType
-    });
+  generateVideoUrl = (
+    cld,
+    publicId,
+    childTransformations,
+    sourceTransformations,
+    sourceType
+  ) => {
+    const sourceTransformation = sourceTransformations[sourceType] || {}
+    const urlOptions = Util.defaults(
+      {},
+      sourceTransformation,
+      childTransformations,
+      {
+        resource_type: 'video',
+        format: sourceType
+      }
+    )
 
-    return cld.url(publicId, urlOptions);
-  };
+    return cld.url(publicId, urlOptions)
+  }
 
   /**
    * Generate <source> tags for this video element
@@ -46,14 +59,27 @@ class Video extends CloudinaryComponent {
    * @param sourceTypes - formats for each video url that will be generated
    * @return {*}
    */
-  generateSources = (cld, publicId, childTransformations, sourceTransformations, sourceTypes) => (
-    sourceTypes.map(sourceType => {
-      const src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformations, sourceType);
-      const mimeType = `${this.mimeType}/${sourceType === 'ogv' ? 'ogg' : sourceType}`;
+  generateSources = (
+    cld,
+    publicId,
+    childTransformations,
+    sourceTransformations,
+    sourceTypes
+  ) =>
+    sourceTypes.map((sourceType) => {
+      const src = this.generateVideoUrl(
+        cld,
+        publicId,
+        childTransformations,
+        sourceTransformations,
+        sourceType
+      )
+      const mimeType = `${this.mimeType}/${
+        sourceType === 'ogv' ? 'ogg' : sourceType
+      }`
 
-      return <source key={mimeType} src={src} type={mimeType}/>;
+      return <source key={mimeType} src={src} type={mimeType} />
     })
-  );
 
   /**
    * Get props for the video element that will be rendered
@@ -68,75 +94,98 @@ class Video extends CloudinaryComponent {
       sourceTypes,
       sourceTransformation = {},
       ...options
-    } = this.getMergedProps();
+    } = this.getMergedProps()
 
-    options = CloudinaryComponent.normalizeOptions(options, {});
-    const {cloudinaryProps, cloudinaryReactProps, nonCloudinaryProps} = extractCloudinaryProps(options);
-    options = {...cloudinaryProps, ...cloudinaryReactProps};
+    options = CloudinaryComponent.normalizeOptions(options, {})
+    const {
+      cloudinaryProps,
+      cloudinaryReactProps,
+      nonCloudinaryProps
+    } = extractCloudinaryProps(options)
+    options = { ...cloudinaryProps, ...cloudinaryReactProps }
 
-    //const snakeCaseOptions = toSnakeCaseKeys(options);
-    const snakeCaseOptions = Util.withSnakeCaseKeys(options);
-    const cld = Cloudinary.new(snakeCaseOptions);
+    // const snakeCaseOptions = toSnakeCaseKeys(options);
+    const snakeCaseOptions = Util.withSnakeCaseKeys(options)
+    const cld = Cloudinary.new(snakeCaseOptions)
+
+    // Generate poster url if it's an object
+    if (options.poster && typeof options.poster === 'object') {
+      options.poster = cld.url(options.poster.publicId, options.poster)
+    }
 
     // Use cloudinary-core to generate this video tag's attributes
-    let tagAttributes = cld.videoTag(publicId, options).attributes();
-    tagAttributes = {...Util.withCamelCaseKeys(tagAttributes), ...nonCloudinaryProps};
+    let tagAttributes = cld.videoTag(publicId, options).attributes()
+    tagAttributes = {
+      ...Util.withCamelCaseKeys(tagAttributes),
+      ...nonCloudinaryProps
+    }
 
     // Aggregate child transformations, used for generating <source> tags for this video element
-    const childTransformations = this.getTransformation({...options, children});
+    const childTransformations = this.getTransformation({
+      ...options,
+      children
+    })
 
-    let sources = null;
+    let sources = null
 
     if (Util.isArray(sourceTypes)) {
       // We have multiple sourceTypes, so we generate <source> tags.
-      sources = this.generateSources(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
+      sources = this.generateSources(
+        cld,
+        publicId,
+        childTransformations,
+        sourceTransformation,
+        sourceTypes
+      )
     } else {
       // We have a single source type so we generate the src attribute of this video element.
-      tagAttributes.src = this.generateVideoUrl(cld, publicId, childTransformations, sourceTransformation, sourceTypes);
+      tagAttributes.src = this.generateVideoUrl(
+        cld,
+        publicId,
+        childTransformations,
+        sourceTransformation,
+        sourceTypes
+      )
     }
 
-    return {sources, tagAttributes};
-  };
+    return { sources, tagAttributes }
+  }
 
   reloadVideo = () => {
-    if (this.element && this.element.current){
-      this.element.current.load();
+    if (this.element && this.element.current) {
+      this.element.current.load()
     }
   }
 
   componentDidUpdate() {
     // Load video on props change
-    this.reloadVideo();
+    this.reloadVideo()
   }
-
-
 
   /**
    * Render a video element
    */
   render() {
-    const {fallback, children} = this.props;
+    const { fallback, children } = this.props
 
     const {
       tagAttributes, // Attributes of this video element
-      sources        // <source> tags of this video element
-    } = this.getVideoTagProps();
+      sources // <source> tags of this video element
+    } = this.getVideoTagProps()
 
     return (
-      <video
-        ref={this.attachRef}
-        {...tagAttributes}>
+      <video ref={this.attachRef} {...tagAttributes}>
         {sources}
         {fallback}
         {children}
       </video>
-    );
+    )
   }
 }
 
-Video.propTypes = {publicId: PropTypes.string};
+Video.propTypes = { publicId: PropTypes.string }
 Video.defaultProps = {
-  sourceTypes: Cloudinary.DEFAULT_VIDEO_PARAMS.source_types
-};
+  sourceTypes: ['webm', 'mp4']
+}
 
-export default Video;
+export default Video

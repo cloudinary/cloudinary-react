@@ -12,7 +12,7 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3010 react-scripts start",
     "build": "react-scripts build",
     "cypress": "./node_modules/.bin/cypress run",
     "pretest": "npm uninstall cloudinary-react && npm install cloudinary-react.tgz && npm install",

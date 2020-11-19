@@ -1,2 +1,2 @@
-export * from './cloudinaryCoreUtils';
+export * from './cloudinaryCoreUtils'
 export * from './cloudinaryReactUtils'

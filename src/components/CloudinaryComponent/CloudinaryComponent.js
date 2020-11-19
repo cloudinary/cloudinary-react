@@ -1,9 +1,8 @@
-import React, {PureComponent, createRef} from 'react';
-import PropTypes from 'prop-types';
-import {Transformation, Util} from 'cloudinary-core';
-import {CloudinaryContextType} from '../CloudinaryContext/CloudinaryContextType';
-
-const {camelCase} = Util;
+import React, { PureComponent, createRef } from 'react'
+import PropTypes from 'prop-types'
+import { Transformation, Cloudinary, Util } from 'cloudinary-core'
+import { CloudinaryContextType } from '../CloudinaryContext/CloudinaryContextType'
+import { getTransformationPropTypes } from '../../Util'
 
 /**
  * Check if given component is a Cloudinary Component with given displayName
@@ -12,10 +11,12 @@ const {camelCase} = Util;
  * @return {boolean}
  */
 const isCloudinaryComponent = (component, displayName) => {
-  return !!(React.isValidElement(component)
-    && component.type
-    && component.type.displayName === displayName);
-};
+  return !!(
+    React.isValidElement(component) &&
+    component.type &&
+    component.type.displayName === displayName
+  )
+}
 
 /**
  * Return a new object containing keys and values where keys are in the keys list
@@ -25,15 +26,15 @@ const isCloudinaryComponent = (component, displayName) => {
  */
 function only(source, keys = []) {
   if (!source) {
-    return source;
+    return source
   }
 
   return keys.reduce((tr, key) => {
     if (key in source) {
       tr[key] = source[key]
     }
-    return tr;
-  }, {});
+    return tr
+  }, {})
 }
 
 /**
@@ -42,45 +43,53 @@ function only(source, keys = []) {
  */
 class CloudinaryComponent extends PureComponent {
   constructor(props, context) {
-    super(props, context);
-    this.element = createRef();
+    super(props, context)
+    this.element = createRef()
   }
 
   render() {
-    return null;
+    return null
   }
 
   getContext = () => {
-    return this.context || {};
+    return this.context || {}
   }
 
   /**
    * React function: Called when this element is in view
    */
-  onIntersect = () =>{
-    this.setState({isInView: true})
+  onIntersect = () => {
+    this.setState({ isInView: true })
   }
 
-  getChildPlaceholder(children){
+  getChildPlaceholder(children) {
     if (children) {
-      return React.Children.toArray(children)
-        .find(child => isCloudinaryComponent(child, "CloudinaryPlaceholder"));
+      return React.Children.toArray(children).find((child) =>
+        isCloudinaryComponent(child, 'Placeholder')
+      )
     }
   }
 
   getChildTransformations(children) {
-    let result = children ? React.Children.toArray(children)
-      .filter(child => isCloudinaryComponent(child, "CloudinaryTransformation"))
-      .map(child => {
-        const options = CloudinaryComponent.normalizeOptions(child.props, child.context);
-        const childOptions = this.getChildTransformations(child.props.children);
-        if (childOptions) {
-          options.transformation = childOptions;
-        }
-        return options;
-      }) : [];
+    const result = children
+      ? React.Children.toArray(children)
+          .filter((child) => isCloudinaryComponent(child, 'Transformation'))
+          .map((child) => {
+            const options = CloudinaryComponent.normalizeOptions(
+              child.props,
+              child.context
+            )
+            const childOptions = this.getChildTransformations(
+              child.props.children
+            )
+            if (childOptions) {
+              options.transformation = childOptions
+            }
+            return options
+          })
+      : []
 
-    return result.length ? result : null;
+    return result.length ? result : null
   }
 
   /**
@@ -91,20 +100,23 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getTransformation(extendedProps) {
-    let {children, accessibility, placeholder, ...rest} = extendedProps;
-    let ownTransformation = only(Util.withCamelCaseKeys(rest), Transformation.methods) || {};
-    let childrenOptions = this.getChildTransformations(children);
+    const { children, accessibility, placeholder, ...rest } = extendedProps
+    const ownTransformation =
+      only(Util.withCamelCaseKeys(rest), Transformation.methods) || {}
+    const childrenOptions = this.getChildTransformations(children)
     if (!Util.isEmpty(childrenOptions)) {
-      ownTransformation.transformation = childrenOptions;
+      ownTransformation.transformation = childrenOptions
     }
 
-    //Append placeholder and accessibility if exists
-    const advancedTransformations = {accessibility, placeholder};
-    Object.keys(advancedTransformations).filter(k=>advancedTransformations[k]).map(k=>{
-      ownTransformation[k] = advancedTransformations[k];
-    });
+    // Append placeholder and accessibility if exists
+    const advancedTransformations = { accessibility, placeholder }
+    Object.keys(advancedTransformations)
+      .filter((k) => advancedTransformations[k])
+      .map((k) => {
+        ownTransformation[k] = advancedTransformations[k]
+      })
 
-    return ownTransformation;
+    return ownTransformation
   }
 
   /**
@@ -116,15 +128,14 @@ class CloudinaryComponent extends PureComponent {
    */
   static normalizeOptions(...options) {
     return options.reduce((left, right) => {
-        Object.keys(right || {}).forEach(key => {
-          let value = right[key];
-          if (value !== null && value !== undefined) {
-            left[key] = value;
-          }
-        });
-        return left;
-      }
-      , {});
+      Object.keys(right || {}).forEach((key) => {
+        const value = right[key]
+        if (value !== null && value !== undefined) {
+          left[key] = value
+        }
+      })
+      return left
+    }, {})
   }
 
   /**
@@ -132,9 +143,9 @@ class CloudinaryComponent extends PureComponent {
    * @param extendedProps React props combined with custom Cloudinary configuration options
    * @return {Cloudinary} configured using extendedProps
    */
-  getConfiguredCloudinary(extendedProps){
-    const options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps));
-    return Cloudinary.new(options);
+  getConfiguredCloudinary(extendedProps) {
+    const options = Util.extractUrlParams(Util.withSnakeCaseKeys(extendedProps))
+    return Cloudinary.new(options)
   }
 
   /**
@@ -144,9 +155,9 @@ class CloudinaryComponent extends PureComponent {
    * @protected
    */
   getUrl(extendedProps) {
-    const {publicId} = extendedProps;
-    const cl = getConfiguredCloudinary(extendedProps);
-    return cl.url(publicId, this.getTransformation(extendedProps));
+    const { publicId } = extendedProps
+    const cl = this.getConfiguredCloudinary(extendedProps)
+    return cl.url(publicId, this.getTransformation(extendedProps))
   }
 
   /**
@@ -156,46 +167,30 @@ class CloudinaryComponent extends PureComponent {
    * @return {Object}
    */
   getExtendedProps = (props = this.props, context = this.getContext()) => {
-    return CloudinaryComponent.normalizeOptions(context, props);
-  };
+    return CloudinaryComponent.normalizeOptions(context, props)
+  }
 
   /**
    * Attach both this.element and props.innerRef as ref to the given element
    * @param element - the element to attach a ref to
    */
   attachRef = (element) => {
-    const {innerRef} = this.props;
-    this.element.current = element;
+    const { innerRef } = this.props
+    this.element.current = element
 
     if (innerRef) {
       if (innerRef instanceof Function) {
-        innerRef(element);
+        innerRef(element)
       } else {
-        innerRef.current = element;
+        innerRef.current = element
       }
     }
-  };
-
-  static contextType = CloudinaryContextType;
-}
-
-CloudinaryComponent.propTypes = typesFrom(Transformation.PARAM_NAMES.map(camelCase));
-CloudinaryComponent.propTypes.publicId = PropTypes.string;
-
-/**
- * Create a React type definition object. All items are PropTypes.string or [string] or object or [object].
- * @param {Array} configParams a list of parameter names
- * @returns {Object}
- * @private
- */
-function typesFrom(configParams) {
-  configParams = configParams || [];
-  const types = {};
-  for (let i = 0; i < configParams.length; i++) {
-    const key = configParams[i];
-    types[camelCase(key)] = PropTypes.any;
   }
-  return types;
+
+  static contextType = CloudinaryContextType
 }
 
-export default CloudinaryComponent;
+CloudinaryComponent.propTypes = getTransformationPropTypes()
+CloudinaryComponent.propTypes.publicId = PropTypes.string
+
+export default CloudinaryComponent

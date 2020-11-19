@@ -1,5 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
+import PropTypes from 'prop-types'
 
 /**
  * Placeholder used by parent Image component, renders nothing on it's own.
@@ -7,18 +9,18 @@ import PropTypes from 'prop-types';
  * @return {null}
  * @constructor
  */
-const Placeholder = ({type}) => {
-  return null;
-};
+const Placeholder = ({ type }) => {
+  return null
+}
 
 Placeholder.propTypes = {
   type: PropTypes.string
-};
+}
 
 Placeholder.defaultProps = {
   type: 'blur'
-};
+}
 
-Placeholder.displayName = "CloudinaryPlaceholder";
+Placeholder.displayName = 'Placeholder'
 
-export default Placeholder;
+export default Placeholder
