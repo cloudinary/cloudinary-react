@@ -3169,10 +3169,10 @@ cloudinary-core@^2.11.3:
   resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.11.3.tgz#1440f61c6280485094aac87021b7e10f746dc69e"
   integrity sha512-ZRnpjSgvx+LbSf+aEz5NKzxDB4Z0436aY/0BSDa90kAHiwAyd84VyEi95I74SE80e15Ri9t5S2xtksTXpzk9Xw==
 
-cloudinary-react@^1.6.7:
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/cloudinary-react/-/cloudinary-react-1.6.7.tgz#13a8c8660a36377edbc2482cdc7f061a12d60b19"
-  integrity sha512-u7Mx2CWEPG7Iy/3jn+JcvYu50uHwem4XokveNDqdnoeBJwit2B/ccfUtOUbpSfKAaEKLxXuPcQR5H8FEpIoavw==
+cloudinary-react@^1.6.8:
+  version "1.6.8"
+  resolved "https://registry.yarnpkg.com/cloudinary-react/-/cloudinary-react-1.6.8.tgz#e13b229553521aa375db655e9e8a5d3a5a087ca2"
+  integrity sha512-2NSX45MEXT9v1l8XqIebgs+gBiGycjz0VbhvK8VgNWBuTstsbBMxMcaF/0oW9sBh4alZN6odVJaRsQpnHnFnIQ==
   dependencies:
     cloudinary-core "^2.11.3"
     prop-types "^15.6.2"
@@ -5781,9 +5781,9 @@ inherits@2.0.3:
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 ini@^1.3.5, ini@~1.3.0:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
-  integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
+  integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
 inquirer@7.3.3:
   version "7.3.3"
