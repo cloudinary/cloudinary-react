@@ -79,13 +79,13 @@ describe("Transformation", () => {
   it("should not change variable names even if they are keywords", function () {
     const image = shallow(
       <Image publicId="sample" cloudName="demo">
-        <Transformation variables={[["$width", 10]]}/>
+        <Transformation variables={[["$width", 10], ["$myheight", 20], ["$heightheight", 30], ["$theheight", 40], ["$__height", 50]]}/>
         <Transformation width="$width + 10 + width" crop="scale"/>
       </Image>
     );
     expect(image.name()).to.equal("img");
     expect(image.props().src).to.equal(
-      "http://res.cloudinary.com/demo/image/upload/$width_10/c_scale,w_$width_add_10_add_w/sample"
+      "http://res.cloudinary.com/demo/image/upload/$width_10,$myheight_20,$heightheight_30,$theheight_40,$__height_50/c_scale,w_$width_add_10_add_w/sample"
     );
   });
 });
