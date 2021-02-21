@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CloudinaryComponent from "../CloudinaryComponent";
 
 /**
  * Placeholder used by parent Image component, renders nothing on it's own.
@@ -8,7 +7,9 @@ import CloudinaryComponent from "../CloudinaryComponent";
  * @return {null}
  * @constructor
  */
-class Placeholder extends CloudinaryComponent {}
+const Placeholder = ({type}) => {
+  return null;
+};
 
 Placeholder.propTypes = {
   type: PropTypes.string
