@@ -84,7 +84,6 @@ function App() {
         </div>
       </div>
       }
-      }
       {test === 'responsivePlaceholder' &&
       <div>
         <h1>Responsive Placeholder</h1>
