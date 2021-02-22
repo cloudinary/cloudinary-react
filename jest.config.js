@@ -15,7 +15,6 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/__tests__/setupTests.js"],
   moduleNameMapper: {
     "^cloudinary-react$": mappedModule,
-    "^../../Util$": "<rootDir>/src/Util"
   },
   bail: true,
   collectCoverageFrom: [
