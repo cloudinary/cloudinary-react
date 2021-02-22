@@ -4,7 +4,7 @@
   "description": "Present Cloudinary images and videos using React components",
   "main": "lib/index.js",
   "scripts": {
-    "test": "run-s test:unit test:build test:e2e",
+    "test": "run-s build test:unit test:build test:e2e",
     "test:unit": "jest",
     "test:build": "TEST_ENV=PRODUCTION npm run test:unit",
     "test:e2e": "cd ./e2e-test && npm run test",
