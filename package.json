@@ -2,7 +2,13 @@
   "name": "cloudinary-react",
   "version": "1.6.8",
   "description": "Present Cloudinary images and videos using React components",
-  "main": "lib/index.js",
+  "main": "./dist/cloudinary-react.js",
+  "umd:main": "./dist/cloudinary-react.umd.js",
+  "module": "dist/cloudinary-react.esm.js",
+  "source": "src/index.js",
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
     "test": "run-s build test:unit test:build test:e2e",
     "test:unit": "jest",
@@ -10,8 +16,8 @@
     "test:e2e": "cd ./e2e-test && npm run test",
     "test:coverage": "jest --coverage",
     "pretest:e2e": "npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz",
-    "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
-    "build": "node_modules/.bin/webpack && npm run bundlewatch",
+    "build": "microbundle --no-compress --sourcemap false --jsx React.createElement --format esm,umd,cjs && npm run bundlewatch",
+    "start": "microbundle watch --no-compress --sourcemap false --jsx React.createElement --format esm,umd,cjs",
     "bundlewatch": "bundlewatch --config ./bundlewatch.config.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs",
@@ -53,11 +59,10 @@
     "jest-enzyme": "^7.1.2",
     "jest-extended": "^0.11.5",
     "jsdom": "^11.12.0",
+    "microbundle": "^0.13.0",
     "npm-run-all": "^4.1.5",
     "react": "^16.3.3",
-    "react-dom": "^16.3.3",
-    "webpack": "4.27.1",
-    "webpack-cli": "^3.1.2"
+    "react-dom": "^16.3.3"
   },
   "dependencies": {
     "cloudinary-core": "^2.11.3",
@@ -67,8 +72,6 @@
     "react": "^16.3.3 || ^17.0.0"
   },
   "files": [
-    "src",
-    "lib",
     "dist"
   ]
 }
