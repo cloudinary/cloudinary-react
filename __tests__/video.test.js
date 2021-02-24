@@ -371,6 +371,10 @@ describe('Video', () => {
             {
               type: 'webm',
               transformations: { videoCodec: 'auto' }
+            },
+            {
+              type: '3gp',
+              transformations: { videoCodec: 'auto' }
             }
           ]}
           audioCodec={'aac'}
@@ -387,7 +391,7 @@ describe('Video', () => {
       expect(tag.props().height).toEqual(100);
       expect(tag.props().poster).toEqual(`${VIDEO_UPLOAD_PATH}ac_aac,so_3,vc_h264/dog.jpg`);
 
-      expect(tag.children('source')).toHaveLength(4);
+      expect(tag.children('source')).toHaveLength(5);
 
       expect(tag.childAt(0).prop('type')).toEqual('video/mp4; codecs=hev1');
       expect(tag.childAt(0).prop('src')).toEqual(`${VIDEO_UPLOAD_PATH}ac_aac,so_3,vc_h265/dog.mp4`);
@@ -400,6 +404,9 @@ describe('Video', () => {
 
       expect(tag.childAt(3).prop('type')).toEqual('video/webm');
       expect(tag.childAt(3).prop('src')).toEqual(`${VIDEO_UPLOAD_PATH}ac_aac,so_3,vc_auto/dog.webm`);
+
+      expect(tag.childAt(4).prop('type')).toEqual('video/3gpp');
+      expect(tag.childAt(4).prop('src')).toEqual(`${VIDEO_UPLOAD_PATH}ac_aac,so_3,vc_auto/dog.3gp`);
     });
   });
 })

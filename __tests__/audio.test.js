@@ -56,10 +56,10 @@ describe('Audio', () => {
         <Transformation duration='2' />
       </Audio>
     )
-    expect(tag.find('[type="audio/wav"]').props().src).toEndWith(
+    expect(tag.find('[type="audio/vnd.wav"]').props().src).toEndWith(
       '/du_2/e_volume:30/dog.wav'
     )
-    expect(tag.find('[type="audio/mp3"]').props().src).toEndWith(
+    expect(tag.find('[type="audio/mpeg"]').props().src).toEndWith(
       '/du_2/e_volume:45/dog.mp3'
     )
   })
@@ -140,7 +140,7 @@ describe('Audio', () => {
     expect(tag.find('[type="audio/aac"]').props().src).toEndWith(
       '/du_1/dog.aac'
     )
-    expect(tag.find('[type="audio/mp3"]').props().src).toEndWith(
+    expect(tag.find('[type="audio/mpeg"]').props().src).toEndWith(
       '/du_2/dog.mp3'
     )
     expect(tag.find('[type="audio/ogg"]').props().src).toEndWith(
