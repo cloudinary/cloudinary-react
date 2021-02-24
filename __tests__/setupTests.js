@@ -5,27 +5,11 @@
  * "If your app uses a browser API that you need to mock in your tests or if you need a global setup before running your tests, add a src/setupTests.js to your project. It will be automatically executed before running your tests."
  */
 
-import { JSDOM } from 'jsdom'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import 'jest-extended';
 
 Enzyme.configure({ adapter: new Adapter() })
-
-const { window } = new JSDOM('<!doctype html><html><body></body></html>')
-
-function copyProps(src, target) {
-  const props = Object.getOwnPropertyNames(src)
-    .filter((prop) => typeof target[prop] === 'undefined')
-    .reduce(
-      (result, prop) => ({
-        ...result,
-        [prop]: Object.getOwnPropertyDescriptor(src, prop)
-      }),
-      {}
-    )
-  Object.defineProperties(target, props)
-}
 
 /**
  * Utility function that mocks the `IntersectionObserver` API. Necessary for components that rely
@@ -55,12 +39,8 @@ function setupIntersectionObserverMock({
   })
 }
 
-global.window = window
-global.document = window.document
 global.navigator = {
   userAgent: 'node.js'
 }
 
 setupIntersectionObserverMock()
-
-copyProps(window, global)
