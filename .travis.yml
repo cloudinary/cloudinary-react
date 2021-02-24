@@ -3,7 +3,5 @@ node_js:
   - 14
   - 12
   - 10
-before_install:
-  - npm i -g jest
 script:
   - npm test
