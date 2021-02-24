@@ -24,10 +24,6 @@ module.exports = {
     "js",
     "jsx",
   ],
-  reporters:
-    [
-      '<rootDir>/__tests__/reporter.js',
-    ],
   modulePaths: [
     "<rootDir>/src"
   ],

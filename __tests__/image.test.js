@@ -4,8 +4,15 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import { Image, Placeholder, Transformation } from 'cloudinary-react'
 
+const RESPONSIVE_OVERRIDE_WARNING = [
+  "Warning: passing a number value for width cancels the 'responsive' prop's effect on the image transformation.",
+  "The 'responsive' prop affects the image transformation only when width === 'auto'.",
+  "Passing 'width=\"auto\" responsive' will affect the actual image width that is fetched from Cloudinary.",
+  "The 'responsive' prop causes the Image component to request an image which width is equal to the width of it's container.",
+  "When passing 'width=\"auto\" responsive', you can set the <img> element width by passing a 'style' prop"
+].join('\n');
+
 describe('Image', () => {
-  console.warn = jest.fn();
   it('should create an img tag', function () {
     const tag = shallow(<Image publicId='sample' cloudName='demo' />)
     expect(tag.html()).toEqual(
@@ -13,21 +20,19 @@ describe('Image', () => {
     )
   })
   it('should allow transformation params as attributes', function () {
-    const width = 300
     const tag = shallow(
-      <Image publicId='sample' cloudName='demo' width={width} crop='scale' />
+      <Image publicId='sample' cloudName='demo' width={300} crop='scale' />
     )
     expect(tag.html()).toEqual(
       `<img width="300" src="http://res.cloudinary.com/demo/image/upload/c_scale,w_300/sample"/>`
     )
   })
   it('should set event handlers', function () {
-    const width = 300
     const tag = shallow(
       <Image
         publicId='sample'
         cloudName='demo'
-        width={width}
+        width={300}
         crop='scale'
         onLoad={() => 'foo'}
       />
@@ -38,7 +43,6 @@ describe('Image', () => {
     expect(tag.props().onLoad()).toEqual('foo')
   })
   it('should not pass-through Cloudinary attributes', function () {
-    const width = 300
     let tag = shallow(
       <Image
         publicId='sample'
@@ -66,7 +70,7 @@ describe('Image', () => {
       <Image
         publicId='sample'
         cloudName='demo'
-        width={width}
+        width={300}
         crop='scale'
         private_cdn='private'
         default_image='foobar'
@@ -194,18 +198,27 @@ describe('Image', () => {
     expect(tag.find('img').prop('src')).toEqual(expected)
   })
   describe('Responsive', () => {
+    const spy = jest.spyOn(console, 'warn').mockImplementation();
+
     it('should support responsive prop', () => {
       const tag = mount(<Image publicId='sample' cloudName='demo' />)
       tag.setProps({ responsive: true })
       expect(tag.find('img').prop('data-src')).toEqual(
         'http://res.cloudinary.com/demo/image/upload/sample'
       )
+
+      expect(spy).toHaveBeenCalledWith(RESPONSIVE_OVERRIDE_WARNING);
+      spy.mockRestore();
     })
     it('should set image width even when responsive prop is passed', () => {
+      const spy = jest.spyOn(console, 'warn').mockImplementation();
+
       const tag = mount(
         <Image publicId='sample' cloudName='demo' width={100} responsive />
       )
       expect(tag.find('img').prop('width')).toEqual(100)
+      expect(spy).toHaveBeenCalledWith(RESPONSIVE_OVERRIDE_WARNING);
+      spy.mockRestore();
     })
   })
   describe('Placeholder', () => {
