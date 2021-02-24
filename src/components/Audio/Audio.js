@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Video from '../Video';
+import {AUDIO_MIME_TYPES} from "../../Util";
 
 /**
  * A component representing a Cloudinary served audio
@@ -10,6 +11,7 @@ import Video from '../Video';
  */
 class Audio extends Video {
   mimeType = 'audio';
+  mimeSubTypes = AUDIO_MIME_TYPES;
 
   /**
    * Render an audio element

@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Cloudinary, Util} from 'cloudinary-core';
 import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps} from "../../Util";
+import {VIDEO_MIME_TYPES, extractCloudinaryProps} from "../../Util";
 
 /**
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
   mimeType = 'video';
+  mimeSubTypes = VIDEO_MIME_TYPES;
 
   /**
    * Merge context with props
@@ -76,7 +77,7 @@ class Video extends CloudinaryComponent {
    * @param publicId - identifier of the video asset
    * @param childTransformations - child transformations for this video element
    * @param transformations - source transformations for specified source type
-   * @param sourceType - format of the video url 
+   * @param sourceType - format of the video url
    * @param mimeType - MIME type if specified source type
    */
   toSourceTag = (cld, publicId, childTransformations, transformations, sourceType, mimeType) => {
@@ -91,11 +92,11 @@ class Video extends CloudinaryComponent {
 
   /**
    * Determines MIME type of given source type and codecs.
-   * @param type - format of the video 
+   * @param type - format of the video
    * @param codecs - optional information about codecs of the video
    */
   buildMimeType = (type, codecs) => {
-    let mimeType = `${this.mimeType}/${type === 'ogv' ? 'ogg' : type}`;
+    let mimeType = `${this.mimeType}/${this.mimeSubTypes[type] || type}`;
     if (!Util.isEmpty(codecs)) {
       mimeType += "; codecs=" + (Util.isArray(codecs) ? codecs.join(', ') : codecs);
     }
