@@ -1,5 +1,4 @@
 import React from 'react'
-import sinon from 'sinon'
 import { shallow, mount } from 'enzyme'
 import { Video, Transformation } from 'cloudinary-react'
 
@@ -220,7 +219,7 @@ describe('Video', () => {
     const tag = shallow(<Video cloudName='demo' publicId='dog' />)
 
     // detect calls for reloadVideo()
-    sinon.spy(tag.instance(), 'reloadVideo')
+    jest.spyOn(tag.instance(), 'reloadVideo')
 
     expect(tag.instance().reloadVideo).not.toHaveBeenCalled()
 
