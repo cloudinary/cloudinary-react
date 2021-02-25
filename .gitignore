@@ -41,7 +41,6 @@ lib/
 dist/
 *-compiled.js*
 storybook-static/
-.storybook/
 .idea/
 package-lock.json
 yarn.lock
