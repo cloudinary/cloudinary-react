@@ -20,8 +20,7 @@
     "start": "microbundle watch --no-compress --sourcemap false --jsx React.createElement --format esm,umd,cjs",
     "bundlewatch": "bundlewatch --config ./bundlewatch.config.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs",
-    "prepublishOnly": "npm run build-storybook"
+    "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs"
   },
   "repository": {
     "type": "git",
@@ -41,10 +40,11 @@
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@storybook/addon-actions": "^4.1.2",
-    "@storybook/addon-info": "^4.1.2",
-    "@storybook/addon-links": "^4.1.2",
-    "@storybook/react": "^4.1.2",
+    "@storybook/addon-actions": "^6.1.20",
+    "@storybook/addon-essentials": "^6.1.20",
+    "@storybook/addon-links": "^6.1.20",
+    "@storybook/preset-create-react-app": "^3.1.6",
+    "@storybook/react": "^6.1.20",
     "babel-loader": "^8.0.4",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
