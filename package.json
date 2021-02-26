@@ -10,7 +10,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "test": "run-s build test:unit test:build test:e2e",
+    "test": "run-s build test:lint test:unit test:build test:e2e",
     "test:unit": "jest",
     "test:build": "TEST_ENV=PRODUCTION npm run test:unit",
     "test:e2e": "cd ./e2e-test && npm run test",

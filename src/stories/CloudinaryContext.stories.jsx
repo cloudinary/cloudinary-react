@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 
-import { CloudinaryContext, Image, Transformation } from '../index'
+import { CloudinaryContext, Image, Transformation } from '../index';
 
 export default {
   title: 'Example/CloudinaryContext',
   component: CloudinaryContext,
   subcomponents: { Image, Transformation }
-}
+};
 
 export const Basic = (args) => (
   <CloudinaryContext {...args}>
@@ -21,10 +21,10 @@ export const Basic = (args) => (
 
     <Image publicId='sample' transformation={{ width: 0.5, crop: 'scale' }} />
   </CloudinaryContext>
-)
+);
 Basic.args = {
   cloudName: 'demo'
-}
+};
 
 export const Nested = (args) => (
   <CloudinaryContext {...args}>
@@ -38,10 +38,10 @@ export const Nested = (args) => (
       <Image publicId='sample' angle='0' />
     </CloudinaryContext>
   </CloudinaryContext>
-)
+);
 
 Nested.args = {
   cloudName: 'demo',
   width: 50,
   crop: 'scale'
-}
+};

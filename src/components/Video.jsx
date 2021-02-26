@@ -1,23 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Cloudinary, Util} from 'cloudinary-core';
-import CloudinaryComponent from '../CloudinaryComponent';
-import {VIDEO_MIME_TYPES, extractCloudinaryProps} from "../../Util";
+import { Cloudinary, Util } from 'cloudinary-core';
+import CloudinaryComponent from './CloudinaryComponent';
+import { VIDEO_MIME_TYPES, extractCloudinaryProps, normalizeOptions, getTransformation } from '../Util';
 
 /**
  * A component representing a Cloudinary served video
  */
 class Video extends CloudinaryComponent {
   mimeType = 'video';
+
   mimeSubTypes = VIDEO_MIME_TYPES;
 
   /**
    * Merge context with props
    * @return {*}
    */
-  getMergedProps = () => {
-    return {...this.getContext(), ...this.props};
-  };
+  getMergedProps = () => ({ ...this.getContext(), ...this.props });
 
   /**
    * Generate a video source url
@@ -47,14 +46,15 @@ class Video extends CloudinaryComponent {
    * @return {*}
    */
   generateUsingSourceTypes = (cld, publicId, childTransformations, sourceTransformations, sourceTypes) => (
-    sourceTypes.map(sourceType => (
+    sourceTypes.map((sourceType) => (
       this.toSourceTag(
         cld,
         publicId,
         childTransformations,
         sourceTransformations[sourceType] || {},
         sourceType,
-        this.buildMimeType(sourceType))
+        this.buildMimeType(sourceType)
+      )
     ))
   );
 
@@ -86,8 +86,9 @@ class Video extends CloudinaryComponent {
       publicId,
       childTransformations,
       transformations,
-      sourceType);
-    return <source key={src + mimeType} src={src} type={mimeType}/>;
+      sourceType
+    );
+    return <source key={src + mimeType} src={src} type={mimeType} />;
   };
 
   /**
@@ -98,7 +99,7 @@ class Video extends CloudinaryComponent {
   buildMimeType = (type, codecs) => {
     let mimeType = `${this.mimeType}/${this.mimeSubTypes[type] || type}`;
     if (!Util.isEmpty(codecs)) {
-      mimeType += "; codecs=" + (Util.isArray(codecs) ? codecs.join(', ') : codecs);
+      mimeType += `; codecs=${Util.isArray(codecs) ? codecs.join(', ') : codecs}`;
     }
     return mimeType;
   };
@@ -119,50 +120,50 @@ class Video extends CloudinaryComponent {
       ...options
     } = this.getMergedProps();
 
-    options = CloudinaryComponent.normalizeOptions(options, {});
-    const {cloudinaryProps, cloudinaryReactProps, nonCloudinaryProps} = extractCloudinaryProps(options);
-    options = {...cloudinaryProps, ...cloudinaryReactProps};
+    options = normalizeOptions(options, {});
+    const { cloudinaryProps, cloudinaryReactProps, nonCloudinaryProps } = extractCloudinaryProps(options);
+    options = { ...cloudinaryProps, ...cloudinaryReactProps };
 
-    //const snakeCaseOptions = toSnakeCaseKeys(options);
+    // const snakeCaseOptions = toSnakeCaseKeys(options);
     const snakeCaseOptions = Util.withSnakeCaseKeys(options);
     const cld = Cloudinary.new(snakeCaseOptions);
 
     // Use cloudinary-core to generate this video tag's attributes
     let tagAttributes = cld.videoTag(publicId, options).attributes();
-    tagAttributes = {...Util.withCamelCaseKeys(tagAttributes), ...nonCloudinaryProps};
+    tagAttributes = { ...Util.withCamelCaseKeys(tagAttributes), ...nonCloudinaryProps };
 
     // Aggregate child transformations, used for generating <source> tags for this video element
-    const childTransformations = this.getTransformation({...options, children});
+    const childTransformations = getTransformation({ ...options, children });
 
     let sourceElements = null;
 
     if (Util.isArray(sources) && !Util.isEmpty(sources)) {
       sourceElements = this.generateUsingSources(cld, publicId, childTransformations, sources);
+    } else if (Util.isArray(sourceTypes)) {
+      // We have multiple sourceTypes, so we generate <source> tags.
+      sourceElements = this.generateUsingSourceTypes(
+        cld,
+        publicId,
+        childTransformations,
+        sourceTransformation,
+        sourceTypes
+      );
     } else {
-      if (Util.isArray(sourceTypes)) {
-        // We have multiple sourceTypes, so we generate <source> tags.
-        sourceElements = this.generateUsingSourceTypes(
-          cld,
-          publicId,
-          childTransformations,
-          sourceTransformation,
-          sourceTypes);
-      } else {
-        // We have a single source type so we generate the src attribute of this video element.
-        tagAttributes.src = this.generateVideoUrl(
-          cld,
-          publicId,
-          childTransformations,
-          sourceTransformation[sourceTypes] || {},
-          sourceTypes);
-      }
+      // We have a single source type so we generate the src attribute of this video element.
+      tagAttributes.src = this.generateVideoUrl(
+        cld,
+        publicId,
+        childTransformations,
+        sourceTransformation[sourceTypes] || {},
+        sourceTypes
+      );
     }
 
-    return {sources: sourceElements, tagAttributes};
+    return { sources: sourceElements, tagAttributes };
   };
 
   reloadVideo = () => {
-    if (this.element && this.element.current){
+    if (this.element && this.element.current) {
       this.element.current.load();
     }
   }
@@ -172,23 +173,22 @@ class Video extends CloudinaryComponent {
     this.reloadVideo();
   }
 
-
-
   /**
    * Render a video element
    */
   render() {
-    const {fallback, children} = this.props;
+    const { fallback, children } = this.props;
 
     const {
       tagAttributes, // Attributes of this video element
-      sources        // <source> tags of this video element
+      sources // <source> tags of this video element
     } = this.getVideoTagProps();
 
     return (
       <video
         ref={this.attachRef}
-        {...tagAttributes}>
+        {...tagAttributes}
+      >
         {sources}
         {fallback}
         {children}

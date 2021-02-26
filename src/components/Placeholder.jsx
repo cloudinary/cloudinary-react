@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,9 +8,8 @@ import PropTypes from 'prop-types';
  * @return {null}
  * @constructor
  */
-const Placeholder = ({type}) => {
-  return null;
-};
+// eslint-disable-next-line no-unused-vars
+const Placeholder = ({ type }) => null;
 
 Placeholder.propTypes = {
   type: PropTypes.string
@@ -19,6 +19,6 @@ Placeholder.defaultProps = {
   type: 'blur'
 };
 
-Placeholder.displayName = "CloudinaryPlaceholder";
+Placeholder.displayName = 'CloudinaryPlaceholder';
 
 export default Placeholder;

@@ -1,6 +1,0 @@
-{
-  "name": "transformation",
-  "version": "1.0.0",
-  "main": "./Transformation.js",
-  "private": true
-}

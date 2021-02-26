@@ -1,42 +1,45 @@
-import React from 'react'
+import React from 'react';
 
-import {Audio, Transformation, Video} from '../index'
+import { Audio, Transformation } from '../index';
 
 export default {
   title: 'Example/Audio',
   component: Audio,
   subcomponents: { Transformation }
-}
+};
 
-const Template = (args) => <Audio {...args} />
+const Template = (args) => <Audio {...args} />;
 
-export const Basic = Template.bind({})
+export const Basic = Template.bind({});
 Basic.args = {
   ...Audio.defaultProps,
   cloudName: 'demo',
   publicId: 'dog',
   controls: true
-}
-export const WithFallback = Template.bind({})
+};
+export const WithFallback = Template.bind({});
 WithFallback.args = {
   ...Audio.defaultProps,
   cloudName: 'demo',
   publicId: 'dog',
   controls: true,
   fallback: 'Cannot play audio'
-}
+};
 export const WithInlineFallback = (args) => (
   <Audio {...args}>
-    Cannot play <b>audio</b>.
+    Cannot play
+    {' '}
+    <b>audio</b>
+    .
   </Audio>
-)
+);
 WithInlineFallback.args = {
   ...Audio.defaultProps,
   cloudName: 'demo',
   publicId: 'dog',
   controls: true
-}
-export const WithSourceTypes = Template.bind({})
+};
+export const WithSourceTypes = Template.bind({});
 WithSourceTypes.args = {
   ...Audio.defaultProps,
   cloudName: 'demo',
@@ -48,4 +51,4 @@ WithSourceTypes.args = {
     wav: { duration: 3 }
   },
   fallback: 'Cannot play audio'
-}
+};
