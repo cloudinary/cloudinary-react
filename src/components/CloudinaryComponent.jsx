@@ -18,7 +18,7 @@ class CloudinaryComponent extends PureComponent {
 
   getContext = () => {
     return this.context || {};
-  }
+  };
 
   /**
    * React function: Called when this element is in view
@@ -26,7 +26,7 @@ class CloudinaryComponent extends PureComponent {
   onIntersect = () => {
     // eslint-disable-next-line react/no-unused-state
     this.setState({ isInView: true });
-  }
+  };
 
   /**
    * Merges context & props
@@ -36,7 +36,7 @@ class CloudinaryComponent extends PureComponent {
    */
   getExtendedProps = (props = this.props, context = this.getContext()) => {
     return normalizeOptions(context, props);
-  }
+  };
 
   /**
    * Attach both this.element and props.innerRef as ref to the given element
@@ -53,7 +53,7 @@ class CloudinaryComponent extends PureComponent {
         innerRef.current = element;
       }
     }
-  }
+  };
 
   render() {
     return null;

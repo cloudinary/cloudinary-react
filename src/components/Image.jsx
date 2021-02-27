@@ -30,12 +30,11 @@ class Image extends CloudinaryComponent {
   isResponsive = () => {
     const { responsive, width } = this.getExtendedProps();
     if (responsive && width !== 'auto') {
-      // eslint-disable-next-line no-console
       console.warn(RESPONSIVE_OVERRIDE_WARNING);
     }
 
     return responsive && this.element && this.element.current;
-  }
+  };
 
   /**
    * @return merged props & context with aggregated transformation, excluding children and innerRef.
@@ -49,7 +48,7 @@ class Image extends CloudinaryComponent {
     }
 
     return options;
-  }
+  };
 
   /**
    * @param additionalOptions - extra options to pass to cloudinary.url(), for example: placeholder
@@ -87,7 +86,7 @@ class Image extends CloudinaryComponent {
     });
 
     return attributes;
-  }
+  };
 
   /**
    * Update this image using cloudinary-core
@@ -134,9 +133,7 @@ class Image extends CloudinaryComponent {
   }
 
   componentWillUnmount() {
-    this.listenerRemovers.forEach((removeListener) => {
-      removeListener();
-    });
+    this.listenerRemovers.forEach((removeListener) => removeListener());
   }
 
   /**
@@ -168,14 +165,16 @@ class Image extends CloudinaryComponent {
     );
   };
 
-  renderImage = (attributes) => <img ref={this.attachRef} {...attributes} />
+  renderImage = (attributes) => (
+    <img ref={this.attachRef} {...attributes} />
+  );
 
   getPlaceholderType = () => {
     const { children } = this.getExtendedProps();
     const placeholder = getChildPlaceholder(children);
 
     return placeholder ? placeholder.props.type : null;
-  }
+  };
 
   render() {
     const { isLoaded } = this.state;
