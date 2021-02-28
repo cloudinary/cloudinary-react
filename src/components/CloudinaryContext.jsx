@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CloudinaryComponent from '../CloudinaryComponent';
-import {extractCloudinaryProps} from '../../Util';
-import {CloudinaryContextType} from './CloudinaryContextType';
+import CloudinaryComponent from './CloudinaryComponent';
+import { extractCloudinaryProps, CloudinaryContextType } from '../Util';
 
 /**
  * Provides a container for Cloudinary components. Any option set in CloudinaryContext will be passed to the children.
@@ -15,14 +14,12 @@ import {CloudinaryContextType} from './CloudinaryContextType';
  *
  */
 class CloudinaryContext extends CloudinaryComponent {
-  constructor(props, context) {
-    super(props, context);
-  }
-
   render() {
-    const props = {...this.getContext(), ...this.props};
+    const props = { ...this.getContext(), ...this.props };
 
-    const {children, cloudinaryProps, nonCloudinaryProps, cloudinaryReactProps} = extractCloudinaryProps(props);
+    const {
+      children, cloudinaryProps, nonCloudinaryProps, cloudinaryReactProps
+    } = extractCloudinaryProps(props);
 
     return (
       <CloudinaryContextType.Provider value={cloudinaryProps}>
@@ -32,7 +29,7 @@ class CloudinaryContext extends CloudinaryComponent {
   }
 }
 
-CloudinaryContext.propTypes = {...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool};
-CloudinaryContext.defaultProps = {includeOwnBody: false};
+CloudinaryContext.propTypes = { ...CloudinaryComponent.propTypes, includeOwnBody: PropTypes.bool };
+CloudinaryContext.defaultProps = { includeOwnBody: false };
 
 export default CloudinaryContext;

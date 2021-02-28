@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Video from '../Video';
-import {AUDIO_MIME_TYPES} from "../../Util";
+import Video from './Video';
+import { AUDIO_MIME_TYPES } from '../Util';
 
 /**
  * A component representing a Cloudinary served audio
@@ -17,11 +17,11 @@ class Audio extends Video {
    * Render an audio element
    */
   render() {
-    const {innerRef, fallback, children} = this.props;
+    const { innerRef, fallback, children } = this.props;
 
     const {
       tagAttributes, // Attributes of this video element
-      sources        // <source> tags of this video element
+      sources // <source> tags of this video element
     } = this.getVideoTagProps();
 
     // We generated video attributes, lets delete the unneeded poster
@@ -30,7 +30,8 @@ class Audio extends Video {
     return (
       <audio
         ref={innerRef}
-        {...tagAttributes}>
+        {...tagAttributes}
+      >
         {sources}
         {fallback}
         {children}
@@ -39,7 +40,7 @@ class Audio extends Video {
   }
 }
 
-Audio.propTypes = {publicId: PropTypes.string};
-Audio.defaultProps = {sourceTypes: ["aac","mp3","ogg"]};
+Audio.propTypes = { publicId: PropTypes.string };
+Audio.defaultProps = { sourceTypes: ['aac', 'mp3', 'ogg'] };
 
 export default Audio;

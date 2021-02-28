@@ -5,11 +5,11 @@
  * "If your app uses a browser API that you need to mock in your tests or if you need a global setup before running your tests, add a src/setupTests.js to your project. It will be automatically executed before running your tests."
  */
 
-import Enzyme from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import 'jest-extended';
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({ adapter: new Adapter() });
 
 /**
  * Utility function that mocks the `IntersectionObserver` API. Necessary for components that rely
@@ -26,7 +26,7 @@ function setupIntersectionObserverMock({
     constructor(callback) {
       // This is the callback that notifies when an intersection occurs
       // We'll store it to use it later
-      global.simulateIntersection = callback
+      global.simulateIntersection = callback;
     }
 
     observe = observe
@@ -36,11 +36,11 @@ function setupIntersectionObserverMock({
     writable: true,
     configurable: true,
     value: IntersectionObserver
-  })
+  });
 }
 
 global.navigator = {
   userAgent: 'node.js'
-}
+};
 
-setupIntersectionObserverMock()
+setupIntersectionObserverMock();
