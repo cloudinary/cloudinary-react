@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Audio, Transformation } from '../index';
 
 export default {

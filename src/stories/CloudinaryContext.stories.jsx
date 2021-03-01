@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { CloudinaryContext, Image, Transformation } from '../index';
 
 export default {
