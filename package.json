@@ -1,21 +1,27 @@
 {
   "name": "cloudinary-react",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "Present Cloudinary images and videos using React components",
-  "main": "lib/index.js",
+  "main": "./dist/cloudinary-react.js",
+  "umd:main": "./dist/cloudinary-react.umd.js",
+  "module": "dist/cloudinary-react.esm.js",
+  "source": "src/index.js",
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "test": "node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "test:all": "run-s build test test-dist test-lib test:e2e",
-    "test-dist": "TEST_SUBJECT=dist node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "test-lib": "TEST_SUBJECT=lib node_modules/.bin/mocha --require @babel/register test/.setup.js --recursive test",
-    "pretest:e2e": "npm run build && npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz",
+    "test": "run-s build test:lint test:unit test:build test:e2e",
+    "test:unit": "jest",
+    "test:build": "TEST_ENV=PRODUCTION npm run test:unit",
     "test:e2e": "cd ./e2e-test && npm run test",
-    "prebuild": "node_modules/.bin/babel src --out-dir lib --copy-files ",
-    "build": "node_modules/.bin/webpack && npm run bundlewatch",
+    "test:coverage": "jest --coverage",
+    "test:lint": "eslint src --ext js,jsx",
+    "pretest:e2e": "npm pack && cpy cloudinary-react-*.tgz e2e-test --rename=cloudinary-react.tgz",
+    "build": "microbundle --no-compress --sourcemap false --jsx React.createElement --format esm,umd,cjs && npm run bundlewatch",
+    "start": "microbundle watch --no-compress --sourcemap false --jsx React.createElement --format esm,umd,cjs",
     "bundlewatch": "bundlewatch --config ./bundlewatch.config.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs",
-    "prepublishOnly": "npm run build-storybook"
+    "build-storybook": "del-cli docs && build-storybook -c .storybook -o docs"
   },
   "repository": {
     "type": "git",
@@ -30,43 +36,51 @@
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.2",
+    "@babel/eslint-parser": "^7.13.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@storybook/addon-actions": "^4.1.2",
-    "@storybook/addon-info": "^4.1.2",
-    "@storybook/addon-links": "^4.1.2",
-    "@storybook/react": "^4.1.2",
+    "@storybook/addon-essentials": "^6.1.20",
+    "@storybook/react": "^6.1.20",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.4",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "browserify-shim": "^3.8.14",
     "bundlewatch": "^0.2.6",
-    "chai": "^4.1.2",
-    "chai-string": "^1.4.0",
     "cpy-cli": "^3.1.1",
     "del-cli": "^3.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "jest": "^26.6.3",
+    "jest-environment-enzyme": "^7.1.2",
+    "jest-enzyme": "^7.1.2",
+    "jest-extended": "^0.11.5",
     "jsdom": "^11.12.0",
-    "mocha": "^8.0.1",
+    "microbundle": "^0.13.0",
     "npm-run-all": "^4.1.5",
-    "react-dom": "^16.3.3",
-    "webpack": "4.27.1",
-    "webpack-cli": "^3.1.2"
+    "react": "^16.3.3",
+    "react-dom": "^16.3.3"
   },
   "dependencies": {
-    "cloudinary-core": "^2.10.3",
+    "cloudinary-core": "^2.11.3",
     "prop-types": "^15.6.2"
   },
   "peerDependencies": {
-    "react": "^16.3.3"
+    "react": "^16.3.3 || ^17.0.0"
   },
   "files": [
-    "src",
-    "lib",
     "dist"
   ]
 }

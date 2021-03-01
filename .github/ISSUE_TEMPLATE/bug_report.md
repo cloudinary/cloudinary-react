@@ -13,6 +13,12 @@ Before proceeding, please update to latest version and test if the issue persist
 ## Describe the bug in a sentence or two.
 …
 
+## Describe the desired/expected behavior.
+…
+
+## Link to reproduction of the issue on codepen/jsfiddle/etc.
+…
+
 ## Issue Type (Can be multiple)
 [ ] Build - Can’t install or import the SDK
 [ ] Babel - Babel errors or cross browser issues
@@ -37,7 +43,8 @@ Before proceeding, please update to latest version and test if the issue persist
 
 
 ## Versions and Libraries (fill in the version numbers)
-React Cloudinary SDK - 0.0.0
+Cloudinary-core - 0.0.0
+Cloudinary-react - 0.0.0
 React - 0.0.0
 Create-React-App - 0.0.0 / N/A
 Babel - 0.0.0

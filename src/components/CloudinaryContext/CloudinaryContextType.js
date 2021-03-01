@@ -1,2 +1,0 @@
-import React, {createContext} from 'react';
-export const CloudinaryContextType = createContext();

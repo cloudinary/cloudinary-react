@@ -1,6 +1,0 @@
-{
-  "name": "Audio",
-  "version": "1.0.0",
-  "main": "./Audio.js",
-  "private": true
-}
