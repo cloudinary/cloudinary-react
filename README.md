@@ -97,7 +97,7 @@ For example:
 
 
 The Cloudinary Documentation can be found at:
-http://cloudinary.com/documentation
+https://cloudinary.com/documentation/react_integration
 
 ## Additional resources
 
