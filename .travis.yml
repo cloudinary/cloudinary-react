@@ -7,6 +7,6 @@ script:
   - npm test
 
 notifications:
-email:
-  recipients:
-    - sdk_developers@cloudinary.com
+  email:
+    recipients:
+      - sdk_developers@cloudinary.com
