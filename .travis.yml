@@ -5,3 +5,8 @@ node_js:
   - 10
 script:
   - npm test
+
+notifications:
+email:
+  recipients:
+    - sdk_developers@cloudinary.com
