@@ -28,7 +28,7 @@ For the complete documentation, see the [React SDK Guide](https://cloudinary.com
 | 1.0.0 - 1.0.4 | :white_check_mark:| :x:                | :x:                | :x:                |
 | 1.0.5 - 1.1.4 | :x:               | :white_check_mark: | :x:                | :x:                |
 | 1.2.0 - 1.6.7 | :x:               | :x:                | :white_check_mark: | :x:                |
-| 1.6.8 - 1.7.0 | :x:               | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 1.6.8 - 1.7.0 | :x:               | :x:                | :white_check_mark: | :white_check_mark: |
 
 ## Installation
 ### Install using your favorite package manager (yarn, npm)
