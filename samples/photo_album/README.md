@@ -1,101 +1,70 @@
-Cloudinary React SDK
-=========================
-## About
-The Cloudinary React SDK allows you to quickly and easily integrate your application with Cloudinary.
-Effortlessly optimize and transform your cloud's assets.
+Cloudinary React Photo Album Sample
+=======================================
 
-#### Note
-This Readme provides basic installation and usage information.
-For the complete documentation, see the [React SDK Guide](https://cloudinary.com/documentation/react1_integration).
+This sample project shows:
 
+1. How to use the Cloudinary React components.
+2. How to upload files to Cloudinary in an unsigned manner, using an upload preset.
+3. How to use the dynamic list resource in order to maintain a short list of resources aggregated by tags.
+4. How to delete an image uploaded from the browser with an unsigned upload. You can find additional details in this [knowledge base article](https://support.cloudinary.com/hc/en-us/articles/202521132-How-to-delete-an-image-from-the-client-side-). Don't forget to set the `Return delete token` setting of your unsigned upload preset to `true`.
 
-## Table of Contents
-- [Key Features](#key-features)
-- [Version Support](#Version-Support)
-- [Installation](#installation)
-- [Usage](#usage)
-    - [Setup](#Setup)
-    - [Transform and Optimize Assets](#Transform-and-Optimize-Assets)
-    - [Generate Image and HTML Tags](#Generate-Image-and-Video-HTML-Tags)
+## Configuration ##
 
-## Key Features
-- [Transform](https://cloudinary.com/documentation/react1_video_manipulation#video_transformation_examples) and [optimize](https://cloudinary.com/documentation/react1_image_manipulation#image_optimizations) assets.
-- Generate [image](https://cloudinary.com/documentation/react1_image_manipulation#deliver_and_transform_images) and [video](https://cloudinary.com/documentation/react1_video_manipulation#video_element) tags.
+There are 2 settings you need to change for this demo to work. Copy or rename `src/config/config.js.sample` to `src/config/config.js` and edit the following:
 
-## Version Support
-| SDK Version   | React 15.3 | React 16.2 | React 16.3 | React 17 |
-|---------------|------------|------------|------------|----------|
-| 1.6.8 & up    | X          | X          | V          | V        |
-| 1.2.0 - 1.6.7 | X          | X          | V          | X        |
-| 1.0.5 - 1.1.4 | X          | V          | X          | X        |
-| 1.0.0 - 1.0.4 | V          | X          | X          | X        |
+1. **cloud_name** - Should be change to the cloud name you received when you registered for a Cloudinary account.
+2. **upload_preset** - You should first "Enable unsigned uploads" in the ["Upload Settings"](https://cloudinary.com/console/settings/upload) of your Cloudinary console and assign the resulting preset name to that field. Note, you may want to tweak and modify the upload preset's parameters.
+3. Additionally, in your Cloudinary console in the ["Security Settings"](https://cloudinary.com/console/settings/security) section you should uncheck the "list" item.
 
-## Installation
-### Install using your favorite package manager (yarn, npm)
-```bash
-npm install cloudinary-react
-```
-Or
-```bash
-yarn add cloudinary-react
-```
+## Setup ##
 
-## Usage
-### Setup
-```javascript
-import React from 'react';
-import {Image, Video, Transformation} from 'cloudinary-react';
-```
+Run `yarn` to install the required dependencies for this module.
 
-### Transform and Optimize Assets
-- [See full documentation](https://cloudinary.com/documentation/react1_image_manipulation)
+## Running ##
 
-   ```jsx
-    // Apply a single transformation
-    <Image cloudName="demo" publicId="sample">
-      <Transformation crop="scale" width="200" angle="10" />
-    </Image>
-    ```
+Run `yarn start` to build the app and serve it using a local server.
 
-    ```jsx
-    // Chain (compose) multiple transformations
-    <Image cloudName="demo" publicId="sample">
-          <Transformation angle="-45" />
-          <Transformation effect="trim" angle="45" crop="scale" width="600" />
-          <Transformation overlay="text:Arial_100:Hello" />
-    </Image>
-    ```
-### Generate Image and Video HTML Tags
-    - Use <Image> to generate image tags
-    - Use <Video> to generate video tags
+The application is deployed at http://localhost:5000/
 
-### File upload
-This SDK does not provide file upload functionality, however there are [several methods of uploading from the client side](https://cloudinary.com/documentation/react1_image_and_video_upload).
+## Internals ##
+This sample was created using [CRA](https://github.com/facebook/create-react-app).
 
-## Contributions
-- Ensure tests run locally (```npm run test```)
-- Open a PR and ensure Travis tests pass
+### Sample main components ###
 
-## Get Help
-If you run into an issue or have a question, you can either:
-- [Open a Github issue](https://github.com/CloudinaryLtd/cloudinary-react/issues)  (for issues related to the SDK)
-- [Open a support ticket](https://cloudinary.com/contact) (for issues related to your account)
+#### Routing ####
 
-## About Cloudinary
-Cloudinary is a powerful media API for websites and mobile apps alike, Cloudinary enables developers to efficiently manage, transform, optimize, and deliver images and videos through multiple CDNs. Ultimately, viewers enjoy responsive and personalized visual-media experiences—irrespective of the viewing device.
+The application has 2 routes:
 
+* **/photos** - Presents a list of images tagged by `myphotoalbum`
+* **/photos/new** - Presents an upload control that allows uploading multiple files by a file input or drag-and-grop.
+  Uploads have a dynamic progress bar. In addition it displays the details of successful uploads.
 
-## Additional Resources
-- [Cloudinary Transformation and REST API References](https://cloudinary.com/documentation/cloudinary_references): Comprehensive references, including syntax and examples for all SDKs.
-- [MediaJams.dev](https://mediajams.dev/): Bite-size use-case tutorials written by and for Cloudinary Developers
-- [DevJams](https://www.youtube.com/playlist?list=PL8dVGjLA2oMr09amgERARsZyrOz_sPvqw): Cloudinary developer podcasts on YouTube.
-- [Cloudinary Academy](https://training.cloudinary.com/): Free self-paced courses, instructor-led virtual courses, and on-site courses.
-- [Code Explorers and Feature Demos](https://cloudinary.com/documentation/code_explorers_demos_index): A one-stop shop for all code explorers, Postman collections, and feature demos found in the docs.
-- [Cloudinary Roadmap](https://cloudinary.com/roadmap): Your chance to follow, vote, or suggest what Cloudinary should develop next.
-- [Cloudinary Facebook Community](https://www.facebook.com/groups/CloudinaryCommunity): Learn from and offer help to other Cloudinary developers.
-- [Cloudinary Account Registration](https://cloudinary.com/users/register/free): Free Cloudinary account registration.
-- [Cloudinary Website](https://cloudinary.com): Learn about Cloudinary's products, partners, customers, pricing, and more.
+The default route is set to `/photos`.
 
+#### Main Components ####
+> Photo list
+* [App.js](src/components/App.js) the application root component. Fetches the displayed list of images.
+* [PhotoList.js](src/components/PhotoList.js) displays the list of photos that was set to the state.
+* [Photo.js](src/components/Photo.js) displays a single image.
+* [PhotoThumbnail.js](src/components/PhotoThumbnails.js) displays the image transformations.
 
-## Licence
-Released under the MIT license.
+> Photo Upload
+* [PhotosUploader.js](src/components/PhotosUploader.js) displays the upload control and lists the properties of the uploaded images once upload completes successfully.
+
+**Important observations**:
+* This implementation shows usage of both cloudinary file upload and a react upload control.
+* Changes to the title field are sent in the upload request. This is meant to illustrate the possibility of attaching extra meta-data to each upload image.
+* The upload control uses the `upload_preset` we configured in Configuration step. This uses the settings defined on Cloudinary side to process the uploaded file.
+
+### Unsigned Upload ###
+
+In order to add images to our photo album that would later be retrievable from the Cloudinary service we must select a tag which will serve as our source for the list. In this case `myphotoalbum`.
+While this tag can be set in the upload preset and remain hidden from the client side, in this sample we included it in the request itself to make this sample work without further configuration steps.
+
+### List Resource ###
+
+Cloudinary supports a JSON list resource.
+This list represents all resources marked with a specific tag during upload (or later through other APIs).
+Whenever a new resource is uploaded with a tag, or an existing resource already tagged is deleted then the list is recalculated.
+This enables you to group a list of resources which can be retrieved by a single query. The size of the list is currently limited to 100 entires.
+[Learn more](http://cloudinary.com/documentation/image_transformations#client_side_resource_lists)

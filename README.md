@@ -1,132 +1,101 @@
+Cloudinary React SDK
+=========================
+## About
+The Cloudinary React SDK allows you to quickly and easily integrate your application with Cloudinary.
+Effortlessly optimize and transform your cloud's assets.
 
-# Cloudinary React Library
+#### Note
+This Readme provides basic installation and usage information.
+For the complete documentation, see the [React SDK Guide](https://cloudinary.com/documentation/react1_integration).
 
-Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline.
 
-Easily upload images to the cloud. Automatically perform smart image resizing, cropping and conversion without installing any complex software. Integrate Facebook or Twitter profile image extraction in a snap, in any dimension and style to match your website’s graphics requirements. Images are seamlessly delivered through a fast CDN, and much much more.
+## Table of Contents
+- [Key Features](#key-features)
+- [Version Support](#Version-Support)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Setup](#Setup)
+    - [Transform and Optimize Assets](#Transform-and-Optimize-Assets)
+    - [Generate Image and HTML Tags](#Generate-Image-and-Video-HTML-Tags)
 
-Cloudinary offers comprehensive APIs and administration capabilities and is easy to integrate with any web application, existing or new.
+## Key Features
+- [Transform](https://cloudinary.com/documentation/react1_video_manipulation#video_transformation_examples) and [optimize](https://cloudinary.com/documentation/react1_image_manipulation#image_optimizations) assets.
+- Generate [image](https://cloudinary.com/documentation/react1_image_manipulation#deliver_and_transform_images) and [video](https://cloudinary.com/documentation/react1_video_manipulation#video_element) tags.
 
-Cloudinary provides URL and HTTP based APIs that can be easily integrated with any Web development framework.
+## Version Support
+| SDK Version   | React 15.3 | React 16.2 | React 16.3 | React 17 |
+|---------------|------------|------------|------------|----------|
+| 1.6.8 & up    | X          | X          | V          | V        |
+| 1.2.0 - 1.6.7 | X          | X          | V          | X        |
+| 1.0.5 - 1.1.4 | X          | V          | X          | X        |
+| 1.0.0 - 1.0.4 | V          | X          | X          | X        |
 
 ## Installation
-
-
-### NPM
-
-1. Install the files using the following command. Use the optional `--save` parameter if you wish to save the dependency in your `bower.json` file.
-
-   ```shell
-   npm install cloudinary-react --save
-   ```
-
-1. Include the javascript files in your code. For Example:
-   
-   ```js
-   import {Image} from 'cloudinary-react';
-   ```
-
-
-## Setup
-
-In order to properly use this library you have to provide it with a few configuration parameters. All configuration parameters can be applied directly to the element or using a CloudinaryContext element.
-
-
-```js
-ReactDOM.render(
-            <div>
-                <h1>Hello, world!</h1>
-                <Image cloudName="demo" publicId="sample" width="300" crop="scale"/>
-                // Or for more advanced usage:
-                // import {CloudinaryContext, Transformation} from 'cloudinary-react';
-                <CloudinaryContext cloudName="demo">
-                    <Image publicId="sample">
-                        <Transformation width="200" crop="scale" angle="10"/>
-                    </Image>
-                </CloudinaryContext>
-            </div>,
-            document.getElementById('example')
-    );
+### Install using your favorite package manager (yarn, npm)
+```bash
+npm install cloudinary-react
 ```
-
-Required:
-
-* `cloudName` - The cloudinary cloud name associated with your Cloudinary account.
-
-Optional:
-
-* `privateCdn`, `secureDistribution`, `cname`, `cdnSubdomain` - Please refer to [Cloudinary Documentation](https://cloudinary.com/documentation/react_integration#3_set_cloudinary_configuration_parameters) for information on these parameters.
-
+Or
+```bash
+yarn add cloudinary-react
+```
 
 ## Usage
-
-The library includes 6 Components:
-
-* CloudinaryContext
-* Image
-* Audio
-* Video
-* Transformation
-* Placeholder - can only be used as child of an Image component
-
-## Components Demo
-Storybook for the components is available [here](https://cloudinary.github.io/cloudinary-react/)
-
-### CloudinaryContext
-CloudinaryContext allows you to define shared parameters that are applied to all children elements.
-
-### Image
-The Image element defines a Cloudinary Image tag.
- 
-### Video
-The Video element defines a Cloudinary Video tag.
-
-### Transformation
-The Transformation element allows you to defined additional transformations on the parent element.
-
-For example:
-
-```
-<Image cloudName="demo" publicId="sample">
-    <Transformation angle="-45"/>
-    <Transformation effect="trim" angle="45" crop="scale" width="600">
-      <Transformation overlay="text:Arial_100:Hello" />
-    </Transformation>
-</Image>
+### Setup
+```javascript
+import React from 'react';
+import {Image, Video, Transformation} from 'cloudinary-react';
 ```
 
+### Transform and Optimize Assets
+- [See full documentation](https://cloudinary.com/documentation/react1_image_manipulation)
 
-The Cloudinary Documentation can be found at:
-https://cloudinary.com/documentation/react_integration
+   ```jsx
+    // Apply a single transformation
+    <Image cloudName="demo" publicId="sample">
+      <Transformation crop="scale" width="200" angle="10" />
+    </Image>
+    ```
 
-## Additional resources
+    ```jsx
+    // Chain (compose) multiple transformations
+    <Image cloudName="demo" publicId="sample">
+          <Transformation angle="-45" />
+          <Transformation effect="trim" angle="45" crop="scale" width="600" />
+          <Transformation overlay="text:Arial_100:Hello" />
+    </Image>
+    ```
+### Generate Image and Video HTML Tags
+    - Use <Image> to generate image tags
+    - Use <Video> to generate video tags
 
-Additional resources are available at:
+### File upload
+This SDK does not provide file upload functionality, however there are [several methods of uploading from the client side](https://cloudinary.com/documentation/react1_image_and_video_upload).
 
-* [Website](http://cloudinary.com)
-* [Documentation](http://cloudinary.com/documentation)
-* [Knowledge Base](http://support.cloudinary.com/forums)
-* [Image transformations documentation](http://cloudinary.com/documentation/image_transformations)
+## Contributions
+- Ensure tests run locally (```npm run test```)
+- Open a PR and ensure Travis tests pass
 
-## Support
+## Get Help
+If you run into an issue or have a question, you can either:
+- [Open a Github issue](https://github.com/CloudinaryLtd/cloudinary-react/issues)  (for issues related to the SDK)
+- [Open a support ticket](https://cloudinary.com/contact) (for issues related to your account)
 
-You can [open an issue through GitHub](https://github.com/cloudinary/cloudinary_js/issues).
+## About Cloudinary
+Cloudinary is a powerful media API for websites and mobile apps alike, Cloudinary enables developers to efficiently manage, transform, optimize, and deliver images and videos through multiple CDNs. Ultimately, viewers enjoy responsive and personalized visual-media experiences—irrespective of the viewing device.
 
-Contact us at [http://cloudinary.com/contact](http://cloudinary.com/contact).
 
-Stay tuned for updates, tips and tutorials: [Blog](http://cloudinary.com/blog), [Twitter](https://twitter.com/cloudinary), [Facebook](http://www.facebook.com/Cloudinary).
+## Additional Resources
+- [Cloudinary Transformation and REST API References](https://cloudinary.com/documentation/cloudinary_references): Comprehensive references, including syntax and examples for all SDKs.
+- [MediaJams.dev](https://mediajams.dev/): Bite-size use-case tutorials written by and for Cloudinary Developers
+- [DevJams](https://www.youtube.com/playlist?list=PL8dVGjLA2oMr09amgERARsZyrOz_sPvqw): Cloudinary developer podcasts on YouTube.
+- [Cloudinary Academy](https://training.cloudinary.com/): Free self-paced courses, instructor-led virtual courses, and on-site courses.
+- [Code Explorers and Feature Demos](https://cloudinary.com/documentation/code_explorers_demos_index): A one-stop shop for all code explorers, Postman collections, and feature demos found in the docs.
+- [Cloudinary Roadmap](https://cloudinary.com/roadmap): Your chance to follow, vote, or suggest what Cloudinary should develop next.
+- [Cloudinary Facebook Community](https://www.facebook.com/groups/CloudinaryCommunity): Learn from and offer help to other Cloudinary developers.
+- [Cloudinary Account Registration](https://cloudinary.com/users/register/free): Free Cloudinary account registration.
+- [Cloudinary Website](https://cloudinary.com): Learn about Cloudinary's products, partners, customers, pricing, and more.
 
-## Join the Community ##########################################################
 
-Impact the product, hear updates, test drive new features and more! Join [here](https://www.facebook.com/groups/CloudinaryCommunity).
-
-## Updating github pages
-The github pages source is the "gh-pages" branch. To generate updated storybook:
-1. Switch to "gh-pages" branch
-2. pull from master
-3. rebuild storybook by running "npm run build-storybook"
-4. commit and push
-
-## License
-
+## Licence
 Released under the MIT license.
