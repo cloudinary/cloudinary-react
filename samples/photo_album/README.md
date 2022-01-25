@@ -25,10 +25,10 @@ For the complete documentation, see the [React SDK Guide](https://cloudinary.com
 ## Version Support
 | SDK Version   | React 15.3 | React 16.2 | React 16.3 | React 17 |
 |---------------|------------|------------|------------|----------|
-| 1.0.0 - 1.0.4 | V          | X          | X          | X        |
-| 1.0.5 - 1.1.4 | X          | V          | X          | X        |
+| 1.6.8 & up    | X          | X          | V          | V        |
 | 1.2.0 - 1.6.7 | X          | X          | V          | X        |
-| 1.6.8 - 1.7.0 | X          | X          | V          | V        |
+| 1.0.5 - 1.1.4 | X          | V          | X          | X        |
+| 1.0.0 - 1.0.4 | V          | X          | X          | X        |
 
 ## Installation
 ### Install using your favorite package manager (yarn, npm)
