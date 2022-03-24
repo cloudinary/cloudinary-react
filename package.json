@@ -1,6 +1,6 @@
 {
   "name": "cloudinary-react",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Present Cloudinary images and videos using React components",
   "main": "./dist/cloudinary-react.js",
   "umd:main": "./dist/cloudinary-react.umd.js",

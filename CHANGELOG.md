@@ -1,3 +1,13 @@
+1.7.2 / 2022-03-24
+==================
+* bump immer and ejs versions in photo_album
+
+1.7.1 / 2022-01-25
+==================
+* Update README.md
+* Update sample app dependencies
+* Update travis configuration
+
 1.7.0 / 2021-02-28
 ==================
 
