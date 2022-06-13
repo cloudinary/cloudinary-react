@@ -1,6 +1,8 @@
 Cloudinary React SDK
 =========================
 ## About
+**NOTE-IMPORTANT**: This is a legacy package, please find latest at https://github.com/cloudinary/frontend-frameworks/tree/master/packages/react
+
 The Cloudinary React SDK allows you to quickly and easily integrate your application with Cloudinary.
 Effortlessly optimize and transform your cloud's assets.
 

@@ -1,7 +1,7 @@
 {
   "name": "cloudinary-react",
   "version": "1.7.2",
-  "description": "Present Cloudinary images and videos using React components",
+  "description": "This is a legacy package, please find latest at https://www.npmjs.com/package/@cloudinary/react",
   "main": "./dist/cloudinary-react.js",
   "umd:main": "./dist/cloudinary-react.umd.js",
   "module": "dist/cloudinary-react.esm.js",
