@@ -1,3 +1,15 @@
+1.8.0 / 2022-06-27
+==================
+
+New functionality
+-----------------
+  * Add support for React 18 (#246)
+
+Other changes
+-----------------
+  * Add description to package
+
+
 1.7.2 / 2022-03-24
 ==================
 * bump immer and ejs versions in photo_album
