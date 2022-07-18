@@ -42,6 +42,5 @@ dist/
 *-compiled.js*
 storybook-static/
 .idea/
-package-lock.json
 yarn.lock
 .nvmrc
