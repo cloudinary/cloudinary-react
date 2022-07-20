@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const { camelCase, withCamelCaseKeys, isEmpty } = Util;
 
 // props passed to cloudinary-core but should not be rendered as dom attributes
-const CLOUDINARY_REACT_PROPS = ['accessibility', 'breakpoints', 'dataSrc', 'placeholder', 'publicId', 'signature'];
+const CLOUDINARY_REACT_PROPS = ['accessibility', 'breakpoints', 'dataSrc', 'placeholder', 'publicId', 'signature', 'authToken'];
 
 /**
  * Convert common video file extensions to mime types
