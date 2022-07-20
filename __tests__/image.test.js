@@ -195,6 +195,16 @@ describe('Image', () => {
 
     expect(tag.find('img').prop('src')).toEqual(expected);
   });
+  it('Should support authToken param', function () {
+    const authToken = 'ip=111.222.111.222~exp=1512982559~acl=%2fimage%2fauthenticated%2f%2a~hmac=b17360091889151e9c2e2a7c713a074fdd29dc4ef1cc2fb897a0764664f3c48d';
+    const expected = `http://res.cloudinary.com/demo/image/upload/sample?__cld_token__=${authToken}`;
+
+    const tag = mount(
+      <Image cloudName='demo' publicId='sample' authToken={authToken} />
+    );
+
+    expect(tag.find('img').prop('src')).toEqual(expected);
+  });
   describe('Responsive', () => {
     const spy = jest.spyOn(console, 'warn').mockImplementation();
 
