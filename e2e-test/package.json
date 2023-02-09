@@ -3,13 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "cloudinary-react": "file:cloudinary-react.tgz",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-scripts": "3.4.1"
+    "react-dom": "^18.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,7 +31,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "cypress": "^4.9.0",
+    "react-scripts": "3.4.1",
     "start-server-and-test": "^1.14.0",
     "typescript": "^3.9.10"
   }
